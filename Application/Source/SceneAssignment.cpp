@@ -312,111 +312,87 @@ void SceneAssignment::InitLiftLevel1()
 
 	MaximumBound.Set(150,50,-90);
 	MinimumBound.Set(50,-50,-110);
-
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(100,0,-100);
-	myObj.setScale(100,100,100);
-	myObj.setRotate(0,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::WALL);
-
+	Translate.Set(100,0,-100);
+	Scale.Set(100,100,100);
+	Rotate.SetToRotation(0,0,1,0);
+	
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
+	
 	Objs.push_back(myObj);
 
 	////Lift Wall Left from inside the lift
 	MaximumBound.Set(150,50,-90);
 	MinimumBound.Set(50,-50,-110);
-
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(100,0,-100);
-	myObj.setScale(100,100,100);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::WALL);
+	Translate.Set(100,0,-100);
+	Scale.Set(100,100,100);
+	Rotate.SetToRotation(180,0,1,0);
+	
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
 	MaximumBound.Set(160,50,-110);
 	MinimumBound.Set(140,-50,-210);
+	Translate.Set(150,0,-150);
+	Scale.Set(100,100,100);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(150,0,-150);
-	myObj.setScale(100,100,100);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 	
 	////Lift Wall Right from inside the lift
 	MaximumBound.Set(160,50,-190);
 	MinimumBound.Set(40,-50,-210);
+	Translate.Set(100,0,-200);
+	Scale.Set(100,100,100);
+	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(100,0,-200);
-	myObj.setScale(100,100,100);
-	myObj.setRotate(0,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
 	////Lift Wall Back from inside the lift
 	MaximumBound.Set(60,50,-100);
-	MinimumBound.Set(40,-50,-150);
+	MinimumBound.Set(40,-50,-160);
+	Translate.Set(50,0,-125);
+	Scale.Set(50,100,50);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(50,0,-125);
-	myObj.setScale(50,100,50);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 	
 	////Lift Wall Front from inside the lift
 	MaximumBound.Set(60,50,-100);
-	MinimumBound.Set(40,-50,-150);
+	MinimumBound.Set(40,-50,-160);
+	Translate.Set(50,0,-125);
+	Scale.Set(50,100,50);
+	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(50,0,-125);
-	myObj.setScale(50,100,50);
-	myObj.setRotate(90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
 	////Lift Wall Front from inside the lift
 	MaximumBound.Set(60,50,-100);
 	MinimumBound.Set(40,-50,-150);
+	Translate.Set(50,40,-175);
+	Scale.Set(50,25,50);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(50,40,-175);
-	myObj.setScale(50,25,50);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
 	////Lift Wall Front from inside the lift
 	MaximumBound.Set(60,50,-100);
 	MinimumBound.Set(40,-50,-150);
+	Translate.Set(50,40,-175);
+	Scale.Set(50,25,50);
+	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(50,40,-175);
-	myObj.setScale(50,25,50);
-	myObj.setRotate(90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
@@ -426,14 +402,11 @@ void SceneAssignment::InitLiftLevel1()
 
 	//MaximumBound.Set(60,50,-100);
 	//MinimumBound.Set(40,-50,-150);
+	Translate.Set(50,-50,-175);
+	Scale.Set(7,7,3);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_DOOR);
-	myObj.setTranslate(50,-50,-175);
-	myObj.setScale(7,7,3);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::DOOR);
+	myObj.Set(CModel::GEO_LIFT_DOOR, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::DOOR);
 
 	Objs.push_back(myObj);
 }
@@ -592,111 +565,87 @@ void SceneAssignment::InitLiftLevel2()
 
 	MaximumBound.Set(150,50,-90);
 	MinimumBound.Set(50,-50,-110);
-
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(100,0,-100);
-	myObj.setScale(100,100,100);
-	myObj.setRotate(0,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::WALL);
-
+	Translate.Set(100,0,-100);
+	Scale.Set(100,100,100);
+	Rotate.SetToRotation(0,0,1,0);
+	
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
+	
 	Objs.push_back(myObj);
 
 	////Lift Wall Left from inside the lift
 	MaximumBound.Set(150,50,-90);
 	MinimumBound.Set(50,-50,-110);
-
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(100,0,-100);
-	myObj.setScale(100,100,100);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::WALL);
+	Translate.Set(100,0,-100);
+	Scale.Set(100,100,100);
+	Rotate.SetToRotation(180,0,1,0);
+	
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
 	MaximumBound.Set(160,50,-110);
 	MinimumBound.Set(140,-50,-210);
+	Translate.Set(150,0,-150);
+	Scale.Set(100,100,100);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(150,0,-150);
-	myObj.setScale(100,100,100);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 	
 	////Lift Wall Right from inside the lift
 	MaximumBound.Set(160,50,-190);
 	MinimumBound.Set(40,-50,-210);
+	Translate.Set(100,0,-200);
+	Scale.Set(100,100,100);
+	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(100,0,-200);
-	myObj.setScale(100,100,100);
-	myObj.setRotate(0,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
 	////Lift Wall Back from inside the lift
 	MaximumBound.Set(60,50,-100);
-	MinimumBound.Set(40,-50,-150);
+	MinimumBound.Set(40,-50,-160);
+	Translate.Set(50,0,-125);
+	Scale.Set(50,100,50);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(50,0,-125);
-	myObj.setScale(50,100,50);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 	
 	////Lift Wall Front from inside the lift
 	MaximumBound.Set(60,50,-100);
-	MinimumBound.Set(40,-50,-150);
+	MinimumBound.Set(40,-50,-160);
+	Translate.Set(50,0,-125);
+	Scale.Set(50,100,50);
+	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(50,0,-125);
-	myObj.setScale(50,100,50);
-	myObj.setRotate(90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
 	////Lift Wall Front from inside the lift
 	MaximumBound.Set(60,50,-100);
 	MinimumBound.Set(40,-50,-150);
+	Translate.Set(50,40,-175);
+	Scale.Set(50,25,50);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(50,40,-175);
-	myObj.setScale(50,25,50);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
 	////Lift Wall Front from inside the lift
 	MaximumBound.Set(60,50,-100);
 	MinimumBound.Set(40,-50,-150);
+	Translate.Set(50,40,-175);
+	Scale.Set(50,25,50);
+	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_WALL);
-	myObj.setTranslate(50,40,-175);
-	myObj.setScale(50,25,50);
-	myObj.setRotate(90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
@@ -706,14 +655,11 @@ void SceneAssignment::InitLiftLevel2()
 
 	//MaximumBound.Set(60,50,-100);
 	//MinimumBound.Set(40,-50,-150);
+	Translate.Set(50,-50,-175);
+	Scale.Set(7,7,3);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_LIFT_DOOR);
-	myObj.setTranslate(50,-50,-175);
-	myObj.setScale(7,7,3);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::DOOR);
+	myObj.Set(CModel::GEO_LIFT_DOOR, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::DOOR);
 
 	Objs.push_back(myObj);
 }
@@ -724,33 +670,27 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_COUNTER] = MeshBuilder::GenerateOBJ("cashier", "OBJ//Cashier.obj");
 	meshList[CModel::GEO_COUNTER]->textureID = LoadTGA("Image//cashierCounter.tga");
 
-	MaximumBound.Set(-52, 50, -7);
-	MinimumBound.Set(-124, -50, -52);
+	MaximumBound.Set(-52, 50, 0);
+	MinimumBound.Set(-130, -50, -62);
+	Translate.Set(-90,-50,-20);
+	Scale.Set(6,6,6);
+	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.setModel(CModel::GEO_COUNTER);
-	myObj.setTranslate(-90, -50, -20);
-	myObj.setScale(6, 6, 6);
-	myObj.setRotate(0,1,0,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::COUNTER);
-	
+	myObj.Set(CModel::GEO_COUNTER, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::COUNTER);
+
 	Objs.push_back(myObj);
 
 	////Shelf1
 	meshList[CModel::GEO_RIGHTSHELFWCANS] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfWCans.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCANS]->textureID = LoadTGA("Image//CanTexture3.tga");
 
-	MaximumBound.Set(54, 50, -3);
-	MinimumBound.Set(-12, -50, -28);
+	MaximumBound.Set(60, 50, 1);
+	MinimumBound.Set(-20, -50, -30);
+	Translate.Set(20,-50,-30);
+	Scale.Set(10,10,10);
+	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWCANS);
-	myObj.setTranslate(20, -50, -30);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(0,1,0,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCANS, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -758,16 +698,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWMD] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwMD.obj");
 	meshList[CModel::GEO_RIGHTSHELFWMD]->textureID = LoadTGA("Image//CanTexture2.tga");
 
-	MaximumBound.Set(54,50,-31);
-	MinimumBound.Set(-15,-50,-55);
+	MaximumBound.Set(60,50,-29);
+	MinimumBound.Set(-20,-50,-60);
+	Translate.Set(20,-50,-30);
+	Scale.Set(10,10,10);
+	Rotate.SetToRotation(180,0,1,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWMD);
-	myObj.setTranslate(20, -50, -30);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWMD, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -775,16 +712,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWSODA] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwSoda.obj");
 	meshList[CModel::GEO_RIGHTSHELFWSODA]->textureID = LoadTGA("Image//CanTexture.tga");
 
-	MaximumBound.Set(139, 50, -3);
-	MinimumBound.Set(86,-50,-29);
+	MaximumBound.Set(160, 50, 1);
+	MinimumBound.Set(80,-50,-30);
+	Translate.Set(120,-50,-30);
+	Scale.Set(10,10,10);
+	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWSODA);
-	myObj.setTranslate( 120, -50, -30);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(0,1,0,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWSODA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -792,16 +726,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwCereal.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL]->textureID = LoadTGA("Image//cerealBox.tga");
 
-	MaximumBound.Set(139, 50, -33);
-	MinimumBound.Set(83, -50, -58);
+	MaximumBound.Set(160, 50, -29);
+	MinimumBound.Set(80, -50, -60);
+	Translate.Set(120, -50, -30);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(180,0,1,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWCEREAL);
-	myObj.setTranslate(120, -50, -30);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -809,16 +740,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_COUNTER] = MeshBuilder::GenerateOBJ("cashier", "OBJ//Cashier.obj");
 	meshList[CModel::GEO_COUNTER]->textureID = LoadTGA("Image//cashierCounter.tga");
 
-	MaximumBound.Set(-56, 50, 73);
-	MinimumBound.Set(-122, -50, 24);
+	MaximumBound.Set(-52, 50, 80);
+	MinimumBound.Set(-130, -50, 18);
+	Translate.Set(-90, -50, 60);
+	Scale.Set(6, 6, 6);
+	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.setModel(CModel::GEO_COUNTER);
-	myObj.setTranslate(-90, -50, 60);
-	myObj.setScale(6, 6, 6);
-	myObj.setRotate(0,1,0,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::COUNTER);
+	myObj.Set(CModel::GEO_COUNTER, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::COUNTER);
 
 	Objs.push_back(myObj);
 
@@ -826,16 +754,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL1] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwCereal1.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL1]->textureID = LoadTGA("Image//cerealBox1.tga");
 
-	MaximumBound.Set(51, 50, 75);
-	MinimumBound.Set(-11, -50, 53);
+	MaximumBound.Set(60, 50, 81);
+	MinimumBound.Set(-20, -50, 50);
+	Translate.Set(20, -50, 50);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWCEREAL1);
-	myObj.setTranslate(20, -50, 50);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(0,1,0,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -843,16 +768,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL2] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwCereal2.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL2]->textureID = LoadTGA("Image//displayTable2.tga");
 
-	MaximumBound.Set(48, 50, 52);
-	MinimumBound.Set(-14, -50, 25);
+	MaximumBound.Set(60, 50, 51);
+	MinimumBound.Set(-20, -50, 15);
+	Translate.Set(20, -50, 50);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(180,0,1,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWCEREAL2);
-	myObj.setTranslate(20, -50, 50);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -860,15 +782,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL3] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwCereal3.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL3]->textureID = LoadTGA("Image//stitchCereal.tga");
 
-	MaximumBound.Set(139, 50,77);
-	MinimumBound.Set(87, -50, 51);
+	MaximumBound.Set(160, 50,81);
+	MinimumBound.Set(80, -50, 50);
+	Translate.Set(120, -50, 50);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,1,0,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWCEREAL3);
-	myObj.setTranslate(120, -50, 50);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(0,1,0,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL3, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -876,16 +796,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWBEANCAN] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwBeanCan.obj");
 	meshList[CModel::GEO_RIGHTSHELFWBEANCAN]->textureID = LoadTGA("Image//beanCan.tga");
 
-	MaximumBound.Set(139, 50, 47);
-	MinimumBound.Set(85, -50, 24);
+	MaximumBound.Set(160, 50, 51);
+	MinimumBound.Set(80, -50, 15);
+	Translate.Set(120, -50, 50);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(180,0,1,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWBEANCAN);
-	myObj.setTranslate(120, -50, 50);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWBEANCAN, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -946,14 +863,11 @@ void SceneAssignment::InitOBJs()
 
 	MaximumBound.Set(-65, 50, -181);
 	MinimumBound.Set(-94, -50, -190);
+	Translate.Set(-80, -50, -190);
+	Scale.Set(8, 10, 8);
+	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.setModel(CModel::GEO_ATM);
-	myObj.setTranslate(-80, -50, -190);
-	myObj.setScale(8, 10, 8);
-	myObj.setRotate(-90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::ATM);
+	myObj.Set(CModel::GEO_ATM, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::ATM);
 
 	Objs.push_back(myObj);
 
@@ -961,16 +875,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_FOODSTORAGE] = MeshBuilder::GenerateOBJ("foodstorage", "OBJ//FoodStorage.obj");
 	meshList[CModel::GEO_FOODSTORAGE]->textureID = LoadTGA("Image//FoodStorage.tga");
 
-	MaximumBound.Set(139, 50, 89);
-	MinimumBound.Set(77, -50, 50);
+	MaximumBound.Set(142, 50, 109);
+	MinimumBound.Set(72, -50, 45);
+	Translate.Set(115, -50, 80);
+	Scale.Set(7, 8, 7);
+	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.setModel(CModel::GEO_FOODSTORAGE);
-	myObj.setTranslate(115, -50, 80);
-	myObj.setScale(7, 8, 7);
-	myObj.setRotate(90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_FOODSTORAGE, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -978,16 +889,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_FOODSTORAGE1] = MeshBuilder::GenerateOBJ("foodstorage1", "OBJ//FoodStorage1.obj");
 	meshList[CModel::GEO_FOODSTORAGE1]->textureID = LoadTGA("Image//FoodStorage1.tga");
 
-	MaximumBound.Set(-72, 50, 89);
-	MinimumBound.Set(-139, -50, 49);
+	MaximumBound.Set(-89, 50, 109);
+	MinimumBound.Set(-159, -50, 45);
+	Translate.Set(-116, -50, 80);
+	Scale.Set(7, 8, 7);
+	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.setModel(CModel::GEO_FOODSTORAGE1);
-	myObj.setTranslate(-116, -50, 80);
-	myObj.setScale(7, 8, 7);
-	myObj.setRotate(90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_FOODSTORAGE1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -995,16 +903,13 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_FOODSTORAGE2] = MeshBuilder::GenerateOBJ("foodstorage2", "OBJ//FoodStorage2.obj");
 	meshList[CModel::GEO_FOODSTORAGE2]->textureID = LoadTGA("Image//FoodStorage2.tga");
 
-	MaximumBound.Set(139, 50, -51);
-	MinimumBound.Set(78, -50, -89);
+	MaximumBound.Set(140, 50, -49);
+	MinimumBound.Set(70, -50, -87);
+	Translate.Set(113,-50,-78);
+	Scale.Set(7, 8, 7);
+	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.setModel(CModel::GEO_FOODSTORAGE2);
-	myObj.setTranslate(115, -50, -80);
-	myObj.setScale(7, 8, 7);
-	myObj.setRotate(90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_FOODSTORAGE2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
