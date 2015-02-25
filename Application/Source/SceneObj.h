@@ -25,6 +25,7 @@ public:
 	};
 
 	void CSceneObj::Set(CModel::GEOMETRY_TYPE Model,Vector3 translate, Vector3 scale, Mtx44 rotate, Vector3 Min, Vector3 Max, int level, CSceneObj::OBJ_TYPE type);
+	void CSceneObj::Set(CModel::GEOMETRY_TYPE Model,Vector3 translate, Vector3 scale, Mtx44 rotate, Vector3 Min, Vector3 Max, int level, CSceneObj::OBJ_TYPE type, CModel::GEOMETRY_TYPE Item);
 	void setModel(CModel::GEOMETRY_TYPE Model);
 	void setRotate(int angle, bool x, bool y, bool z);
 	void setTranslate(int x, int y, int z);
@@ -34,12 +35,17 @@ public:
 	void setOBJType(OBJ_TYPE Type);
 
 	CModel::GEOMETRY_TYPE getModel(void);
+	CModel::GEOMETRY_TYPE getItem();
+
 	Mtx44 getRotate(void);
+	
 	Vector3 getTranslate(void);
 	Vector3 getScale(void);
 	Vector3 getBoundMin(void);
 	Vector3 getBoundMax(void);
+	
 	int getLevel();
+	
 	OBJ_TYPE getOBJType();
 
 private:
@@ -50,6 +56,7 @@ private:
 	CModel model;
 	int Level;
 	OBJ_TYPE Type;
+	CModel item;
 };
 
 #endif

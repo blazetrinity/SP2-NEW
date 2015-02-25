@@ -9,6 +9,8 @@ Ccharacter::Ccharacter()
 	movebody = 0;
 	firstpersoncamera.Init(Vector3(Position.x,Position.y + 30,Position.z), Vector3(Position.x, Position.y + 30, Position.z-10), Vector3(0, 1, 0));
 	level = 1;
+	inventorySize = 0;
+	maxInventorySize = 2;
 }
 	
 Ccharacter::~Ccharacter()
@@ -185,4 +187,17 @@ int Ccharacter::getLevel()
 void Ccharacter::setLevel(int lvl)
 {
 	level = lvl;
+}
+
+void Ccharacter::AddToInventory(CModel::GEOMETRY_TYPE ShelfObject)
+{
+	if(inventorySize != maxInventorySize)
+	{
+		Inventory.push_back(ShelfObject);
+	}
+}
+
+vector<CModel::GEOMETRY_TYPE> Ccharacter::GetInterventory()
+{
+	return Inventory;
 }

@@ -1166,7 +1166,14 @@ void SceneAssignment::Update(double dt)
 		}
 		
 		Character.Update(dt, Objs);
-		InteractionCheck();
+
+		InteractionTimer += (float)(10*dt);
+
+		if(InteractionTimer > 20)
+		{
+			InteractionTimer = 0;
+			InteractionCheck();
+		}
 	}
 
 	fps = 1/dt;
@@ -1183,7 +1190,10 @@ void SceneAssignment::InteractionCheck()
 				//Customer
 				if(currentScene == CUSTOMER)
 				{
-					
+					if(Objs[i].getOBJType() == CSceneObj::SHELF)
+					{
+						Pickup(Objs[i]);
+					}
 				}
 
 				//Cashier
@@ -1200,6 +1210,11 @@ void SceneAssignment::InteractionCheck()
 			}
 		}	
 	}
+}
+
+void SceneAssignment::Pickup(CSceneObj object)
+{
+	Character.AddToInventory(object.getItem());
 }
 
 void SceneAssignment::LiftInteraction(double dt)

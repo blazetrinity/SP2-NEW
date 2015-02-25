@@ -25,6 +25,9 @@ public:
 	
 	void setModel(CModel::GEOMETRY_TYPE model, CModel::GEOMETRY_TYPE modelArm);
 	void setModelPosition(float x, float y, float z);
+
+	void AddToInventory(CModel::GEOMETRY_TYPE ShelfObject);
+
 	CModel::GEOMETRY_TYPE GetModel();
 	CModel::GEOMETRY_TYPE GetModelArm();
 	
@@ -32,6 +35,8 @@ public:
 	Camera3 GetCamera();
 	
 	bool BoundChecking(vector<CSceneObj> Objs);
+
+	vector<CModel::GEOMETRY_TYPE> GetInterventory();
 	
 private:
 	bool updatePosition;
@@ -48,6 +53,11 @@ private:
 	float movebody;
 
 	int level;
+
+	int inventorySize;
+	int maxInventorySize;
+
+	vector<CModel::GEOMETRY_TYPE> Inventory;
 };
 
 #endif

@@ -92,11 +92,13 @@ private:
 	void InitAIModel();
 	void LiftInteraction(double dt);
 	void InteractionCheck();
+	void Pickup(CSceneObj Object);
 
 	float fps;
 	float FloorTimer;
 	float MoveDoor;
-	
+	float InteractionTimer;
+
 	bool SecurityCamera;
 
 	int CameraMode;
