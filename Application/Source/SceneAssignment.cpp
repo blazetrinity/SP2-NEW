@@ -881,7 +881,7 @@ void SceneAssignment::InitOBJs()
 	Scale.Set(7, 8, 7);
 	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.Set(CModel::GEO_FOODSTORAGE, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_FOODSTORAGE, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -895,7 +895,7 @@ void SceneAssignment::InitOBJs()
 	Scale.Set(7, 8, 7);
 	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.Set(CModel::GEO_FOODSTORAGE1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_FOODSTORAGE1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -1132,6 +1132,11 @@ void SceneAssignment::Update(double dt)
 		{
 			Character.setModel(CModel::GEO_CASHIER,CModel::GEO_CASHIERARM);
 			//Character.setModelPosition(7, 0, 0);
+		}
+		
+		if (currentScene == EXIT)
+		{
+			exit(0);
 		}
 		PanCam.UpdatePan(dt);
 	}
@@ -1441,7 +1446,6 @@ void SceneAssignment::RenderMenu()
 		{
 			a = 1;
 		}
-
 	}
 }
 
