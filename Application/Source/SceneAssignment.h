@@ -55,7 +55,7 @@ public:
 		CASHIER,
 		CUSTOMER,
 		SECURITY,
-		SWITCH,
+		EXIT,
 	};
 
 	SceneAssignment();

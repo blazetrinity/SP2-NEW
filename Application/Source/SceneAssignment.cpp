@@ -1228,6 +1228,11 @@ void SceneAssignment::Update(double dt)
 			Character.setModel(CModel::GEO_CASHIER,CModel::GEO_CASHIERARM);
 			//Character.setModelPosition(7, 0, 0);
 		}
+		
+		if (currentScene == EXIT)
+		{
+			exit(0);
+		}
 		PanCam.UpdatePan(dt);
 	}
 
@@ -1536,7 +1541,6 @@ void SceneAssignment::RenderMenu()
 		{
 			a = 1;
 		}
-
 	}
 }
 
