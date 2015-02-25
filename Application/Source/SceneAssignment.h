@@ -93,6 +93,8 @@ private:
 	void LiftInteraction(double dt);
 	void InteractionCheck();
 	void Pickup(CSceneObj Object);
+	void getTrolley(int i);
+	void renderTrolley(bool a);
 
 	float fps;
 	float FloorTimer;
@@ -100,6 +102,7 @@ private:
 	float InteractionTimer;
 
 	bool SecurityCamera;
+	bool renderCart;
 
 	int CameraMode;
 
@@ -109,6 +112,7 @@ private:
 	vector<int> Doorindex;
 	int MoveDoorUpperLimit;
 	int MoveDoorLowerLimit;
+	int diffDistance;
 
 	CInteraction LiftDoor, Lift;
 
@@ -121,6 +125,8 @@ private:
 	CSceneObj myObj;
 	vector<CSceneObj> Objs;
 
+	Vector3 DirectionVector;
+	Vector3 trolleyPos;
 	Vector3 MaximumBound, MinimumBound;
 	Vector3 Translate, Scale;
 	Mtx44 Rotate;

@@ -8,7 +8,7 @@ Ccharacter::Ccharacter()
 	turnbody = 0;
 	movebody = 0;
 	firstpersoncamera.Init(Vector3(Position.x,Position.y + 30,Position.z), Vector3(Position.x, Position.y + 30, Position.z-10), Vector3(0, 1, 0));
-	level = 1;
+	level = 2;
 	inventorySize = 0;
 	maxInventorySize = 2;
 }

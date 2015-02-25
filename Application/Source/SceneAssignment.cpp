@@ -150,6 +150,9 @@ void SceneAssignment::Init()
 	FloorTimer = 0;
 	highlight = 2;
 	delay = 0;
+	renderCart = false;
+	diffDistance = 5;
+	InteractionTimer = 0;
 }
 
 void SceneAssignment::InitSkyboxLevel1()
@@ -947,38 +950,39 @@ void SceneAssignment::InitOBJs()
 
 	Objs.push_back(myObj);
 
-	////Shelf3
-	meshList[CModel::GEO_RIGHTSHELFWCANS] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfWCans.obj");
-	meshList[CModel::GEO_RIGHTSHELFWCANS]->textureID = LoadTGA("Image//CanTexture3.tga");
 
-	MaximumBound.Set(-81, 50, 30);
-	MinimumBound.Set(-139, -50, -1);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWCANS);
-	myObj.setTranslate(-120, -50, -1);
+	////FruitStall
+	meshList[CModel::GEO_FRUITSTALL] = MeshBuilder::GenerateOBJ("RightShelf", "OBJ//FruitStall.obj");
+	meshList[CModel::GEO_FRUITSTALL]->textureID = LoadTGA("Image//FruitStall.tga");
+
+	MaximumBound.Set(-72, 50, -8);
+	MinimumBound.Set(-139,-50,-100);
+
+	myObj.setModel(CModel::GEO_FRUITSTALL);
+	myObj.setTranslate(-120, -50, -50);
 	myObj.setScale(10, 10, 10);
-	myObj.setRotate(0,1,0,0);
+	myObj.setRotate(90,0,1,0);
 	myObj.setBound(MinimumBound, MaximumBound);
 	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
 
-	////Shelf4
-	meshList[CModel::GEO_RIGHTSHELFWMD] = MeshBuilder::GenerateOBJ("RightShelf", "OBJ//RightShelfwMD.obj");
-	meshList[CModel::GEO_RIGHTSHELFWMD]->textureID = LoadTGA("Image//CanTexture2.tga");
 
-	MaximumBound.Set(-82,50, -1);
-	MinimumBound.Set(-139,-50,-29);
+	////FruitStall1
+	meshList[CModel::GEO_FRUITSTALL] = MeshBuilder::GenerateOBJ("RightShelf", "OBJ//FruitStall.obj");
+	meshList[CModel::GEO_FRUITSTALL]->textureID = LoadTGA("Image//FruitStall.tga");
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWMD);
-	myObj.setTranslate(-120, -50, 1);
+	/*MaximumBound.Set(0,0, -1);
+	MinimumBound.Set(-139,-50,-29);*/
+
+	myObj.setModel(CModel::GEO_FRUITSTALL);
+	myObj.setTranslate(-120, -50, -50);
 	myObj.setScale(10, 10, 10);
-	myObj.setRotate(180,0,1,0);
+	myObj.setRotate(270,0,1,0);
 	myObj.setBound(MinimumBound, MaximumBound);
 	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 }
@@ -1167,9 +1171,9 @@ void SceneAssignment::Update(double dt)
 		
 		Character.Update(dt, Objs);
 
-		InteractionTimer += (float)(10*dt);
+		InteractionTimer += 10*dt;
 
-		if(InteractionTimer > 20)
+		if(InteractionTimer > 20 && Application::IsKeyPressed('K'))
 		{
 			InteractionTimer = 0;
 			InteractionCheck();
@@ -1179,10 +1183,12 @@ void SceneAssignment::Update(double dt)
 	fps = 1/dt;
 }
 
+void SceneAssignment::getTrolley(int i){
+	Objs.erase(Objs.begin() + i);
+}
+
 void SceneAssignment::InteractionCheck()
 {
-	if(Application::IsKeyPressed('K'))
-	{
 		for(int i = 0; i < Objs.size(); ++i)
 		{
 			if(Character.GetCamera().target.x > Objs[i].getBoundMin().x && Character.GetCamera().target.x < Objs[i].getBoundMax().x && Character.GetCamera().target.z > Objs[i].getBoundMin().z && Character.GetCamera().target.z < Objs[i].getBoundMax().z && Character.getLevel() == Objs[i].getLevel())
@@ -1193,6 +1199,15 @@ void SceneAssignment::InteractionCheck()
 					if(Objs[i].getOBJType() == CSceneObj::SHELF)
 					{
 						Pickup(Objs[i]);
+					}
+
+					if(Objs[i].getOBJType() == CSceneObj::CART)
+					{
+						if(renderCart == false){
+							getTrolley(i);
+							renderCart = true;
+							break;
+						}
 					}
 				}
 
@@ -1209,7 +1224,6 @@ void SceneAssignment::InteractionCheck()
 				}
 			}
 		}	
-	}
 }
 
 void SceneAssignment::Pickup(CSceneObj object)
@@ -1407,6 +1421,8 @@ void SceneAssignment::Render()
 		RenderCharacter();
 	}
 
+	renderTrolley(renderCart);
+
 	std::ostringstream stringfps;
 
 	stringfps << fps;
@@ -1414,6 +1430,29 @@ void SceneAssignment::Render()
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "FPS:", Color(0, 1, 0), 3, 0, 1);
 
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(0, 1, 0), 3, 4, 1);
+}
+
+void SceneAssignment::renderTrolley(bool a){
+	if(a == true){
+		trolleyPos.Set(0,0,0);
+		DirectionVector = Character.GetCamera().target - Character.GetPosition();
+		DirectionVector.Normalize();
+		trolleyPos = (DirectionVector * diffDistance) + Character.GetPosition();
+
+		for(int a = 0; a < Objs.size(); ++a){
+			if(Objs[a].getOBJType() == CSceneObj::CART){
+				modelStack.PushMatrix();
+				//modelStack.Rotate(Character.GetRotation(), 0, 1, 0);
+				modelStack.Translate(trolleyPos.x, trolleyPos.y + 10, trolleyPos.z);
+				modelStack.Rotate(Character.GetRotation() + 90, 0, 1, 0);
+				modelStack.Translate(35, 0, 0);
+				modelStack.Scale(Objs[a].getScale().x, Objs[a].getScale().y, Objs[a].getScale().z);
+				RenderMesh(meshList[Objs[a].getModel()], false);
+				modelStack.PopMatrix();
+				break;
+			}
+		}
+	}
 }
 
 void SceneAssignment::RenderCharacter()
@@ -1437,6 +1476,7 @@ void SceneAssignment::RenderCharacter()
 		RenderMesh(meshList[Character.GetModelArm()], false);
 		modelStack.PopMatrix();
 	}
+	
 	modelStack.PopMatrix();
 }
 
