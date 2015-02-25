@@ -16,6 +16,5 @@
 *.cache
 *.ilk
 *.log
-*.lib
 *.sbr
 *.tlog
