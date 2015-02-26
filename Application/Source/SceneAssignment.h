@@ -12,6 +12,7 @@
 #include "Character.h"
 #include "SceneObj.h"
 #include "Interaction.h"
+#include "AI.h"
 #include <vector>
 #include <string>
 
@@ -82,19 +83,21 @@ private:
 	void RenderTextOnScreen(Mesh *mesh, std::string text, Color color, float size, float x, float y);
 	void RenderObjs();
 	void RenderCharacter();
+	void RenderTrolley();
 	void RenderMenu();
+	void RenderAI();
 	void InitSkyboxLevel1();
 	void InitLiftLevel1();
 	void InitSkyboxLevel2();
 	void InitLiftLevel2();
 	void InitOBJs();
 	void InitCharacterModel();
-	void InitAIModel();
+	void InitAI();
 	void LiftInteraction(double dt);
 	void InteractionCheck();
 	void Pickup(CSceneObj Object);
-	void getTrolley(int i);
-	void renderTrolley(bool a);
+	void RemoveTrolley(int i);
+	
 
 	float fps;
 	float FloorTimer;
@@ -124,6 +127,9 @@ private:
 
 	CSceneObj myObj;
 	vector<CSceneObj> Objs;
+
+	CAi myAI;
+	vector<CAi> AiList;
 
 	Vector3 DirectionVector;
 	Vector3 trolleyPos;

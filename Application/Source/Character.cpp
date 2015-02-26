@@ -2,7 +2,8 @@
 
 Ccharacter::Ccharacter()
 {
-	Position.Set(-120,-50,-100);
+	Position.Set(0,-50,-100);
+	Scale.Set(12,12,12);
 	Displacement.Set(0,0,0);
 	Rotation.SetToIdentity();
 	turnbody = 0;
@@ -18,7 +19,7 @@ Ccharacter::~Ccharacter()
 
 }
 	
-void Ccharacter::Update(double dt,vector<CSceneObj> Objs)
+void Ccharacter::Update(double dt,vector<CSceneObj> Objs, vector<CAi> AiList)
 {
 	static const float Move = 20.f;
 	static const float Turn = 25.f;
@@ -34,7 +35,7 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs)
 		Displacement = Rotation * Displacement;
 		tempPosition += Displacement;
 
-		updatePosition = BoundChecking(Objs);
+		BoundChecking(Objs, AiList);
 
 		movebody = 0;
 	}
@@ -47,7 +48,7 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs)
 		Displacement = Rotation * Displacement;
 		tempPosition += Displacement;
 
-		updatePosition = BoundChecking(Objs);
+		BoundChecking(Objs, AiList);
 
 		movebody = 0;
 	}
@@ -60,7 +61,7 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs)
 		Displacement = Rotation * Displacement;
 		tempPosition += Displacement;
 
-		updatePosition = BoundChecking(Objs);
+		BoundChecking(Objs, AiList);
 
 		movebody = 0;
 	}
@@ -73,7 +74,7 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs)
 		Displacement = Rotation * Displacement;
 		tempPosition += Displacement;
 
-		updatePosition = BoundChecking(Objs);
+		BoundChecking(Objs, AiList);
 
 		movebody = 0;
 	}
@@ -86,7 +87,7 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs)
 		Displacement =  Rotation * Displacement;
 		tempPosition += Displacement;
 
-		updatePosition = BoundChecking(Objs);
+		BoundChecking(Objs, AiList);
 	}
 
 	if(Application::IsKeyPressed(VK_RIGHT))
@@ -97,7 +98,7 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs)
 		Displacement =  Rotation * Displacement;
 		tempPosition += Displacement;
 
-		updatePosition = BoundChecking(Objs);
+		BoundChecking(Objs, AiList);
 	}
 
 	firstpersoncamera.Update(dt);
@@ -124,6 +125,11 @@ Vector3 Ccharacter::GetPosition()
 	return Position;
 }
 
+Vector3 Ccharacter::GetScale()
+{
+	return Scale;
+}
+
 Camera3 Ccharacter::GetCamera()
 {
 	return firstpersoncamera;
@@ -134,27 +140,42 @@ float Ccharacter::GetRotation()
 	return turnbody;
 }
 
-bool Ccharacter::BoundChecking(vector<CSceneObj> Objs)
+void Ccharacter::BoundChecking(vector<CSceneObj> Objs, vector<CAi> AiList)
 {	
-	if(Objs.size() > 0)
+	if(Objs.size() > 0 || AiList.size() > 0)
 	{
 		for(int i = 0; i < Objs.size(); ++i)
 		{
 			if(tempPosition.x < Objs[i].getBoundMax().x && tempPosition.x > Objs[i].getBoundMin().x && tempPosition.z < Objs[i].getBoundMax().z && tempPosition.z > Objs[i].getBoundMin().z && Objs[i].getLevel() == level)
 			{
-				return false;
+				updatePosition = false;
+				return;
 			}
 
 			else if(i == (Objs.size()-1))
 			{
-				return true;
+				updatePosition = true;
+			}
+		}
+
+		for(int i = 0; i < AiList.size(); ++i)
+		{
+			if(tempPosition.x < AiList[i].getBoundMax().x && tempPosition.x > AiList[i].getBoundMin().x && tempPosition.z < AiList[i].getBoundMax().z && tempPosition.z > AiList[i].getBoundMin().z && AiList[i].getLevel() == level)
+			{
+				updatePosition = false;
+				return;
+			}
+
+			else if(i == (AiList.size()-1))
+			{
+				updatePosition = true;
 			}
 		}
 	}
 
 	else
 	{
-		return true;
+		updatePosition = true;
 	}
 }
 
@@ -189,11 +210,17 @@ void Ccharacter::setLevel(int lvl)
 	level = lvl;
 }
 
+void Ccharacter::setInventorySize()
+{
+	maxInventorySize = 10;
+}
+
 void Ccharacter::AddToInventory(CModel::GEOMETRY_TYPE ShelfObject)
 {
 	if(inventorySize != maxInventorySize)
 	{
 		Inventory.push_back(ShelfObject);
+		inventorySize++;
 	}
 }
 

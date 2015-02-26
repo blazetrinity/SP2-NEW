@@ -120,6 +120,7 @@ void SceneAssignment::Init()
 	InitSkyboxLevel2();
 	InitOBJs();
 	InitCharacterModel();
+	InitAI();
 
 	LiftDoor.setLevel(1);
 	LiftDoor.setInteractionBound(Vector3(0,-1,-190),Vector3(75,1,-90));
@@ -130,7 +131,7 @@ void SceneAssignment::Init()
 	Mtx44 projection;
 	projection.SetToPerspective(45.f,4.f/3.f,0.1f,10000.f);
 	projectionStack.LoadMatrix(projection);
-	
+
 	//Initialize current scene
 	currentScene = MENU; //show menu
 
@@ -683,34 +684,6 @@ void SceneAssignment::InitOBJs()
 
 	Objs.push_back(myObj);
 
-	////Shelf1
-	meshList[CModel::GEO_RIGHTSHELFWCANS] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfWCans.obj");
-	meshList[CModel::GEO_RIGHTSHELFWCANS]->textureID = LoadTGA("Image//CanTexture3.tga");
-
-	MaximumBound.Set(60, 50, 1);
-	MinimumBound.Set(-20, -50, -30);
-	Translate.Set(20,-50,-30);
-	Scale.Set(10,10,10);
-	Rotate.SetToRotation(0,0,1,0);
-
-	myObj.Set(CModel::GEO_RIGHTSHELFWCANS, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
-	////Shelf2
-	meshList[CModel::GEO_RIGHTSHELFWMD] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwMD.obj");
-	meshList[CModel::GEO_RIGHTSHELFWMD]->textureID = LoadTGA("Image//CanTexture2.tga");
-
-	MaximumBound.Set(60,50,-29);
-	MinimumBound.Set(-20,-50,-60);
-	Translate.Set(20,-50,-30);
-	Scale.Set(10,10,10);
-	Rotate.SetToRotation(180,0,1,0);
-
-	myObj.Set(CModel::GEO_RIGHTSHELFWMD, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
 	////Shelf3
 	meshList[CModel::GEO_RIGHTSHELFWSODA] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwSoda.obj");
 	meshList[CModel::GEO_RIGHTSHELFWSODA]->textureID = LoadTGA("Image//CanTexture.tga");
@@ -815,48 +788,34 @@ void SceneAssignment::InitOBJs()
 
 	MaximumBound.Set(-63, 50, -143);
 	MinimumBound.Set(-139, -50, -189);
+	Translate.Set(-125, -35, -180);
+	Scale.Set(15, 15, 15);
+	Rotate.SetToRotation(180,0,1,0);
 
-	myObj.setModel(CModel::GEO_TROLLEY);
-	myObj.setTranslate(-125, -35, -180);
-	myObj.setScale(15, 15, 15);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::CART);
+	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
 
 	Objs.push_back(myObj);
 
 	////Trolley2
-	meshList[CModel::GEO_TROLLEY2] = MeshBuilder::GenerateOBJ("trolley", "OBJ//trolley.obj");
-	meshList[CModel::GEO_TROLLEY2]->textureID = LoadTGA("Image//trolley.tga");
 
 	/*MaximumBound.Set(54, 50, -3);
 	MinimumBound.Set(-12, -50, -28);*/
+	Translate.Set(-115, -35, -180);
+	Scale.Set(15, 15, 15);
+	Rotate.SetToRotation(180,0,1,0);
 
-	myObj.setModel(CModel::GEO_TROLLEY2);
-	myObj.setTranslate(-115, -35, -180);
-	myObj.setScale(15, 15, 15);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::CART);
+	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
 
 	Objs.push_back(myObj);
 
 	////Trolley3
-	meshList[CModel::GEO_TROLLEY2] = MeshBuilder::GenerateOBJ("trolley", "OBJ//trolley.obj");
-	meshList[CModel::GEO_TROLLEY2]->textureID = LoadTGA("Image//trolley.tga");
 
 	/*MaximumBound.Set(54, 50, -3);
 	MinimumBound.Set(-12, -50, -28);*/
-
-	myObj.setModel(CModel::GEO_TROLLEY2);
-	myObj.setTranslate(-105, -35, -180);
-	myObj.setScale(15, 15, 15);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(1);
-	myObj.setOBJType(CSceneObj::CART);
+	Translate.Set(-105, -35, -180);
+	Scale.Set(15, 15, 15);
+	Rotate.SetToRotation(180,0,1,0);
+	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
 
 	Objs.push_back(myObj);
 
@@ -864,7 +823,7 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_ATM] = MeshBuilder::GenerateOBJ("ATM", "OBJ//ATM.obj");
 	meshList[CModel::GEO_ATM]->textureID = LoadTGA("Image//ATMTexture.tga");
 
-	MaximumBound.Set(-65, 50, -181);
+	MaximumBound.Set(-65, 50, -170);
 	MinimumBound.Set(-94, -50, -190);
 	Translate.Set(-80, -50, -190);
 	Scale.Set(8, 10, 8);
@@ -892,7 +851,7 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_FOODSTORAGE1] = MeshBuilder::GenerateOBJ("foodstorage1", "OBJ//FoodStorage1.obj");
 	meshList[CModel::GEO_FOODSTORAGE1]->textureID = LoadTGA("Image//FoodStorage1.tga");
 
-	MaximumBound.Set(-89, 50, 109);
+	MaximumBound.Set(-69, 50, 109);
 	MinimumBound.Set(-159, -50, 45);
 	Translate.Set(-116, -50, 80);
 	Scale.Set(7, 8, 7);
@@ -922,14 +881,11 @@ void SceneAssignment::InitOBJs()
 
 	MaximumBound.Set(139, 50, 31);
 	MinimumBound.Set(81, -50, 0);
+	Translate.Set(120, -50, -1);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,1,0,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWCANS);
-	myObj.setTranslate(120, -50, -1);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(0,1,0,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCANS, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
@@ -939,18 +895,13 @@ void SceneAssignment::InitOBJs()
 
 	MaximumBound.Set(139,50,0);
 	MinimumBound.Set(81,-50,-29);
+	Translate.Set(120, -50, 1);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(180,0,1,0);
 
-	myObj.setModel(CModel::GEO_RIGHTSHELFWMD);
-	myObj.setTranslate(120, -50, 1);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(180,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
-	myObj.setOBJType(CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWMD, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
-
-
 
 	////FruitStall
 	meshList[CModel::GEO_FRUITSTALL] = MeshBuilder::GenerateOBJ("RightShelf", "OBJ//FruitStall.obj");
@@ -958,31 +909,23 @@ void SceneAssignment::InitOBJs()
 
 	MaximumBound.Set(-72, 50, -8);
 	MinimumBound.Set(-139,-50,-100);
+	Translate.Set(-120, -50, -50);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.setModel(CModel::GEO_FRUITSTALL);
-	myObj.setTranslate(-120, -50, -50);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(90,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
+	myObj.Set(CModel::GEO_FRUITSTALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 
-
-
 	////FruitStall1
-	meshList[CModel::GEO_FRUITSTALL] = MeshBuilder::GenerateOBJ("RightShelf", "OBJ//FruitStall.obj");
-	meshList[CModel::GEO_FRUITSTALL]->textureID = LoadTGA("Image//FruitStall.tga");
 
 	/*MaximumBound.Set(0,0, -1);
 	MinimumBound.Set(-139,-50,-29);*/
+	Translate.Set(-120, -50, -50);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(270,0,1,0);
 
-	myObj.setModel(CModel::GEO_FRUITSTALL);
-	myObj.setTranslate(-120, -50, -50);
-	myObj.setScale(10, 10, 10);
-	myObj.setRotate(270,0,1,0);
-	myObj.setBound(MinimumBound, MaximumBound);
-	myObj.setLevel(2);
+	myObj.Set(CModel::GEO_FRUITSTALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
 }
@@ -1006,11 +949,7 @@ void SceneAssignment::InitCharacterModel()
 
 	meshList[CModel::GEO_SECURITYARM] = MeshBuilder::GenerateOBJ("security's arm", "OBJ//arm.OBJ");
 	meshList[CModel::GEO_SECURITYARM] ->textureID = LoadTGA("Image//security_arm.tga");
-}
 
-void SceneAssignment::InitAIModel()
-{
-	/*
 	meshList[CModel::GEO_ADULT2] = MeshBuilder::GenerateOBJ("Adult shopper 2", "OBJ//adult_male_body.obj");
 	meshList[CModel::GEO_ADULT2] ->textureID = LoadTGA("Image//shopper2_uv.tga");
 
@@ -1034,7 +973,13 @@ void SceneAssignment::InitAIModel()
 
 	meshList[CModel::GEO_GIRLARM] = MeshBuilder::GenerateOBJ("Girl's arm", "OBJ//kid_arm.OBJ");
 	meshList[CModel::GEO_GIRLARM] ->textureID = LoadTGA("Image//girl_arm.tga");
-	*/
+}
+
+void SceneAssignment::InitAI()
+{
+	myAI.Set(Vector3(-120,-50,-120),Character.GetPosition(),CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::STATIONARY,2,5);
+
+	AiList.push_back(myAI);
 }
 
 static float ROT_LIMIT = 45.f;
@@ -1168,9 +1113,22 @@ void SceneAssignment::Update(double dt)
 			//Character.setModelPosition(7, 0, 0);
 			currentScene = CASHIER;
 		}
-		
-		Character.Update(dt, Objs);
 
+		
+		Vector3 TempPosition = Character.GetPosition();
+		Character.Update(dt, Objs, AiList);
+		/*
+		if(Character.GetPosition() != TempPosition)
+		{
+			for(int i = 0; i <AiList.size(); ++i)
+			{
+				if(AiList[i].GetModel() == CModel::GEO_SECURITY)
+				{
+					AiList[i].CalTarget(Character.GetPosition());
+				}
+			}
+		}
+		*/
 		InteractionTimer += 10*dt;
 
 		if(InteractionTimer > 20 && Application::IsKeyPressed('K'))
@@ -1183,47 +1141,59 @@ void SceneAssignment::Update(double dt)
 	fps = 1/dt;
 }
 
-void SceneAssignment::getTrolley(int i){
+void SceneAssignment::RemoveTrolley(int i){
 	Objs.erase(Objs.begin() + i);
+	Character.setInventorySize();
 }
 
 void SceneAssignment::InteractionCheck()
 {
-		for(int i = 0; i < Objs.size(); ++i)
+	for(int i = 0; i < Objs.size(); ++i)
+	{
+		if(Character.GetCamera().target.x > Objs[i].getBoundMin().x && Character.GetCamera().target.x < Objs[i].getBoundMax().x && Character.GetCamera().target.z > Objs[i].getBoundMin().z && Character.GetCamera().target.z < Objs[i].getBoundMax().z && Character.getLevel() == Objs[i].getLevel())
 		{
-			if(Character.GetCamera().target.x > Objs[i].getBoundMin().x && Character.GetCamera().target.x < Objs[i].getBoundMax().x && Character.GetCamera().target.z > Objs[i].getBoundMin().z && Character.GetCamera().target.z < Objs[i].getBoundMax().z && Character.getLevel() == Objs[i].getLevel())
+			//Customer
+			if(currentScene == CUSTOMER)
 			{
-				//Customer
-				if(currentScene == CUSTOMER)
+				if(Objs[i].getOBJType() == CSceneObj::SHELF)
 				{
-					if(Objs[i].getOBJType() == CSceneObj::SHELF)
-					{
-						Pickup(Objs[i]);
-					}
-
-					if(Objs[i].getOBJType() == CSceneObj::CART)
-					{
-						if(renderCart == false){
-							getTrolley(i);
-							renderCart = true;
-							break;
-						}
-					}
+					Pickup(Objs[i]);
 				}
 
-				//Cashier
-				else if(currentScene == CASHIER)
+				if(Objs[i].getOBJType() == CSceneObj::CART)
 				{
+					if(renderCart == false)
+					{
+						RemoveTrolley(i);
+						renderCart = true;
+						break;
+					}
+				}
+			
+			}
+
+			//Cashier	
+			else if(currentScene == CASHIER)
+			{
 	
-				}
+			}
 
-				//Security
-				else if(currentScene == SECURITY)
-				{
+			//Security
+			else if(currentScene == SECURITY)
+			{
 
-				}
 			}
 		}	
+	}
+
+	//Ai Interaction check
+	for(int i = 0; i < AiList.size(); ++i)
+	{
+		if(Character.GetCamera().target.x > AiList[i].getBoundMin().x && Character.GetCamera().target.x < AiList[i].getBoundMax().x && Character.GetCamera().target.z > AiList[i].getBoundMin().z && Character.GetCamera().target.z < AiList[i].getBoundMax().z && Character.getLevel() == AiList[i].getLevel())
+		{
+			
+		}	
+	}
 }
 
 void SceneAssignment::Pickup(CSceneObj object)
@@ -1419,10 +1389,14 @@ void SceneAssignment::Render()
 	else
 	{
 		RenderCharacter();
+		RenderAI();
+		if(renderCart && currentScene == CUSTOMER)
+		{
+			RenderTrolley();
+		}
 	}
 
-	renderTrolley(renderCart);
-
+	
 	std::ostringstream stringfps;
 
 	stringfps << fps;
@@ -1432,25 +1406,55 @@ void SceneAssignment::Render()
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(0, 1, 0), 3, 4, 1);
 }
 
-void SceneAssignment::renderTrolley(bool a){
-	if(a == true){
-		trolleyPos.Set(0,0,0);
-		DirectionVector = Character.GetCamera().target - Character.GetPosition();
-		DirectionVector.Normalize();
-		trolleyPos = (DirectionVector * diffDistance) + Character.GetPosition();
-
-		for(int a = 0; a < Objs.size(); ++a){
-			if(Objs[a].getOBJType() == CSceneObj::CART){
+void SceneAssignment::RenderAI()
+{
+	for(int i = 0; i < AiList.size(); ++i)
+	{
+		if(AiList[i].getLevel() == Character.getLevel())
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(AiList[i].GetPosition().x, AiList[i].GetPosition().y,	AiList[i].GetPosition().z);
+			modelStack.MultMatrix(AiList[i].GetRotation());
+			modelStack.Scale(AiList[i].GetScale().x,AiList[i].GetScale().y,AiList[i].GetScale().z);
+			RenderMesh(meshList[AiList[i].GetModel()], false);
+			{
 				modelStack.PushMatrix();
-				//modelStack.Rotate(Character.GetRotation(), 0, 1, 0);
-				modelStack.Translate(trolleyPos.x, trolleyPos.y + 10, trolleyPos.z);
-				modelStack.Rotate(Character.GetRotation() + 90, 0, 1, 0);
-				modelStack.Translate(35, 0, 0);
-				modelStack.Scale(Objs[a].getScale().x, Objs[a].getScale().y, Objs[a].getScale().z);
-				RenderMesh(meshList[Objs[a].getModel()], false);
+				{
+					modelStack.PushMatrix();
+					modelStack.Translate(-1.3, 0, 0);
+					modelStack.Rotate(90, 0, 1, 0);
+					RenderMesh(meshList[AiList[i].GetModelArm()], false);
+					modelStack.PopMatrix();
+				}
+				modelStack.Translate(1.3, 0, 0);
+				modelStack.Rotate(180, 0, 1, 0);
+				RenderMesh(meshList[AiList[i].GetModelArm()], false);
 				modelStack.PopMatrix();
-				break;
 			}
+	
+			modelStack.PopMatrix();
+		}
+	}
+}
+void SceneAssignment::RenderTrolley()
+{
+	trolleyPos.Set(0,0,0);
+	DirectionVector = Character.GetCamera().target - Character.GetPosition();
+	DirectionVector.Normalize();
+	trolleyPos = (DirectionVector * diffDistance) + Character.GetPosition();
+
+	for(int a = 0; a < Objs.size(); ++a)
+	{
+		if(Objs[a].getOBJType() == CSceneObj::CART)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(trolleyPos.x, trolleyPos.y + 10, trolleyPos.z);
+			modelStack.Rotate(Character.GetRotation() + 90, 0, 1, 0);
+			modelStack.Translate(35, 0, 0);
+			modelStack.Scale(Objs[a].getScale().x, Objs[a].getScale().y, Objs[a].getScale().z);
+			RenderMesh(meshList[Objs[a].getModel()], false);
+			modelStack.PopMatrix();
+			break;
 		}
 	}
 }
@@ -1460,7 +1464,7 @@ void SceneAssignment::RenderCharacter()
 	modelStack.PushMatrix();
 	modelStack.Translate(Character.GetPosition().x,Character.GetPosition().y,Character.GetPosition().z);
 	modelStack.Rotate(Character.GetRotation(),0,1,0);
-	modelStack.Scale(12,12,12);
+	modelStack.Scale(Character.GetScale().x,Character.GetScale().y,Character.GetScale().z);
 	RenderMesh(meshList[Character.GetModel()], false);
 	{
 		modelStack.PushMatrix();

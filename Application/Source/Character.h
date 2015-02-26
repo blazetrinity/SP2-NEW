@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "SceneObj.h"
 #include "Camera3.h"
+#include "AI.h"
 #include <vector>
 
 using std::vector;
@@ -20,27 +21,29 @@ public:
 	
 	float GetRotation();
 
-	void Update(double dt,vector<CSceneObj> Objs);
+	void Update(double dt,vector<CSceneObj> Objs, vector<CAi> AiList);
 	void setLevel(int lvl);
 	
 	void setModel(CModel::GEOMETRY_TYPE model, CModel::GEOMETRY_TYPE modelArm);
 	void setModelPosition(float x, float y, float z);
-
+	void setInventorySize();
 	void AddToInventory(CModel::GEOMETRY_TYPE ShelfObject);
 
 	CModel::GEOMETRY_TYPE GetModel();
 	CModel::GEOMETRY_TYPE GetModelArm();
 	
 	Vector3 GetPosition();
+	Vector3 GetScale();
 	Camera3 GetCamera();
 	
-	bool BoundChecking(vector<CSceneObj> Objs);
+	void BoundChecking(vector<CSceneObj> Objs, vector<CAi> AiList);
 
 	vector<CModel::GEOMETRY_TYPE> GetInterventory();
 	
 private:
 	bool updatePosition;
 	Vector3 Position;
+	Vector3 Scale;
 	Vector3 Displacement;
 	Vector3 tempPosition;
 	Mtx44 Rotation;
