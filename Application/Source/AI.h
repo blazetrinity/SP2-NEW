@@ -5,6 +5,7 @@
 #include"Model.h"
 #include"Mtx44.h"
 #include "Bound.h"
+#include "AiPath.h"
 
 class CAi
 {
@@ -20,12 +21,19 @@ public:
 	~CAi();
 
 	void Set(Vector3 NewPosition, Vector3 NewTarget, CModel::GEOMETRY_TYPE model, CModel::GEOMETRY_TYPE modelArm, AI_TYPE type, int level, int size);
+	void Set(Vector3 NewPosition, float RotationAngle, CModel::GEOMETRY_TYPE Model, CModel::GEOMETRY_TYPE ModelArm, AI_TYPE type, int level, int size);
+	void AddPath(Vector3 Point);
 	void CalMovementAndRotation();
 	void CalTarget(Vector3 NewTarget);
+	void UpDatePath(double dt);
+	void UpDateRotate(double dt);
+
+	AI_TYPE getAiType();
 
 	Vector3 getBoundMax();
 	Vector3 getBoundMin();
 	
+
 	CModel::GEOMETRY_TYPE GetModel();
 	CModel::GEOMETRY_TYPE GetModelArm();
 	
@@ -38,18 +46,24 @@ public:
 
 	CBound BoundCheck;
 
+	CAiPath getPath();
+
 private:
 	Vector3 Position;
 	Vector3 Scale;
 	Vector3 Displacement;
 	Vector3 Target;
 	Mtx44 Rotation;
+	float movebody;
 	float rotatebody;
 	float result;
+	float angletorotate;
 	CModel model;
 	CModel modelArm;
 	AI_TYPE Type;
+	CAiPath Path;
 	int Level;
+	bool Update;
 };
 
 #endif

@@ -65,6 +65,12 @@
     <ClCompile Include="Source\AI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AiPath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -128,6 +134,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\AI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AiPath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

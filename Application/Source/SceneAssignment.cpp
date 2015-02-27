@@ -977,8 +977,15 @@ void SceneAssignment::InitCharacterModel()
 
 void SceneAssignment::InitAI()
 {
-	myAI.Set(Vector3(-120,-50,-120),Character.GetPosition(),CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::STATIONARY,2,5);
+	myAI.Set(Vector3(-120,-50,-120),Character.GetPosition(),CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::STATIONARY,2,10);
 
+	AiList.push_back(myAI);
+	
+	myAI.Set(Vector3(-50,-50,-50),180,CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::MOVING,2,5);
+	myAI.AddPath(Vector3(-50,-50,-50));
+	myAI.AddPath(Vector3(-50,-50,50));
+	myAI.AddPath(Vector3(50,-50,50));
+	myAI.AddPath(Vector3(50,-50,-50));
 	AiList.push_back(myAI);
 }
 
@@ -1117,18 +1124,27 @@ void SceneAssignment::Update(double dt)
 		
 		Vector3 TempPosition = Character.GetPosition();
 		Character.Update(dt, Objs, AiList);
-		/*
-		if(Character.GetPosition() != TempPosition)
+			
+		for(int i = 0; i <AiList.size(); ++i)
 		{
-			for(int i = 0; i <AiList.size(); ++i)
+			if(AiList[i].getAiType() == CAi::STATIONARY && Character.GetPosition() != TempPosition && AiList[i].GetModel() == CModel::GEO_SECURITY)
 			{
-				if(AiList[i].GetModel() == CModel::GEO_SECURITY)
-				{
-					AiList[i].CalTarget(Character.GetPosition());
-				}
+				AiList[i].CalTarget(Character.GetPosition());
+			}
+			
+			if(AiList[i].GetModel() == CModel::GEO_SECURITY && AiList[i].getAiType() == CAi::STATIONARY)
+			{
+				AiList[i].UpDateRotate(dt);
+			}
+
+			if(AiList[i].getAiType() == CAi::MOVING)
+			{
+				AiList[i].CalMovementAndRotation();
+				AiList[i].UpDatePath(dt);
 			}
 		}
-		*/
+		
+		
 		InteractionTimer += 10*dt;
 
 		if(InteractionTimer > 20 && Application::IsKeyPressed('K'))
