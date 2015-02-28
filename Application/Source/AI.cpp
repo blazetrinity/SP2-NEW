@@ -25,10 +25,11 @@ void CAi::Set(Vector3 NewPosition, Vector3 NewTarget, CModel::GEOMETRY_TYPE Mode
 	Type = type;
 	Level = level;
 	Vector3 Min, Max;
-	float halfofwidth = size/2;
+	halfofwidth = size/2;
 	Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
 	Max.Set((Position.x + (halfofwidth*Scale.x)),0,(Position.z + (halfofwidth*Scale.z)));
 	BoundCheck.setBound(Min,Max);
+	initAIText();
 }
 
 void CAi::Set(Vector3 NewPosition, float RotationAngle, CModel::GEOMETRY_TYPE Model, CModel::GEOMETRY_TYPE ModelArm, AI_TYPE type, int level, int size)
@@ -41,10 +42,11 @@ void CAi::Set(Vector3 NewPosition, float RotationAngle, CModel::GEOMETRY_TYPE Mo
 	Type = type;
 	Level = level;
 	Vector3 Min, Max;
-	float halfofwidth = size/2;
+	halfofwidth = size/2;
 	Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
 	Max.Set((Position.x + (halfofwidth*Scale.x)),0,(Position.z + (halfofwidth*Scale.z)));
 	BoundCheck.setBound(Min,Max);
+	initAIText();
 }
 
 CModel::GEOMETRY_TYPE CAi::GetModel()
@@ -98,17 +100,23 @@ void CAi::UpDatePath(double dt)
 
 	bool torotate = false;
 
-	if(rotatebody < angletorotate)
+	/*if(rotatebody < angletorotate)
 	{
 		torotate = true;
-	}
+	}*/
 
 	if(Lenght > 1)
 	{
 		movebody -= (float)(Move * dt);
 	}
-
-	if(Lenght < 1 && torotate == true)
+	
+	else
+	{
+		rotatebody += 90;
+		Update = true;
+	}
+	
+	/*if(Lenght < 1 && torotate == true)
 	{
 		rotatebody += (float)(Turn *dt);
 	}
@@ -116,12 +124,17 @@ void CAi::UpDatePath(double dt)
 	else if(Lenght < 1 && rotatebody > angletorotate)
 	{
 		Update = true;
-	}
+	}*/
 
 	Displacement.Set(0,0,movebody);
 	Rotation.SetToRotation(rotatebody,0,1,0);
 	Displacement = Rotation * Displacement;
 	Position += Displacement;
+
+	Vector3 Min, Max;
+	Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
+	Max.Set((Position.x + (halfofwidth*Scale.x)),0,(Position.z + (halfofwidth*Scale.z)));
+	BoundCheck.setBound(Min,Max);
 
 	movebody = 0;
 }
@@ -142,6 +155,14 @@ void CAi::UpDateRotate(double dt)
 	}
 
 	Rotation.SetToRotation(rotatebody,0,1,0);
+
+	Mtx44 AITextRotation;
+	AITextRotation.SetToRotation(-rotatebody, 0, 1, 0);
+	Vector3 AITextTranslation;
+	AITextTranslation.Set(Position.x, Position.y + 55, Position.z);
+	Vector3 AITextScale;
+	AITextScale.Set(5, 5, 5);
+	AIText.Set(AITextRotation, AITextTranslation, AITextScale);
 }
 
 void CAi::CalTarget(Vector3 NewTarget)
@@ -200,4 +221,28 @@ void CAi::AddPath(Vector3 Point)
 CAi::AI_TYPE CAi::getAiType()
 {
 	return Type;
+}
+
+void CAi::SetText(){
+	AIText.randomText();
+}
+
+void CAi::initAIText(){
+	AIText.InitAIText();
+	Mtx44 AITextRotation;
+	AITextRotation.SetToRotation(-rotatebody, 0, 1, 0);
+	Vector3 AITextTranslation;
+	AITextTranslation.Set(Position.x, Position.y + 55, Position.z);
+	Vector3 AITextScale;
+	AITextScale.Set(5, 5, 5);
+	AIText.Set(AITextRotation, AITextTranslation, AITextScale);
+}
+
+CAIInteraction CAi::getAIText(){
+	return AIText;
+}
+
+void CAi::updateText(float updateValue)
+{
+	AIText.updateTime(updateValue);
 }

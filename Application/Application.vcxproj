@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI.cpp" />
+    <ClCompile Include="Source\AIInteractions.cpp" />
     <ClCompile Include="Source\AiPath.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Bound.cpp" />
@@ -95,7 +96,6 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Model.cpp" />
-    <ClCompile Include="Source\Node.cpp" />
     <ClCompile Include="Source\SceneAssignment.cpp" />
     <ClCompile Include="Source\SceneObj.cpp" />
     <ClCompile Include="Source\shader.cpp" />
@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI.h" />
+    <ClInclude Include="Source\AIInteractions.h" />
     <ClInclude Include="Source\AiPath.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Bound.h" />
@@ -118,7 +119,6 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Model.h" />
-    <ClInclude Include="Source\Node.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneAssignment.h" />
     <ClInclude Include="Source\SceneObj.h" />

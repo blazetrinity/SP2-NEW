@@ -6,6 +6,8 @@
 #include"Mtx44.h"
 #include "Bound.h"
 #include "AiPath.h"
+#include "MyMath.h"
+#include "AIInteractions.h"
 
 class CAi
 {
@@ -27,13 +29,16 @@ public:
 	void CalTarget(Vector3 NewTarget);
 	void UpDatePath(double dt);
 	void UpDateRotate(double dt);
+	void SetText();
+	void initAIText();
+	void updateText(float updateValue);
+	CAIInteraction getAIText();
 
 	AI_TYPE getAiType();
 
 	Vector3 getBoundMax();
 	Vector3 getBoundMin();
 	
-
 	CModel::GEOMETRY_TYPE GetModel();
 	CModel::GEOMETRY_TYPE GetModelArm();
 	
@@ -64,6 +69,8 @@ private:
 	CAiPath Path;
 	int Level;
 	bool Update;
+	float halfofwidth;
+	CAIInteraction AIText;
 };
 
 #endif

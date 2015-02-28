@@ -977,11 +977,15 @@ void SceneAssignment::InitCharacterModel()
 
 void SceneAssignment::InitAI()
 {
-	myAI.Set(Vector3(-120,-50,-120),Character.GetPosition(),CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::STATIONARY,2,10);
-
+	myAI.Set(Vector3(-120,-50,-120),Character.GetPosition(),CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::STATIONARY,2,7);
 	AiList.push_back(myAI);
 	
-	myAI.Set(Vector3(-50,-50,-50),180,CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::MOVING,2,5);
+	
+	myAI.Set(Vector3(0,-50,0),90,CModel::GEO_ADULT3,CModel::GEO_ARM3,CAi::STATIONARY,2,7);
+	AiList.push_back(myAI);
+	
+	
+	myAI.Set(Vector3(-50,-50,-50),180,CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::MOVING,2,7);
 	myAI.AddPath(Vector3(-50,-50,-50));
 	myAI.AddPath(Vector3(-50,-50,50));
 	myAI.AddPath(Vector3(50,-50,50));
@@ -1152,6 +1156,17 @@ void SceneAssignment::Update(double dt)
 			InteractionTimer = 0;
 			InteractionCheck();
 		}
+
+		float TextTimer = 0;
+		TextTimer += (float) (2*dt);
+
+		for(int i = 0; i < AiList.size(); ++i)
+		{
+			if(AiList[i].getAIText().getTime() > 0)
+			{
+				AiList[i].updateText(TextTimer);
+			}
+		}
 	}
 
 	fps = 1/dt;
@@ -1207,7 +1222,7 @@ void SceneAssignment::InteractionCheck()
 	{
 		if(Character.GetCamera().target.x > AiList[i].getBoundMin().x && Character.GetCamera().target.x < AiList[i].getBoundMax().x && Character.GetCamera().target.z > AiList[i].getBoundMin().z && Character.GetCamera().target.z < AiList[i].getBoundMax().z && Character.getLevel() == AiList[i].getLevel())
 		{
-			
+			AiList[i].SetText();
 		}	
 	}
 }
@@ -1449,6 +1464,16 @@ void SceneAssignment::RenderAI()
 			}
 	
 			modelStack.PopMatrix();
+
+			if(AiList[i].getAIText().getTime() > 0)
+			{
+				modelStack.PushMatrix();
+				modelStack.Translate(AiList[i].getAIText().getTranslation().x, AiList[i].getAIText().getTranslation().y, AiList[i].getAIText().getTranslation().z);
+				modelStack.MultMatrix(AiList[i].getAIText().getRotation());
+				modelStack.Scale(AiList[i].getAIText().getScale().x, AiList[i].getAIText().getScale().y, AiList[i].getAIText().getScale().z);
+				RenderText(meshList[CModel::GEO_TEXT], AiList[i].getAIText().getText(), Color(0, 1, 0));
+				modelStack.PopMatrix();
+			}
 		}
 	}
 }
