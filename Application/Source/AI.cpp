@@ -234,7 +234,7 @@ void CAi::initAIText(){
 	Vector3 AITextTranslation;
 	AITextTranslation.Set(Position.x, Position.y + 55, Position.z);
 	Vector3 AITextScale;
-	AITextScale.Set(5, 5, 5);
+	AITextScale.Set(4, 4, 4);
 	AIText.Set(AITextRotation, AITextTranslation, AITextScale);
 }
 

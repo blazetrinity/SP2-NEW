@@ -28,6 +28,7 @@ public:
 	void setModelPosition(float x, float y, float z);
 	void setInventorySize();
 	void AddToInventory(CModel::GEOMETRY_TYPE ShelfObject);
+	void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar);
 
 	CModel::GEOMETRY_TYPE GetModel();
 	CModel::GEOMETRY_TYPE GetModelArm();

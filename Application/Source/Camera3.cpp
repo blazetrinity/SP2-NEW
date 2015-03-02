@@ -118,6 +118,15 @@ void Camera3::Update(double dt)
 	}
 }
 
+void Camera3::UpdateUp(Vector3 Pos, Vector3 Tar)
+{
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
+	right.y = 0;
+	right.Normalize();
+	up = right.Cross(view).Normalized();
+}
+
 void Camera3::CameraRotateUpdate(double dt)
 {
 	static const float CAMERA_SPEED = 10.f;

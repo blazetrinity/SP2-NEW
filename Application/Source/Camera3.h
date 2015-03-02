@@ -45,6 +45,7 @@ public:
 	virtual void Reset();
 	void CameraRotateUpdate(double dt);
 	void UpdatePan(double dt);
+	void UpdateUp(Vector3 Pos, Vector3 Tar);
 };
 
 #endif

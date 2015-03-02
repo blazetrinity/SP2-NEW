@@ -31,6 +31,7 @@ private:
 	Mtx44 Rotation;
 	Vector3 Translation;
 	Vector3 Scale;
+	Vector3 Offset;
 	int value;
 	float time;
 	string text;

@@ -93,19 +93,32 @@ private:
 	void InitOBJs();
 	void InitCharacterModel();
 	void InitAI();
+	void InitItemListAndPriceIndex();
 	void LiftInteraction(double dt);
 	void InteractionCheck();
 	void Pickup(CSceneObj Object);
 	void RemoveTrolley(int i);
-	
+	void RenderCashierGame();
+	void RandCustomerList();
+	bool CalTotalPrice(int customerPayingPrice);
 
 	float fps;
 	float FloorTimer;
 	float MoveDoor;
 	float InteractionTimer;
+	float CashierGameKeyPressTimer;
+	float CashierGameTimer;
 
 	bool SecurityCamera;
 	bool renderCart;
+
+	bool StartGame;
+	bool CashierGame;
+
+	bool KeyLeft, KeyRight;
+
+	int round;
+	int chances;
 
 	int CameraMode;
 
@@ -116,6 +129,14 @@ private:
 	int MoveDoorUpperLimit;
 	int MoveDoorLowerLimit;
 	int diffDistance;
+	
+	int customerPayingPrice;
+	int totalPrice;
+
+	vector<string> itemList;
+	vector<string> priceIndex;
+	vector<string> customerList;
+	vector<int> prices;
 
 	CInteraction LiftDoor, Lift;
 
@@ -135,6 +156,7 @@ private:
 	Vector3 trolleyPos;
 	Vector3 MaximumBound, MinimumBound;
 	Vector3 Translate, Scale;
+	Vector3 PlayerPosition, CameraPosition, CameraTarget;
 	Mtx44 Rotate;
 
 	MS modelStack, viewStack, projectionStack;

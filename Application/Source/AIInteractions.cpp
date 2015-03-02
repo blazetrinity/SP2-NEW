@@ -4,6 +4,7 @@
 CAIInteraction::CAIInteraction(void)
 {
 	time = 0.0f;
+	Offset.Set(0,0,0);;
 }
 
 
@@ -32,9 +33,14 @@ void CAIInteraction::Set(Mtx44 rotation, Vector3 translation, Vector3 scale){
 }
 
 void CAIInteraction::randomText(){
+	Translation -= Offset;
 	value = rand() % 9;
 	text = AIText[value];
 	time = 10.0f;
+	int offset = ((text.length()/2)*Scale.x);
+	Offset.Set(-offset,0,0);
+	Offset = Rotation * Offset;
+	Translation += Offset;
 }
 
 

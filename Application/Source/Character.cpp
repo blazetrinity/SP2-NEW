@@ -228,3 +228,11 @@ vector<CModel::GEOMETRY_TYPE> Ccharacter::GetInterventory()
 {
 	return Inventory;
 }
+
+void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar)
+{
+	Position = Pos;
+	firstpersoncamera.position = Cam;
+	firstpersoncamera.target = Tar;
+	firstpersoncamera.UpdateUp(Cam,Tar);
+}
