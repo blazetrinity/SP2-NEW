@@ -239,6 +239,10 @@ void SceneAssignment::InitSkyboxLevel1()
 
 	Objs.push_back(myObj);
 	
+	
+	meshList[CModel::GEO_WANTED_WALL] = MeshBuilder::GenerateQuad("WantedWall", Color(0, 0, 0), 1, 1);
+	meshList[CModel::GEO_WANTED_WALL]->textureID = LoadTGA("Image//Skybox_Wanted.tga");
+	
 	//
 	MaximumBound.Set(60,50,-190);
 	MinimumBound.Set(-60,-50,-210);
@@ -246,7 +250,7 @@ void SceneAssignment::InitSkyboxLevel1()
 	Scale.Set(100,100,100);
 	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.Set(CModel::GEO_Level1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
+	myObj.Set(CModel::GEO_WANTED_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 	
@@ -376,6 +380,9 @@ void SceneAssignment::InitLiftLevel1()
 
 	Objs.push_back(myObj);
 	
+	meshList[CModel::GEO_LIFT_FLOOR1] = MeshBuilder::GenerateQuad("LiftWall", Color(0, 0, 0), 1, 1);
+	meshList[CModel::GEO_LIFT_FLOOR1]->textureID = LoadTGA("Image//Floor Number 1.tga");
+
 	////Lift Wall Front from inside the lift
 	MaximumBound.Set(60,50,-100);
 	MinimumBound.Set(40,-50,-160);
@@ -383,7 +390,7 @@ void SceneAssignment::InitLiftLevel1()
 	Scale.Set(50,100,50);
 	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_FLOOR1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
@@ -629,6 +636,9 @@ void SceneAssignment::InitLiftLevel2()
 
 	Objs.push_back(myObj);
 	
+	meshList[CModel::GEO_LIFT_FLOOR2] = MeshBuilder::GenerateQuad("LiftWall", Color(0, 0, 0), 1, 1);
+	meshList[CModel::GEO_LIFT_FLOOR2]->textureID = LoadTGA("Image//Floor Number 2.tga");
+
 	////Lift Wall Front from inside the lift
 	MaximumBound.Set(60,50,-100);
 	MinimumBound.Set(40,-50,-160);
@@ -636,7 +646,7 @@ void SceneAssignment::InitLiftLevel2()
 	Scale.Set(50,100,50);
 	Rotate.SetToRotation(90,0,1,0);
 
-	myObj.Set(CModel::GEO_LIFT_WALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
+	myObj.Set(CModel::GEO_LIFT_FLOOR2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::WALL);
 
 	Objs.push_back(myObj);
 
@@ -753,9 +763,9 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL1] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwCereal1.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL1]->textureID = LoadTGA("Image//cerealBox1.tga");
 
-	MaximumBound.Set(60, 50, 31);
-	MinimumBound.Set(-20, -50, -50);
-	Translate.Set(20, -50, 0);
+	MaximumBound.Set(80, 50, 31);
+	MinimumBound.Set(0, -50, -50);
+	Translate.Set(40, -50, 0);
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(0,0,1,0);
 
@@ -767,13 +777,37 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL2] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwCereal2.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL2]->textureID = LoadTGA("Image//displayTable2.tga");
 
-	MaximumBound.Set(60, 50, 1);
-	MinimumBound.Set(-20, -50, -35);
-	Translate.Set(20, -50, 0);
+	MaximumBound.Set(80, 50, 1);
+	MinimumBound.Set(0, -50, -35);
+	Translate.Set(40, -50, 0);
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(180,0,1,0);
 
 	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
+
+	Objs.push_back(myObj);
+
+	meshList[CModel::GEO_TABLE] = MeshBuilder::GenerateOBJ("CounterTop", "OBJ//counterTop.obj");
+	meshList[CModel::GEO_TABLE]->textureID = LoadTGA("Image//CounterTopTexture.tga");
+
+	MaximumBound.Set(-20, 50, -170);
+	MinimumBound.Set(-65, -50, -190);
+	Translate.Set(-50, -50, -200);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_TABLE, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::MONITOR);
+
+	Objs.push_back(myObj);
+
+	meshList[CModel::GEO_MONITOR] = MeshBuilder::GenerateOBJ("cashier", "OBJ//monitor.obj");
+	meshList[CModel::GEO_MONITOR]->textureID = LoadTGA("Image//MonitorTexture.tga");
+
+	Translate.Set(-41, -28, -195);
+	Scale.Set(20, 20, 20);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_MONITOR, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::MONITOR);
 
 	Objs.push_back(myObj);
 
@@ -923,6 +957,45 @@ void SceneAssignment::InitOBJs()
 	myObj.Set(CModel::GEO_FRUITSTALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
 
 	Objs.push_back(myObj);
+
+	meshList[CModel::GEO_CAMERA] = MeshBuilder::GenerateOBJ("Camera", "OBJ//securityCamera2.obj");
+	meshList[CModel::GEO_CAMERA]->textureID = LoadTGA("Image//texture camera.tga");
+
+	//SecurityCamera1
+	Translate.Set(SecurityCamera1.position.x, 25, SecurityCamera1.position.z);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
+
+	Objs.push_back(myObj);
+
+	//SecurityCamera2
+	Translate.Set(SecurityCamera2.position.x-5, 25, SecurityCamera2.position.z-20);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(180,0,1,0);
+
+	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
+
+	Objs.push_back(myObj);
+
+	//SecurityCamera3
+	Translate.Set(SecurityCamera3.position.x+20, 25, SecurityCamera3.position.z-5);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(90,0,1,0);
+
+	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
+
+	Objs.push_back(myObj);
+
+	//SecurityCamera4
+	Translate.Set(SecurityCamera4.position.x, 25, SecurityCamera4.position.z+20);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
+
+	Objs.push_back(myObj);
 }
 
 void SceneAssignment::InitCharacterModel()
@@ -978,7 +1051,6 @@ void SceneAssignment::InitAI()
 	
 	myAI.Set(Vector3(0,-50,0),90,CModel::GEO_ADULT3,CModel::GEO_ARM3,CAi::STATIONARY,2,7);
 	AiList.push_back(myAI);
-	
 	
 	myAI.Set(Vector3(-50,-50,-50),180,CModel::GEO_ADULT2,CModel::GEO_ARM2,CAi::MOVING,2,7);
 	myAI.AddPath(Vector3(-50,-50,-50));
@@ -1150,7 +1222,7 @@ void SceneAssignment::Update(double dt)
 
 		CashierGameKeyPressTimer += 5*dt;
 
-		if(CashierGame == true && CashierGameKeyPressTimer > 10)
+		if(CashierGame == true && CashierGameKeyPressTimer > 5)
 		{
 			if(Application::IsKeyPressed(VK_RIGHT))
 			{
@@ -1161,6 +1233,7 @@ void SceneAssignment::Update(double dt)
 			{
 				KeyLeft = true;
 			}
+			CashierGameKeyPressTimer = 0;
 		}
 
 		Vector3 TempPosition = Character.GetPosition();
@@ -1565,8 +1638,8 @@ void SceneAssignment::RenderCashierGame()
 			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (customerPayingPrice)), Color(1, 0, 0), 2, 37, 1);
 			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Life: ", Color(1, 0, 0), 2, 20, 2);
 			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (chances)), Color(1, 0, 0), 2, 26, 2);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round: ", Color(1, 0, 0), 2, 27, 1);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (round)), Color(1, 0, 0), 2, 34, 2);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round: ", Color(1, 0, 0), 2, 29, 2);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (round)), Color(1, 0, 0), 2, 36, 2);
 			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round Timer: ", Color(1, 0, 0), 2, 1, 6);
 			RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(1, 0, 0), 2, 1, 5);
 

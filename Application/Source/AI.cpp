@@ -181,10 +181,21 @@ void CAi::CalTarget(Vector3 NewTarget)
 
 	result = OldVector.Dot(NewVector);
 
+	if(result > 1.0f)
+	{
+		result = 1.0f;
+	}
+
+	else if(result < -1.0f)
+	{
+		result = -1.0f;
+	}
+
     if(CrossProductResult.y > 0)
 	{
 		angletorotate += (acos(result) * 180/3.14159265);
 	}
+	
 	else if(CrossProductResult.y < 0)
 	{
 		angletorotate -= (acos(result) * 180/3.14159265);

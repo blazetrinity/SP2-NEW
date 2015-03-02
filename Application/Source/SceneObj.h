@@ -21,6 +21,7 @@ public:
 		SECURITY_CAM,
 		WALL,
 		DOOR,
+		MONITOR,
 		TYPE_TOTAL,
 	};
 
