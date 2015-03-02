@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	Character.h
+\author	Malcolm Lim
+\par
+\brief	Creates a character Model and storing the Information
+*/
+/***********************************************************/
+
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
@@ -11,6 +20,12 @@
 
 using std::vector;
 
+/***********************************************************/
+/*!
+	class Ccharacter
+\brief	Defines a Character and it's method
+*/
+/***********************************************************/
 class Ccharacter
 {
 public:

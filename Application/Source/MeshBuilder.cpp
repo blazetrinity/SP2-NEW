@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	MeshBuilder.cpp
+\author Tang Wen Sheng
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Define the MeshBuilder and it's method
+*/
+/******************************************************************************/
+
 #include "MeshBuilder.h"
 #include <GL\glew.h>
 #include <vector>

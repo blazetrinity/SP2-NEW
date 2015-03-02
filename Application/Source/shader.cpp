@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	shader.cpp
+\author Tang Wen Sheng
+\par	email: tag_wen_sheng\@nyp.edu.sg
+\brief
+Define the shaders and it's method
+*/
+/******************************************************************************/
+
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -13,6 +23,21 @@ using namespace std;
 
 #include "shader.hpp"
 
+/***********************************************************/
+/*!
+\brief
+	Loades the Shaders
+
+\param vertex_file_path
+	To find the Vertex in the file
+
+\param fragment_file_path
+	To find the Fragment in the file
+
+\return
+	Returns the Program ID
+*/
+/***********************************************************/
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
 	// Create the shaders

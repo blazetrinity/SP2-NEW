@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	SceneAssignment.h
+\author Malcolm Lim
+\par	email: Malcolm_Lim\@nyp.edu.sg
+\brief
+Class to define a Scene
+*/
+/******************************************************************************/
+
 #ifndef SCENEASSIGNMENT_H
 #define SCENEASSIGNMENT_H
 
@@ -19,6 +29,13 @@
 using std::vector;
 using std::string;
 
+
+/******************************************************************************/
+/*!
+		Class SceneAssignment:
+\brief	Defines a Scene and its methods
+*/
+/******************************************************************************/
 class SceneAssignment : public Scene
 {
 	enum UNIFORM_TYPE
@@ -94,6 +111,7 @@ private:
 	void InitCharacterModel();
 	void InitAI();
 	void InitItemListAndPriceIndex();
+	void InitItemsObj();
 	void LiftInteraction(double dt);
 	void InteractionCheck();
 	void Pickup(CSceneObj Object);

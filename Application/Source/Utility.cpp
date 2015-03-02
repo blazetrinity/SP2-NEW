@@ -1,5 +1,27 @@
+/******************************************************************************/
+/*!
+\file	Utility.cpp
+\author Tang Wen Sheng
+\par	email: tag_wen_sheng\@nyp.edu.sg
+\brief
+Define the Utility and it's method
+*/
+/******************************************************************************/
+
 #include "Utility.h"
 
+/***********************************************************/
+/*!
+\brief
+	position of the Utility
+
+\param lhs
+	lhs of the Mtx44
+
+\param rhs
+	rhs of the Mtx44
+*/
+/***********************************************************/
 Position operator*(const Mtx44& lhs, const Position& rhs)
 {
 	float b[4];

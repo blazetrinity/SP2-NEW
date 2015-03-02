@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	Mesh.cpp
+\author Tang Wen Sheng
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Sets the mesh
+*/
+/******************************************************************************/
 
 #include "Mesh.h"
 #include "GL\glew.h"
