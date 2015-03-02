@@ -1,8 +1,25 @@
+/******************************************************************************/
+/*!
+\file	Light.h
+\author Wen Sheng Tang
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Struct to define a Light
+*/
+/******************************************************************************/
+
 #ifndef LIGHT_H
 #define LIGHT_H
 
 #include "Vertex.h"
 
+/******************************************************************************/
+/*!
+		Struct Light:
+\brief	Defines a Light and its methods
+*/
+
+/******************************************************************************/
 struct Light
 {
 	Position position;

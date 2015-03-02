@@ -1,8 +1,24 @@
+/***********************************************************/
+/*!
+\file	Interaction.h
+\author	Malcolm Lim
+\par
+\brief	Create a Interaction and using Interaction.h as it's parent
+*/
+/***********************************************************/
+
 #ifndef INTERACTION_H
 #define INTERACTION_H
 
 #include "Bound.h"
 #include "Vector3.h"
+
+/***********************************************************/
+/*!
+	class CInteraction
+\brief	Defines a Character and it's method
+*/
+/***********************************************************/
 
 class CInteraction
 {

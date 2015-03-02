@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	Utility.h
+\author Wen Sheng Tang
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Struct to define a utility
+*/
+/******************************************************************************/
+
 #ifndef UTILITY_H
 #define UTILITY_H
 

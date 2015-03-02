@@ -1,5 +1,22 @@
+/******************************************************************************/
+/*!
+\file	Model.h
+\author Malcolm Lim
+\par	email: Malcolm_Lim\@nyp.edu.sg
+\brief
+Class to define a Model
+*/
+/******************************************************************************/
+
 #ifndef MODEL_H
 #define MODEL_H
+
+/******************************************************************************/
+/*!
+		Class CModel:
+\brief	Defines a Model and its methods
+*/
+/******************************************************************************/
 
 class CModel
 {
@@ -50,6 +67,7 @@ public:
 		GEO_SECURITY,
 		GEO_SECURITYARM,
 		GEO_FRUITSTALL,
+		GEO_GANTRY,
 		GEO_ADULT2,
 		GEO_ARM2,
 		GEO_ADULT3,
@@ -59,7 +77,26 @@ public:
 		GEO_BOYARM,
 		GEO_GIRLARM,
 		GEO_CAMERA,
-		GEO_GANTRY,
+		GEO_CLEANER,
+		GEO_GIRL_CLEANER,
+		GEO_CLEANERARMS,
+		GEO_GIRL_CLEANERARMS,
+		GEO_SODA,
+		GEO_GUMMYCEREAL,
+		GEO_CEREALKBOX,
+		GEO_STITCHCEREAL,
+		GEO_BAKEDCANS,
+		GEO_CHIPCEREAL,
+		GEO_APPLE,
+		GEO_ORANGE,
+		GEO_HERSHEYS,
+		GEO_FERRERO,
+		GEO_COKEZERO,
+		GEO_MOUNTAINDEW,
+		GEO_SHRIMPBOX,
+		GEO_ATMSCREEN,
+		GEO_INVENT_RED,
+		GEO_INVENT_YELLOW,
 		NUM_GEOMETRY,
 	};
 

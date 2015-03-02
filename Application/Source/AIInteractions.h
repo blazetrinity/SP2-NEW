@@ -19,6 +19,7 @@ public:
 	void InitAIText();
 	void randomText();
 	string getText();
+	string getPlayerText();
 
 	Mtx44 getRotation();
 	Vector3 getTranslation();
@@ -27,6 +28,7 @@ public:
 	void updateTime(float updatevalue);
 
 private:
+	vector<string> PlayerQuestion;
 	vector<string> AIText;
 	Mtx44 Rotation;
 	Vector3 Translation;

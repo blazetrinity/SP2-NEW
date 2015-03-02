@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	Character.h
+\author	Malcolm Lim
+\par
+\brief	Creates a character Model and storing the Information
+*/
+/***********************************************************/
+
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
@@ -11,6 +20,12 @@
 
 using std::vector;
 
+/***********************************************************/
+/*!
+	class Ccharacter
+\brief	Defines a Character and it's method
+*/
+/***********************************************************/
 class Ccharacter
 {
 public:
@@ -29,6 +44,9 @@ public:
 	void setInventorySize();
 	void AddToInventory(CModel::GEOMETRY_TYPE ShelfObject);
 	void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar);
+
+	void SetWallet(int value);
+	int GetWallet(void);
 
 	CModel::GEOMETRY_TYPE GetModel();
 	CModel::GEOMETRY_TYPE GetModelArm();
@@ -60,6 +78,8 @@ private:
 
 	int inventorySize;
 	int maxInventorySize;
+
+	int wallet;
 
 	vector<CModel::GEOMETRY_TYPE> Inventory;
 };

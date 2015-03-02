@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	MeshBuilder.h
+\author Wen Sheng Tang
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Struct to define a MeshBuilder
+*/
+/******************************************************************************/
+
 #ifndef MESH_BUILDER_H
 #define MESH_BUILDER_H
 

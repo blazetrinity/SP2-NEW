@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	SceneAssignment.cpp
+\author Malcolm
+\par	email: Malcolm\@nyp.edu.sg
+\brief
+Define the SceneAssignment and it's method
+*/
+/******************************************************************************/
+
 #include "SceneAssignment.h"
 #include "GL\glew.h"
 #include <sstream>
@@ -10,14 +20,32 @@
 
 SceneAssignment::SELECT SceneAssignment::currentScene = MENU;
 
+/***********************************************************/
+/*!
+\brief
+	SceneAssignment default constructor
+*/
+/***********************************************************/
 SceneAssignment::SceneAssignment()
 {
 }
 
+/***********************************************************/
+/*!
+\brief
+	SceneAssignment deconstructor
+*/
+/***********************************************************/
 SceneAssignment::~SceneAssignment()
 {
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialises the SceneAssignment
+*/
+/***********************************************************/
 void SceneAssignment::Init()
 {
 	// Init VBO here
@@ -129,6 +157,9 @@ void SceneAssignment::Init()
 	Lift.setLevel(1);
 	Lift.setInteractionBound(Vector3(90,-1,-190),Vector3(140,1,-90));
 
+	Gantry.setLevel(1);
+	Gantry.setInteractionBound(Vector3(-130,-1,-20),Vector3(-85,1,20));
+
 	Mtx44 projection;
 	projection.SetToPerspective(45.f,4.f/3.f,0.1f,10000.f);
 	projectionStack.LoadMatrix(projection);
@@ -143,18 +174,59 @@ void SceneAssignment::Init()
 	menu[4] = "-> Play as SECURITY";
 	menu[5] = "-> Exit";
 
+	highlight = 2;
+	atmHigh = 3;
+	anotherHigh = 10;
+	ATMcash = 1000;
+	delay = 0;
+
+	ATMMode = false;
+	Ask = false;
+	Left = false;
+
+	KeyK = false;
+
+	std::stringstream amount;
+	amount << ATMcash;
+
+	cash[0] = "FINGERPRINT";
+	cash[1] = "DETACTED";
+	cash[2] = "YOU HAVE $" + amount.str();
+	cash[3] = "->$10";
+	cash[4] = "->$50";
+	cash[5] = "->$100";
+	cash[6] = "->END";
+	cash[7] = "Would you like";
+	cash[8] = "to make another";
+	cash[9] = "transaction?";
+	cash[10] = "->YES";
+	cash[11] = "->NO";
+
+	navigate[0] = "Press 'TAB' for Inventory";
+	navigate[1] = "Press 'K' to Interact";
+
+	Selected = 0;
+
+	inventory = false;
+	selectItem = false;
+
+	change[0] = "FINGERPRINT";
+	change[1] = "DETACTED";
+	change[2] = "BANK OVERDRAFT";
+	change[3] = " ";
+
 	CameraMode = -1;
 	SecurityCamera = false;
 	fps = 0;
+	RotateGantry = 0;
 	MoveDoor = 0;
 	MoveDoorUpperLimit = 45;
 	MoveDoorLowerLimit = 0;
 	FloorTimer = 0;
-	highlight = 2;
-	delay = 0;
 	renderCart = false;
 	diffDistance = 5;
 	InteractionTimer = 0;
+	
 	CashierGame = false;
 	customerPayingPrice = 0;
 	totalPrice = 0;
@@ -165,6 +237,12 @@ void SceneAssignment::Init()
 	StartGame = false;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialises Level 1 of Skybox
+*/
+/***********************************************************/
 void SceneAssignment::InitSkyboxLevel1()
 {
 	meshList[CModel::GEO_ATM_WALL] = MeshBuilder::GenerateQuad("AtmWall", Color(0, 0, 0), 1, 1);
@@ -321,6 +399,12 @@ void SceneAssignment::InitSkyboxLevel1()
 	InitLiftLevel1();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialises level 1 of the lift
+*/
+/***********************************************************/
 void SceneAssignment::InitLiftLevel1()
 {
 	////Lift Wall Left from inside the lift
@@ -431,6 +515,12 @@ void SceneAssignment::InitLiftLevel1()
 	Objs.push_back(myObj);
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialises Skybox Level 2
+*/
+/***********************************************************/
 void SceneAssignment::InitSkyboxLevel2()
 {
 	//mall Level2
@@ -577,6 +667,12 @@ void SceneAssignment::InitSkyboxLevel2()
 	InitLiftLevel2();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialises Lift Level 2
+*/
+/***********************************************************/
 void SceneAssignment::InitLiftLevel2()
 {
 	////Lift Wall Left from inside the lift
@@ -687,15 +783,80 @@ void SceneAssignment::InitLiftLevel2()
 	Objs.push_back(myObj);
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialises Item Objects
+*/
+/***********************************************************/
+void SceneAssignment::InitItemsObj()
+{
+	meshList[CModel::GEO_SODA] = MeshBuilder::GenerateOBJ("SodaCan", "OBJ//Soda.obj");
+	meshList[CModel::GEO_SODA]->textureID = LoadTGA("Image//CanTexture.tga");
+
+	meshList[CModel::GEO_HERSHEYS] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//HersheyChocolate.obj");
+	meshList[CModel::GEO_HERSHEYS]->textureID = LoadTGA("Image//FoodStorage1.tga");
+
+	meshList[CModel::GEO_GUMMYCEREAL] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//CerealBox1.obj");
+	meshList[CModel::GEO_GUMMYCEREAL]->textureID = LoadTGA("Image//cerealBox.tga");
+
+	meshList[CModel::GEO_CEREALKBOX] = MeshBuilder::GenerateOBJ("CeralBox", "OBJ//CerealBox2.obj");
+	meshList[CModel::GEO_CEREALKBOX]->textureID = LoadTGA("Image//displayTable2.tga");
+
+	meshList[CModel::GEO_STITCHCEREAL] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//CerealBox3.obj");
+	meshList[CModel::GEO_STITCHCEREAL]->textureID = LoadTGA("Image//FoodStorage1.tga");
+
+	meshList[CModel::GEO_BAKEDCANS] = MeshBuilder::GenerateOBJ("BakedBeans", "OBJ//BakedBeans.obj");
+	meshList[CModel::GEO_BAKEDCANS]->textureID = LoadTGA("Image//beanCan.tga");
+
+	meshList[CModel::GEO_CHIPCEREAL] = MeshBuilder::GenerateOBJ("ChipCereal", "OBJ//CerealBox4.obj");
+	meshList[CModel::GEO_CHIPCEREAL]->textureID = LoadTGA("Image//cerealBox1.tga");
+
+	meshList[CModel::GEO_APPLE] = MeshBuilder::GenerateOBJ("Apple", "OBJ//Apple.obj");
+	meshList[CModel::GEO_APPLE]->textureID = LoadTGA("Image//FruitStall1.tga");
+
+	meshList[CModel::GEO_ORANGE] = MeshBuilder::GenerateOBJ("Oranges", "OBJ//Oranges.obj");
+	meshList[CModel::GEO_ORANGE]->textureID = LoadTGA("Image//FruitStall.tga");
+
+	meshList[CModel::GEO_FERRERO] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//BoxFood.obj");
+	meshList[CModel::GEO_FERRERO]->textureID = LoadTGA("Image//FoodStorage.tga");
+
+	meshList[CModel::GEO_COKEZERO] = MeshBuilder::GenerateOBJ("Coke", "OBJ//Coke.obj");
+	meshList[CModel::GEO_COKEZERO]->textureID = LoadTGA("Image//CanTexture3.tga");
+
+	meshList[CModel::GEO_MOUNTAINDEW] = MeshBuilder::GenerateOBJ("MountainDew", "OBJ//CanTexture2.obj");
+	meshList[CModel::GEO_MOUNTAINDEW]->textureID = LoadTGA("Image//FoodStorage1.tga");
+
+	meshList[CModel::GEO_SHRIMPBOX] = MeshBuilder::GenerateOBJ("Frozen_Food", "OBJ//BoxFood.obj");
+	meshList[CModel::GEO_SHRIMPBOX]->textureID = LoadTGA("Image//FoodStorage2.tga");
+}
+
+/***********************************************************/
+/*!
+\brief
+	Initialises OBJs
+*/
+/***********************************************************/
 void SceneAssignment::InitOBJs()
 {
+	//Inventory boxes
+	meshList[CModel::GEO_INVENT_RED] = MeshBuilder::GenerateQuad("Inventory", Color(0, 0, 0), 10, 10);
+	meshList[CModel::GEO_INVENT_RED]->textureID = LoadTGA("Image//red.tga");
+
+	meshList[CModel::GEO_INVENT_YELLOW] = MeshBuilder::GenerateQuad("Inventory", Color(0, 0, 0), 10, 10);
+	meshList[CModel::GEO_INVENT_YELLOW]->textureID = LoadTGA("Image//yellow.tga");
+	
+	//Atm Screen
+	meshList[CModel::GEO_ATMSCREEN] = MeshBuilder::GenerateQuad("ATM", Color(0, 0, 0), 10, 10);
+	meshList[CModel::GEO_ATMSCREEN]->textureID = LoadTGA("Image//yellow.tga");
+
 	////Cashier1
 	meshList[CModel::GEO_COUNTER] = MeshBuilder::GenerateOBJ("cashier", "OBJ//Cashier.obj");
 	meshList[CModel::GEO_COUNTER]->textureID = LoadTGA("Image//cashierCounter.tga");
 
-	MaximumBound.Set(-52, 50, 0);
-	MinimumBound.Set(-130, -50, -62);
-	Translate.Set(-90,-50,-20);
+	MaximumBound.Set(-42, 50, -20);
+	MinimumBound.Set(-115, -50, -82);
+	Translate.Set(-80,-50,-40);
 	Scale.Set(6,6,6);
 	Rotate.SetToRotation(0,0,1,0);
 
@@ -707,9 +868,9 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_COUNTER] = MeshBuilder::GenerateOBJ("cashier", "OBJ//Cashier.obj");
 	meshList[CModel::GEO_COUNTER]->textureID = LoadTGA("Image//cashierCounter.tga");
 
-	MaximumBound.Set(-52, 50, 80);
-	MinimumBound.Set(-130, -50, 18);
-	Translate.Set(-90, -50, 60);
+	MaximumBound.Set(-42, 50, 80);
+	MinimumBound.Set(-115, -50, 18);
+	Translate.Set(-80, -50, 60);
 	Scale.Set(6, 6, 6);
 	Rotate.SetToRotation(0,0,1,0);
 
@@ -727,12 +888,12 @@ void SceneAssignment::InitOBJs()
 	Scale.Set(10,10,10);
 	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.Set(CModel::GEO_RIGHTSHELFWSODA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWSODA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF, CModel::GEO_SODA);
 
 	Objs.push_back(myObj);
 
 	////Shelf2
-	meshList[CModel::GEO_RIGHTSHELFWCEREAL] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwCereal.obj");
+	meshList[CModel::GEO_RIGHTSHELFWCEREAL] = MeshBuilder::GenerateOBJ("Cereal", "OBJ//RightShelfwCereal.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL]->textureID = LoadTGA("Image//cerealBox.tga");
 
 	MaximumBound.Set(140, 50, 25);
@@ -741,12 +902,12 @@ void SceneAssignment::InitOBJs()
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF, CModel::GEO_GUMMYCEREAL);
 
 	Objs.push_back(myObj);
 
 	////Shelf3
-	meshList[CModel::GEO_RIGHTSHELFWBEANCAN] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwBeanCan.obj");
+	meshList[CModel::GEO_RIGHTSHELFWBEANCAN] = MeshBuilder::GenerateOBJ("BeanCan", "OBJ//RightShelfwBeanCan.obj");
 	meshList[CModel::GEO_RIGHTSHELFWBEANCAN]->textureID = LoadTGA("Image//beanCan.tga");
 
 	MaximumBound.Set(140, 50, 85);
@@ -755,12 +916,12 @@ void SceneAssignment::InitOBJs()
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(-90,0,1,0);
 
-	myObj.Set(CModel::GEO_RIGHTSHELFWBEANCAN, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWBEANCAN, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF, CModel::GEO_BAKEDCANS);
 
 	Objs.push_back(myObj);
 
 	////Shelf4
-	meshList[CModel::GEO_RIGHTSHELFWCEREAL1] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfwCereal1.obj");
+	meshList[CModel::GEO_RIGHTSHELFWCEREAL1] = MeshBuilder::GenerateOBJ("Cereal", "OBJ//RightShelfwCereal1.obj");
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL1]->textureID = LoadTGA("Image//cerealBox1.tga");
 
 	MaximumBound.Set(80, 50, 31);
@@ -769,7 +930,7 @@ void SceneAssignment::InitOBJs()
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(0,0,1,0);
 
-	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF, CModel::GEO_CHIPCEREAL);
 
 	Objs.push_back(myObj);
 
@@ -783,7 +944,7 @@ void SceneAssignment::InitOBJs()
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(180,0,1,0);
 
-	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF);
+	myObj.Set(CModel::GEO_RIGHTSHELFWCEREAL2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SHELF, CModel::GEO_CEREALKBOX);
 
 	Objs.push_back(myObj);
 
@@ -817,7 +978,7 @@ void SceneAssignment::InitOBJs()
 
 	MaximumBound.Set(-63, 50, -143);
 	MinimumBound.Set(-139, -50, -189);
-	Translate.Set(-125, -35, -180);
+	Translate.Set(-125, -37, -180);
 	Scale.Set(15, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 
@@ -829,7 +990,7 @@ void SceneAssignment::InitOBJs()
 
 	/*MaximumBound.Set(54, 50, -3);
 	MinimumBound.Set(-12, -50, -28);*/
-	Translate.Set(-115, -35, -180);
+	Translate.Set(-115, -37, -180);
 	Scale.Set(15, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 
@@ -841,123 +1002,14 @@ void SceneAssignment::InitOBJs()
 
 	/*MaximumBound.Set(54, 50, -3);
 	MinimumBound.Set(-12, -50, -28);*/
-	Translate.Set(-105, -35, -180);
+	Translate.Set(-105, -37, -180);
 	Scale.Set(15, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
 
 	Objs.push_back(myObj);
 
-	////ATM Machine
-	meshList[CModel::GEO_ATM] = MeshBuilder::GenerateOBJ("ATM", "OBJ//ATM.obj");
-	meshList[CModel::GEO_ATM]->textureID = LoadTGA("Image//ATMTexture.tga");
-
-	MaximumBound.Set(-65, 50, -170);
-	MinimumBound.Set(-94, -50, -190);
-	Translate.Set(-80, -50, -190);
-	Scale.Set(8, 10, 8);
-	Rotate.SetToRotation(-90,0,1,0);
-
-	myObj.Set(CModel::GEO_ATM, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::ATM);
-
-	Objs.push_back(myObj);
-
-	////Shelf1
-	meshList[CModel::GEO_FOODSTORAGE] = MeshBuilder::GenerateOBJ("foodstorage", "OBJ//FoodStorage.obj");
-	meshList[CModel::GEO_FOODSTORAGE]->textureID = LoadTGA("Image//FoodStorage.tga");
-
-	MaximumBound.Set(142, 50, 109);
-	MinimumBound.Set(72, -50, 45);
-	Translate.Set(115, -50, 80);
-	Scale.Set(7, 8, 7);
-	Rotate.SetToRotation(90,0,1,0);
-
-	myObj.Set(CModel::GEO_FOODSTORAGE, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
-	////Shelf2
-	meshList[CModel::GEO_FOODSTORAGE1] = MeshBuilder::GenerateOBJ("foodstorage1", "OBJ//FoodStorage1.obj");
-	meshList[CModel::GEO_FOODSTORAGE1]->textureID = LoadTGA("Image//FoodStorage1.tga");
-
-	MaximumBound.Set(-69, 50, 109);
-	MinimumBound.Set(-159, -50, 45);
-	Translate.Set(-116, -50, 80);
-	Scale.Set(7, 8, 7);
-	Rotate.SetToRotation(90,0,1,0);
-
-	myObj.Set(CModel::GEO_FOODSTORAGE1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
-	////Shelf3
-	meshList[CModel::GEO_FOODSTORAGE2] = MeshBuilder::GenerateOBJ("foodstorage2", "OBJ//FoodStorage2.obj");
-	meshList[CModel::GEO_FOODSTORAGE2]->textureID = LoadTGA("Image//FoodStorage2.tga");
-
-	MaximumBound.Set(140, 50, -49);
-	MinimumBound.Set(70, -50, -87);
-	Translate.Set(113,-50,-78);
-	Scale.Set(7, 8, 7);
-	Rotate.SetToRotation(90,0,1,0);
-
-	myObj.Set(CModel::GEO_FOODSTORAGE2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
-	////Shelf1
-	meshList[CModel::GEO_RIGHTSHELFWCANS] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfWCans.obj");
-	meshList[CModel::GEO_RIGHTSHELFWCANS]->textureID = LoadTGA("Image//CanTexture3.tga");
-
-	MaximumBound.Set(139, 50, 31);
-	MinimumBound.Set(81, -50, 0);
-	Translate.Set(120, -50, -1);
-	Scale.Set(10, 10, 10);
-	Rotate.SetToRotation(0,1,0,0);
-
-	myObj.Set(CModel::GEO_RIGHTSHELFWCANS, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
-	////Shelf2
-	meshList[CModel::GEO_RIGHTSHELFWMD] = MeshBuilder::GenerateOBJ("RightShelf", "OBJ//RightShelfwMD.obj");
-	meshList[CModel::GEO_RIGHTSHELFWMD]->textureID = LoadTGA("Image//CanTexture2.tga");
-
-	MaximumBound.Set(139,50,0);
-	MinimumBound.Set(81,-50,-29);
-	Translate.Set(120, -50, 1);
-	Scale.Set(10, 10, 10);
-	Rotate.SetToRotation(180,0,1,0);
-
-	myObj.Set(CModel::GEO_RIGHTSHELFWMD, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
-	////FruitStall
-	meshList[CModel::GEO_FRUITSTALL] = MeshBuilder::GenerateOBJ("RightShelf", "OBJ//FruitStall.obj");
-	meshList[CModel::GEO_FRUITSTALL]->textureID = LoadTGA("Image//FruitStall.tga");
-
-	MaximumBound.Set(-72, 50, -8);
-	MinimumBound.Set(-139,-50,-100);
-	Translate.Set(-120, -50, -50);
-	Scale.Set(10, 10, 10);
-	Rotate.SetToRotation(90,0,1,0);
-
-	myObj.Set(CModel::GEO_FRUITSTALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
-	////FruitStall1
-
-	/*MaximumBound.Set(0,0, -1);
-	MinimumBound.Set(-139,-50,-29);*/
-	Translate.Set(-120, -50, -50);
-	Scale.Set(10, 10, 10);
-	Rotate.SetToRotation(270,0,1,0);
-
-	myObj.Set(CModel::GEO_FRUITSTALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF);
-
-	Objs.push_back(myObj);
-
+	
 	meshList[CModel::GEO_CAMERA] = MeshBuilder::GenerateOBJ("Camera", "OBJ//securityCamera2.obj");
 	meshList[CModel::GEO_CAMERA]->textureID = LoadTGA("Image//texture camera.tga");
 
@@ -996,8 +1048,136 @@ void SceneAssignment::InitOBJs()
 	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
 
 	Objs.push_back(myObj);
+
+	meshList[CModel::GEO_GANTRY] = MeshBuilder::GenerateOBJ("Oranges", "OBJ//Gantry.obj");
+	meshList[CModel::GEO_GANTRY]->textureID = LoadTGA("Image//GantryTexture.tga");
+
+	MaximumBound.Set(-104, 50, -18);
+	MinimumBound.Set(-114,-50,-28);
+	Translate.Set(-109, -50, -23);
+	Scale.Set(5, 5, 5);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_GANTRY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::GANTRY);
+
+	Objs.push_back(myObj);
+
+	MaximumBound.Set(-104, 50, 28);
+	MinimumBound.Set(-114,-50, 18);
+	Translate.Set(-109, -50, 23);
+	Scale.Set(5, 5, 5);
+	Rotate.SetToRotation(180,0,1,0);
+
+	myObj.Set(CModel::GEO_GANTRY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::GANTRY);
+
+	Objs.push_back(myObj);
+
+	////ATM Machine
+	meshList[CModel::GEO_ATM] = MeshBuilder::GenerateOBJ("ATM", "OBJ//ATM.obj");
+	meshList[CModel::GEO_ATM]->textureID = LoadTGA("Image//ATMTexture.tga");
+
+	MaximumBound.Set(-65, 50, -170);
+	MinimumBound.Set(-94, -50, -190);
+	Translate.Set(-80, -50, -190);
+	Scale.Set(8, 10, 8);
+	Rotate.SetToRotation(-90,0,1,0);
+
+	myObj.Set(CModel::GEO_ATM, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::ATM);
+
+	Objs.push_back(myObj);
+
+	////Shelf1
+	meshList[CModel::GEO_FOODSTORAGE] = MeshBuilder::GenerateOBJ("foodstorage", "OBJ//FoodStorage.obj");
+	meshList[CModel::GEO_FOODSTORAGE]->textureID = LoadTGA("Image//FoodStorage.tga");
+
+	MaximumBound.Set(142, 50, 109);
+	MinimumBound.Set(72, -50, 45);
+	Translate.Set(115, -50, 80);
+	Scale.Set(7, 8, 7);
+	Rotate.SetToRotation(90,0,1,0);
+
+	myObj.Set(CModel::GEO_FOODSTORAGE, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF, CModel::GEO_FERRERO);
+
+	Objs.push_back(myObj);
+
+	////Shelf2
+	meshList[CModel::GEO_FOODSTORAGE1] = MeshBuilder::GenerateOBJ("foodstorage1", "OBJ//FoodStorage1.obj");
+	meshList[CModel::GEO_FOODSTORAGE1]->textureID = LoadTGA("Image//FoodStorage1.tga");
+
+	MaximumBound.Set(-69, 50, 109);
+	MinimumBound.Set(-159, -50, 45);
+	Translate.Set(-116, -50, 80);
+	Scale.Set(7, 8, 7);
+	Rotate.SetToRotation(90,0,1,0);
+
+	myObj.Set(CModel::GEO_FOODSTORAGE1, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF, CModel::GEO_HERSHEYS);
+
+	Objs.push_back(myObj);
+
+	////Shelf3
+	meshList[CModel::GEO_FOODSTORAGE2] = MeshBuilder::GenerateOBJ("foodstorage2", "OBJ//FoodStorage2.obj");
+	meshList[CModel::GEO_FOODSTORAGE2]->textureID = LoadTGA("Image//FoodStorage2.tga");
+
+	MaximumBound.Set(140, 50, -49);
+	MinimumBound.Set(70, -50, -87);
+	Translate.Set(113,-50,-78);
+	Scale.Set(7, 8, 7);
+	Rotate.SetToRotation(90,0,1,0);
+
+	myObj.Set(CModel::GEO_FOODSTORAGE2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF, CModel::GEO_SHRIMPBOX);
+
+	Objs.push_back(myObj);
+
+	////Shelf1
+	meshList[CModel::GEO_RIGHTSHELFWCANS] = MeshBuilder::GenerateOBJ("cashier", "OBJ//RightShelfWCans.obj");
+	meshList[CModel::GEO_RIGHTSHELFWCANS]->textureID = LoadTGA("Image//CanTexture3.tga");
+
+	MaximumBound.Set(139, 50, 31);
+	MinimumBound.Set(81, -50, 0);
+	Translate.Set(120, -50, -1);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,1,0,0);
+
+	myObj.Set(CModel::GEO_RIGHTSHELFWCANS, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF, CModel::GEO_COKEZERO);
+
+	Objs.push_back(myObj);
+
+	////Shelf2
+	meshList[CModel::GEO_RIGHTSHELFWMD] = MeshBuilder::GenerateOBJ("RightShelf", "OBJ//RightShelfwMD.obj");
+	meshList[CModel::GEO_RIGHTSHELFWMD]->textureID = LoadTGA("Image//CanTexture2.tga");
+
+	MaximumBound.Set(139,50,0);
+	MinimumBound.Set(81,-50,-29);
+	Translate.Set(120, -50, 1);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(180,0,1,0);
+
+	myObj.Set(CModel::GEO_RIGHTSHELFWMD, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF, CModel::GEO_MOUNTAINDEW);
+
+	Objs.push_back(myObj);
+
+	////FruitStall
+	meshList[CModel::GEO_FRUITSTALL] = MeshBuilder::GenerateOBJ("Oranges", "OBJ//FruitStall.obj");
+	meshList[CModel::GEO_FRUITSTALL]->textureID = LoadTGA("Image//FruitStall.tga");
+
+	MaximumBound.Set(-105, 50, -20);
+	MinimumBound.Set(-150,-50,-85);
+	Translate.Set(-150, -50, -50);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_FRUITSTALL, Translate, Scale, Rotate, MinimumBound, MaximumBound, 2, CSceneObj::SHELF, CModel::GEO_ORANGE);
+
+	Objs.push_back(myObj);
+
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialises Character Model
+*/
+/***********************************************************/
 void SceneAssignment::InitCharacterModel()
 {
 	meshList[CModel::GEO_CUSTOMER] = MeshBuilder::GenerateOBJ("Adult shopper 1", "OBJ//adult_male_body.obj");
@@ -1041,18 +1221,51 @@ void SceneAssignment::InitCharacterModel()
 
 	meshList[CModel::GEO_GIRLARM] = MeshBuilder::GenerateOBJ("Girl's arm", "OBJ//kid_arm.OBJ");
 	meshList[CModel::GEO_GIRLARM] ->textureID = LoadTGA("Image//girl_arm.tga");
+
+	meshList[CModel::GEO_CLEANER] = MeshBuilder::GenerateOBJ("Girl's arm", "OBJ//adult_male_body.OBJ");
+	meshList[CModel::GEO_CLEANER] ->textureID = LoadTGA("Image//cleaner_uv.tga");
+
+	meshList[CModel::GEO_CLEANERARMS] = MeshBuilder::GenerateOBJ("Girl's arm", "OBJ//arm.OBJ");
+	meshList[CModel::GEO_CLEANERARMS] ->textureID = LoadTGA("Image//cleaner_arm.tga");
+
+	meshList[CModel::GEO_GIRL_CLEANER] = MeshBuilder::GenerateOBJ("Girl's arm", "OBJ//adult_female_body.OBJ");
+	meshList[CModel::GEO_GIRL_CLEANER] ->textureID = LoadTGA("Image//girl_cleaner_uv.tga");
+
+	meshList[CModel::GEO_GIRL_CLEANERARMS] = MeshBuilder::GenerateOBJ("Girl's arm", "OBJ//arm.OBJ");
+	meshList[CModel::GEO_GIRL_CLEANERARMS] ->textureID = LoadTGA("Image//girl_cleaner_arm.tga");
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialise AI
+*/
+/***********************************************************/
 void SceneAssignment::InitAI()
 {
-	myAI.Set(Vector3(-120,-50,-170),Character.GetPosition(),CModel::GEO_SECURITY,CModel::GEO_SECURITYARM,CAi::STATIONARY,2,7);
+	myAI.Set(Vector3(-120,-50,-170), Character.GetPosition(), CModel::GEO_SECURITY, CModel::GEO_SECURITYARM,CAi::STATIONARY,2,7);
 	AiList.push_back(myAI);
 	
-	
-	myAI.Set(Vector3(0,-50,0),90,CModel::GEO_ADULT3,CModel::GEO_ARM3,CAi::STATIONARY,2,7);
+	myAI.Set(Vector3(130, -50, -39), 90, CModel::GEO_GIRL_CLEANER, CModel::GEO_GIRL_CLEANERARMS, CAi::STATIONARY,2,7);
 	AiList.push_back(myAI);
-	
+
+	myAI.Set(Vector3(63, -50, 74), 45, CModel::GEO_ADULT3, CModel::GEO_ARM3,CAi::STATIONARY,2,7);
+	AiList.push_back(myAI);
+
+	myAI.Set(Vector3(-55, -50, 79), -45, CModel::GEO_ADULT3, CModel::GEO_ARM3,CAi::STATIONARY,2,7);
+	AiList.push_back(myAI);
+
+	myAI.Set(Vector3(-121,-50, 3), 0, CModel::GEO_ADULT2, CModel::GEO_ARM2,CAi::STATIONARY,2,7);
+	AiList.push_back(myAI);
+
+	myAI.Set(Vector3(-90, -50, 40), 90, CModel::GEO_CASHIER, CModel::GEO_CASHIERARM,CAi::STATIONARY,1,7);
+	AiList.push_back(myAI);
+
+	myAI.Set(Vector3( 52, -50, 89), 0, CModel::GEO_CLEANER, CModel::GEO_CLEANERARMS,CAi::STATIONARY,1,7);
+	AiList.push_back(myAI);
+
 	myAI.Set(Vector3(-50,-50,-50),180,CModel::GEO_ADULT2,CModel::GEO_ARM2,CAi::MOVING,2,7);
+	myAI.Set(Vector3(-50,-50,-50),180, CModel::GEO_ADULT2, CModel::GEO_ARM2,CAi::MOVING,2,7);
 	myAI.AddPath(Vector3(-50,-50,-50));
 	myAI.AddPath(Vector3(-50,-50,50));
 	myAI.AddPath(Vector3(50,-50,50));
@@ -1060,6 +1273,12 @@ void SceneAssignment::InitAI()
 	AiList.push_back(myAI);
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialise Item list and price Index
+*/
+/***********************************************************/
 void SceneAssignment::InitItemListAndPriceIndex()
 {
 	itemList.push_back("Fruits");
@@ -1089,6 +1308,15 @@ static float SCALE_LIMIT = 5.f;
 
 #define DOORSPEED 40.0f
 
+/***********************************************************/
+/*!
+\brief
+	Updates in SceneAssignment
+
+\param dt
+	Using Delta Time to update in SceneAssignment
+*/
+/***********************************************************/
 void SceneAssignment::Update(double dt)
 {
 	if(Application::IsKeyPressed('7')) //enable back face culling
@@ -1138,25 +1366,12 @@ void SceneAssignment::Update(double dt)
 	SecurityCamera4.CameraRotateUpdate(dt);
 
 	LiftInteraction(dt);
+	GantryInteraction(dt);
 
 	//Menu
 	if (currentScene == MENU)
 	{
-		if (Application::IsKeyPressed(VK_DOWN) && delay == 0 && highlight < 5)
-		{
-			highlight += 1;
-			delay = 15;
-		}
-		if (Application::IsKeyPressed(VK_UP) && delay == 0 && highlight > 2)
-		{
-			highlight -= 1;
-			delay = 15;
-		}
-
-		if (delay > 0)
-		{
-			--delay;
-		}
+		MenuSelections(highlight, 5, 2);
 
 		//selection of scene
 		if (Application::IsKeyPressed(VK_RETURN))
@@ -1216,11 +1431,22 @@ void SceneAssignment::Update(double dt)
 			currentScene = CASHIER;
 		}
 
+		Vector3 TempPosition = Character.GetPosition();
+		
+		if(CashierGame == false && ATMMode == false && inventory == false)
+		{
+			Character.Update(dt, Objs, AiList);
+		}
+
+		else if (ATMMode == true)
+		{
+			AtmUpdate();
+		}
+
 		CashierGameTimer -= 5*dt;
-
-		KeyLeft = KeyRight = false;
-
 		CashierGameKeyPressTimer += 5*dt;
+
+		KeyLeft = KeyRight = KeyK = KeyTab = false;
 
 		if(CashierGame == true && CashierGameKeyPressTimer > 5)
 		{
@@ -1236,13 +1462,55 @@ void SceneAssignment::Update(double dt)
 			CashierGameKeyPressTimer = 0;
 		}
 
-		Vector3 TempPosition = Character.GetPosition();
-		
-		if(CashierGame == false)
+		if(InteractionTimer > 20 && Application::IsKeyPressed('K'))
 		{
-			Character.Update(dt, Objs, AiList);
+			KeyK = true;
+			InteractionTimer = 0;
 		}
 
+		if(InteractionTimer > 5 &&Application::IsKeyPressed(VK_TAB) && Character.GetModel() == CModel::GEO_CUSTOMER)
+		{
+			KeyTab = true;
+			InteractionTimer = 0;
+		}
+
+		InteractionTimer += 10*dt;
+
+		if(KeyK)
+		{
+			InteractionCheck();
+		}
+
+		if(inventory == true)
+		{
+			UpdateSelectedItem();
+		}
+
+		if(KeyTab && inventory == false)
+		{
+			inventory = true;
+		}
+
+		else if(KeyTab && inventory == true)
+		{
+			inventory = false;
+		}
+
+		navigate[2] = "$" + std::to_string(static_cast<long long> (Character.GetWallet()));
+
+		//UpdateAiText
+		float TextTimer = 0;
+		TextTimer += (float) (2*dt);
+
+		for(int i = 0; i < AiList.size(); ++i)
+		{
+			if(AiList[i].getAIText().getTime() > 0)
+			{
+				AiList[i].updateText(TextTimer);
+			}
+		}
+
+		//UpdateAi
 		for(int i = 0; i <AiList.size(); ++i)
 		{
 			if(AiList[i].getAiType() == CAi::STATIONARY && Character.GetPosition() != TempPosition && AiList[i].GetModel() == CModel::GEO_SECURITY)
@@ -1261,36 +1529,159 @@ void SceneAssignment::Update(double dt)
 				AiList[i].UpDatePath(dt);
 			}
 		}
-		
-		
-		InteractionTimer += 10*dt;
-
-		if(InteractionTimer > 20 && Application::IsKeyPressed('K'))
-		{
-			InteractionTimer = 0;
-			InteractionCheck();
-		}
-
-		float TextTimer = 0;
-		TextTimer += (float) (2*dt);
-
-		for(int i = 0; i < AiList.size(); ++i)
-		{
-			if(AiList[i].getAIText().getTime() > 0)
-			{
-				AiList[i].updateText(TextTimer);
-			}
-		}
 	}
 
 	fps = 1/dt;
 }
 
+void SceneAssignment::AtmUpdate()
+{
+	int selection = 0;
+
+	if(Ask == false)
+	{
+		selection = atmHigh - 1;
+	
+		//ATM selection
+		MenuSelections(atmHigh, 6, 3);
+	}
+
+	//prompt another transaction		
+	else	
+	{
+		selection = anotherHigh - 1;
+				
+		//Yes or No
+		MenuSelections(anotherHigh, 11, 10);
+	}
+
+	//selected on ATM
+	if(Application::IsKeyPressed(VK_RETURN) && delay == 0)
+	{
+		//get $10
+		if(selection == 2)
+		{
+			if (ATMcash < 10)
+			{
+				cash[0] = change[2];
+				cash[1] = change[3];
+			}
+		
+			else
+			{
+				Money(10);
+				Ask = true;
+			}
+		}
+		
+		//get $50
+		if (selection == 3)
+		{
+			if (ATMcash < 50)
+			{
+				cash[0] = change[2];
+				cash[1] = change[3];
+			}
+		
+			else
+			{
+				Money(50);
+				Ask = true;
+			}
+		}
+
+		//get $100
+		if (selection == 4)
+		{
+			if (ATMcash < 100)
+			{
+				cash[0] = change[2];
+				cash[1] = change[3];
+			}
+		
+			else
+			{
+				Money(100);
+				Ask = true;
+			}	
+		}
+				
+		delay = 15;
+
+		//Yes
+		if(selection == 9)
+		{
+			Ask = false;
+		}
+		// End||No
+		if (selection == 5 || selection == 10)
+		{
+			Ask = false;
+			ATMMode = false;
+			Left = true;
+					
+			if (Left == true);
+			{
+				cash[0] = change[0];
+				cash[1] = change[1];
+			}
+		}
+			
+		if (delay > 0)
+		{
+			--delay;
+		}	
+	}
+}
+
+void SceneAssignment::UpdateSelectedItem()
+{
+	if (Application::IsKeyPressed(VK_LEFT) && delay == 0)
+	{
+		Selected -= 1;
+		if(Selected == -1)
+		{
+			Selected = 9;
+		}
+
+		Selected = Selected%10;
+		delay = 10;
+	}
+	if (Application::IsKeyPressed(VK_RIGHT) && delay == 0)
+	{
+		Selected += 1;
+		Selected = Selected%10;
+		delay = 10;
+	}
+
+	if (delay > 0)
+	{
+		--delay;
+	}
+
+}
+
+/***********************************************************/
+/*!
+\brief
+	Removes the Trolley
+
+\param I
+	Using I to count the Index
+*/
+/***********************************************************/
 void SceneAssignment::RemoveTrolley(int i){
 	Objs.erase(Objs.begin() + i);
 	Character.setInventorySize();
+	Character.SetWallet(-1);
 }
 
+/***********************************************************/
+/*!
+\brief
+	Checks for interaction in SceneAssignment
+*/
+/***********************************************************/
 void SceneAssignment::InteractionCheck()
 {
 	for(int i = 0; i < Objs.size(); ++i)
@@ -1305,9 +1696,14 @@ void SceneAssignment::InteractionCheck()
 					Pickup(Objs[i]);
 				}
 
+				if (Objs[i].getOBJType() == CSceneObj::ATM)
+				{
+						ATMMode = true;
+				}
+
 				if(Objs[i].getOBJType() == CSceneObj::CART)
 				{
-					if(renderCart == false)
+					if(renderCart == false && Character.GetWallet() > 0)
 					{
 						RemoveTrolley(i);
 						renderCart = true;
@@ -1352,11 +1748,29 @@ void SceneAssignment::InteractionCheck()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Pickup Items 
+
+\param Object
+	Object to be picked up
+*/
+/***********************************************************/
 void SceneAssignment::Pickup(CSceneObj object)
 {
 	Character.AddToInventory(object.getItem());
 }
 
+/***********************************************************/
+/*!
+\brief
+	Lift Interaction
+
+\param dt
+	Using Delta Time to update the Lift Interaction
+*/
+/***********************************************************/
 void SceneAssignment::LiftInteraction(double dt)
 {
 	if(Doorindex.size() == 0)
@@ -1407,6 +1821,71 @@ void SceneAssignment::LiftInteraction(double dt)
 	}
 }
 
+void SceneAssignment::GantryInteraction(double dt)
+{
+	if(Gantryindex.size() == 0)
+	{
+		for(int i = 0; i < Objs.size(); ++i)
+		{
+			if(Objs[i].getModel() == CModel::GEO_GANTRY)
+			{	
+				Gantryindex.push_back(i);	
+			}
+		}
+	}
+
+	if(Character.GetPosition().x > Gantry.getMinBound().x && Character.GetPosition().x < Gantry.getMaxBound().x && Character.GetPosition().z > Gantry.getMinBound().z && Character.GetPosition().z < Gantry.getMaxBound().z)
+	{
+		if(RotateGantry < 90)
+		{
+			RotateGantry += (float)(40 *dt);
+			Objs[Gantryindex[0]].setRotate(0-RotateGantry,0,1,0);
+			Objs[Gantryindex[1]].setRotate(180+RotateGantry,0,1,0);
+		}
+	}
+
+	else
+	{
+		if(RotateGantry > 0)
+		{
+			RotateGantry -= (float)(40 *dt);
+			Objs[Gantryindex[0]].setRotate(0-RotateGantry,0,1,0);
+			Objs[Gantryindex[1]].setRotate(180+RotateGantry,0,1,0);
+		}
+	}
+}
+
+void SceneAssignment::MenuSelections(int &highlighted, int max, int min)
+{
+	if (Application::IsKeyPressed(VK_DOWN) && delay == 0 && highlighted < max)
+	{
+		highlighted += 1;
+		delay = 15;
+	}
+	if (Application::IsKeyPressed(VK_UP) && delay == 0 && highlighted > min)
+	{
+		highlighted -= 1;
+		delay = 15;
+	}
+
+	if (delay > 0)
+	{
+		--delay;
+	}
+}
+
+/***********************************************************/
+/*!
+\brief
+	Render Mesh in SceneAssignment
+
+\param Mesh
+	Adds the Mesh
+
+\param enableLight
+	Enable the Lights
+*/
+/***********************************************************/
 void SceneAssignment::RenderMesh(Mesh *mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -1451,6 +1930,12 @@ void SceneAssignment::RenderMesh(Mesh *mesh, bool enableLight)
 
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render in SceneAssignment
+*/
+/***********************************************************/
 void SceneAssignment::Render()
 {
 	// Render VBO here
@@ -1540,6 +2025,7 @@ void SceneAssignment::Render()
 
 	if (currentScene == MENU)
 	{
+		//RenderMenu
 		RenderMenu();
 	}
 	else
@@ -1547,14 +2033,42 @@ void SceneAssignment::Render()
 		RenderCharacter();
 		RenderAI();
 		
-		if(renderCart && currentScene == CUSTOMER)
+		if(currentScene == CUSTOMER)
 		{
-			RenderTrolley();
-		}
+			CustomerNavigation();
 
-		if(CashierGame)
-		{
-			RenderCashierGame();
+			if(renderCart)
+			{
+				RenderTrolley();
+			}
+
+			if(CashierGame)
+			{
+				RenderCashierGame();
+			}
+
+			if(inventory)
+			{
+				PrintInventoryBox();
+			}
+
+			if(ATMMode)
+			{
+				//Render ATM background
+				RenderImageOnScreen(meshList[CModel::GEO_ATMSCREEN], Color(0,0,0), 80.f, 0.5f, 0.4f);
+
+				if (Ask == false)
+				{
+					//Render ATM Screen
+					PrintTextInCentre(0, 7, cash, atmHigh, 7);
+				}
+
+				else
+				{
+					//Render Prompt Screen
+					PrintTextInCentre(7, 12, cash, anotherHigh, 18); 
+				}
+			}
 		}
 	}
 
@@ -1568,6 +2082,16 @@ void SceneAssignment::Render()
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(0, 1, 0), 2, 5, 1);
 }
 
+/***********************************************************/
+/*!
+\brief
+	Calculates the Total Price of the Item
+
+\param customerPayingPrice
+	Use the Customer Paying Price to Calculate
+
+*/
+/***********************************************************/
 bool SceneAssignment::CalTotalPrice(int customerPayingPrice)
 {
 	totalPrice = 0;
@@ -1594,6 +2118,12 @@ bool SceneAssignment::CalTotalPrice(int customerPayingPrice)
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Randomises Customer List
+*/
+/***********************************************************/
 void SceneAssignment::RandCustomerList()
 {
 	customerList.clear();
@@ -1610,6 +2140,12 @@ void SceneAssignment::RandCustomerList()
 	CashierGameTimer = 100;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render Cashier Game
+*/
+/***********************************************************/
 void SceneAssignment::RenderCashierGame()
 {
 	if(StartGame == true)
@@ -1712,6 +2248,12 @@ void SceneAssignment::RenderCashierGame()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render AI in Scene Assignment
+*/
+/***********************************************************/
 void SceneAssignment::RenderAI()
 {
 	for(int i = 0; i < AiList.size(); ++i)
@@ -1728,12 +2270,12 @@ void SceneAssignment::RenderAI()
 				{
 					modelStack.PushMatrix();
 					modelStack.Translate(-1.3, 0, 0);
-					modelStack.Rotate(90, 0, 1, 0);
+					modelStack.Rotate(-90, 0, 1, 0);
 					RenderMesh(meshList[AiList[i].GetModelArm()], false);
 					modelStack.PopMatrix();
 				}
 				modelStack.Translate(1.3, 0, 0);
-				modelStack.Rotate(180, 0, 1, 0);
+				modelStack.Rotate(90, 0, 1, 0);
 				RenderMesh(meshList[AiList[i].GetModelArm()], false);
 				modelStack.PopMatrix();
 			}
@@ -1753,6 +2295,12 @@ void SceneAssignment::RenderAI()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render Trolley in Scene Assignment
+*/
+/***********************************************************/
 void SceneAssignment::RenderTrolley()
 {
 	trolleyPos.Set(0,0,0);
@@ -1776,6 +2324,12 @@ void SceneAssignment::RenderTrolley()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render Character in Scene Assignment
+*/
+/***********************************************************/
 void SceneAssignment::RenderCharacter()
 {
 	modelStack.PushMatrix();
@@ -1788,12 +2342,12 @@ void SceneAssignment::RenderCharacter()
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(-1.3, 0, 0);
-			modelStack.Rotate(90, 0, 1, 0);
+			modelStack.Rotate(-90, 0, 1, 0);
 			RenderMesh(meshList[Character.GetModelArm()], false);
 			modelStack.PopMatrix();
 		}
 		modelStack.Translate(1.3, 0, 0);
-		modelStack.Rotate(180, 0, 1, 0);
+		modelStack.Rotate(90, 0, 1, 0);
 		RenderMesh(meshList[Character.GetModelArm()], false);
 		modelStack.PopMatrix();
 	}
@@ -1801,6 +2355,12 @@ void SceneAssignment::RenderCharacter()
 	modelStack.PopMatrix();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render Menu in SceneAssignment
+*/
+/***********************************************************/
 void SceneAssignment::RenderMenu()
 {
 	int a = 1;
@@ -1825,6 +2385,12 @@ void SceneAssignment::RenderMenu()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render Objects in SceneAssignment
+*/
+/***********************************************************/
 void SceneAssignment::RenderObjs()
 {
 	for(int i = 0; i <Objs.size(); ++i)
@@ -1841,6 +2407,87 @@ void SceneAssignment::RenderObjs()
 	}
 }
 
+void SceneAssignment::PrintTextInCentre(int start, int end, string arrName[], int highlighted, int StringSize)
+{
+	int colour = 1;
+	//menu
+	for (int text = start; text < end; text++)
+	{
+		const float TextSize = 3;
+		int x = 80/TextSize/2 - arrName[text].length()/2;
+		int y = 60/TextSize/2 + StringSize/2 - text;
+
+		if(highlighted == text)
+		{
+			colour = 0;
+		}
+
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], arrName[text], Color(1, colour, colour), TextSize, x, y);
+
+		if(highlighted == text)
+		{
+			colour = 1;
+		}
+	}
+}
+
+void SceneAssignment::Money(int amount)
+{
+	Character.SetWallet(amount);
+	ATMcash -= amount;
+	
+	std::stringstream amountLeft;
+	amountLeft << ATMcash;
+	cash[2] = "YOU HAVE $" + amountLeft.str();
+}
+
+void SceneAssignment::CustomerNavigation()
+{
+	float textSize = 2.5f;
+	float topLeftHeight = 80.f/(textSize*1.5);
+	float topLeftStart = 0.5f;
+
+	for (int text = 0; text < 3; text++)
+	{
+	RenderTextOnScreen(meshList[CModel::GEO_TEXT], navigate[text], Color(0, 0, 1), textSize, topLeftStart, topLeftHeight - (text - 1));
+	}
+}
+
+void SceneAssignment::PrintInventoryBox()
+{
+	float BoxSize = 80/7;
+	float x = (BoxSize/2.f - BoxSize/2.5f);
+	float y = 60.f/BoxSize/1.5f;
+	int count = 0;
+
+	for (int row = 0; row < 2; row++)
+	{	
+		for (int column = 0; column < 5; column ++)
+		{
+			if(count == Selected)
+			{
+				selectItem = true;
+				RenderImageOnScreen(meshList[CModel::GEO_INVENT_RED], Color(0,0,0), BoxSize, x + (column * 1.2f), y - (row * 1.2f));	
+			}
+			
+			else
+			{
+				selectItem = false;
+				RenderImageOnScreen(meshList[CModel::GEO_INVENT_YELLOW], Color(0,0,0), BoxSize, x + (column * 1.2f), y - (row * 1.2f));
+			}
+
+			
+			count++;
+		}
+	}
+}
+
+/***********************************************************/
+/*!
+\brief
+	Render Text in Scene Assignment
+*/
+/***********************************************************/
 void SceneAssignment::RenderText(Mesh *mesh, std::string text, Color color)
 {
 	if(!mesh || mesh->textureID <= 0) //Proper error check
@@ -1868,6 +2515,12 @@ void SceneAssignment::RenderText(Mesh *mesh, std::string text, Color color)
 	glEnable(GL_DEPTH_TEST);
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render Text on Screen
+*/
+/***********************************************************/
 void SceneAssignment::RenderTextOnScreen(Mesh *mesh, std::string text, Color color, float size, float x, float y)
 {
 	if(!mesh || mesh->textureID <= 0) //Proper error check
@@ -1907,6 +2560,45 @@ void SceneAssignment::RenderTextOnScreen(Mesh *mesh, std::string text, Color col
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
 }
+
+void SceneAssignment::RenderImageOnScreen(Mesh *mesh, Color color, float size, float x, float y)
+{
+	glDisable(GL_DEPTH_TEST);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	modelStack.Scale(size, size, size);
+	modelStack.Translate(x, y, 0);
+
+	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+	mesh->Render();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glEnable(GL_DEPTH_TEST);
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+/***********************************************************/
+/*!
+\brief
+	Exit Scene Assignment
+*/
+/***********************************************************/
 
 void SceneAssignment::Exit()
 {

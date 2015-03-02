@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	SceneObj.h
+\author Malcolm Lim
+\par	email: Malcolm_Lim\@nyp.edu.sg
+\brief
+Class to define a Scene Object
+*/
+/******************************************************************************/
+
 #ifndef SCENEOBJ_H
 #define SCENEOBJ_H
 
@@ -6,6 +16,13 @@
 #include "Vector3.h"
 #include "Mtx44.h"
 
+
+/******************************************************************************/
+/*!
+		Class CSceneObj:
+\brief	Defines a Scene Object and its methods
+*/
+/******************************************************************************/
 class CSceneObj
 {
 public:
@@ -22,6 +39,7 @@ public:
 		WALL,
 		DOOR,
 		MONITOR,
+		GANTRY,
 		TYPE_TOTAL,
 	};
 

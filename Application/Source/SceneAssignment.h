@@ -1,6 +1,17 @@
+/******************************************************************************/
+/*!
+\file	SceneAssignment.h
+\author Malcolm Lim
+\par	email: Malcolm_Lim\@nyp.edu.sg
+\brief
+Class to define a Scene
+*/
+/******************************************************************************/
+
 #ifndef SCENEASSIGNMENT_H
 #define SCENEASSIGNMENT_H
 
+#include "MyMath.h"
 #include "Scene.h"
 #include "Camera.h"
 #include "Camera3.h"
@@ -15,10 +26,18 @@
 #include "AI.h"
 #include <vector>
 #include <string>
+#include <sstream>
 
 using std::vector;
 using std::string;
 
+
+/******************************************************************************/
+/*!
+		Class SceneAssignment:
+\brief	Defines a Scene and its methods
+*/
+/******************************************************************************/
 class SceneAssignment : public Scene
 {
 	enum UNIFORM_TYPE
@@ -64,8 +83,6 @@ public:
 
 	static SELECT currentScene;
 	
-	string menu[6];
-
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();
@@ -81,6 +98,7 @@ private:
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderText(Mesh *mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh *mesh, std::string text, Color color, float size, float x, float y);
+	void RenderImageOnScreen(Mesh *mesh, Color color, float size, float x, float y);
 	void RenderObjs();
 	void RenderCharacter();
 	void RenderTrolley();
@@ -94,6 +112,8 @@ private:
 	void InitCharacterModel();
 	void InitAI();
 	void InitItemListAndPriceIndex();
+	void InitItemsObj();
+	void GantryInteraction(double dt);
 	void LiftInteraction(double dt);
 	void InteractionCheck();
 	void Pickup(CSceneObj Object);
@@ -102,12 +122,37 @@ private:
 	void RandCustomerList();
 	bool CalTotalPrice(int customerPayingPrice);
 
+	void CustomerNavigation();
+	void PrintTextInCentre(int start, int end, string arrName[], int highlighted, int StringSize);
+	void PrintInventoryBox();
+	void UpdateSelectedItem();
+	void MenuSelections(int &highlighted, int max, int min);
+	void Money(int amount);
+	void ATMwithdraw();
+	void AtmUpdate();
+
+	string menu[6];
+	string navigate[3];
+	string cash[12];
+	string change[4];
+
+	string amountLeft;
+
+	int box[10];
+	int Selected;
+
 	float fps;
 	float FloorTimer;
 	float MoveDoor;
+	float RotateGantry;
 	float InteractionTimer;
 	float CashierGameKeyPressTimer;
 	float CashierGameTimer;
+
+	float InventRed;
+	float InventYellow;
+	float InventX;
+	float InventY;
 
 	bool SecurityCamera;
 	bool renderCart;
@@ -115,7 +160,16 @@ private:
 	bool StartGame;
 	bool CashierGame;
 
-	bool KeyLeft, KeyRight;
+	bool KeyLeft, KeyRight, KeyK,KeyTab;
+
+	bool ATMMode;
+	bool Ask;
+	bool Left;
+
+	bool inventory;
+	bool selectItem;
+
+	int ATMcash;
 
 	int round;
 	int chances;
@@ -124,6 +178,8 @@ private:
 
 	int highlight;
 	int delay;
+	int atmHigh;
+	int anotherHigh;
 
 	vector<int> Doorindex;
 	int MoveDoorUpperLimit;
@@ -138,7 +194,9 @@ private:
 	vector<string> customerList;
 	vector<int> prices;
 
-	CInteraction LiftDoor, Lift;
+	vector<int> Gantryindex;
+
+	CInteraction LiftDoor, Lift, Gantry;
 
 	Ccharacter Character;
 	

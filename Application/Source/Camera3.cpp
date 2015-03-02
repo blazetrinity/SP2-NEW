@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	Camera3.cpp
+\author Malcolm Lim
+\par	email: Malcolm_Lim\@nyp.edu.sg
+\brief
+Sets the Camera
+*/
+/******************************************************************************/
+
 #include "Camera3.h"
 #include "Application.h"
 #include "Mtx44.h"
@@ -15,7 +25,7 @@ Camera3::Camera3()
 /***********************************************************/
 /*!
 \brief
-	Camera2's destruction
+	Camera2's destructor
 */
 /***********************************************************/
 Camera3::~Camera3()
@@ -52,6 +62,7 @@ void Camera3::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 /*!
 \brief
 	Update the camera position based on key pressed
+
 \param dt - the delta time since the last time the function was called
 */
 /***********************************************************/
@@ -118,6 +129,18 @@ void Camera3::Update(double dt)
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Update the camera's up position based on key pressed
+
+\param pos
+	Camera's position
+
+\param Tar
+	Camera's Target
+*/
+/***********************************************************/
 void Camera3::UpdateUp(Vector3 Pos, Vector3 Tar)
 {
 	view = (target - position).Normalized();
@@ -127,6 +150,15 @@ void Camera3::UpdateUp(Vector3 Pos, Vector3 Tar)
 	up = right.Cross(view).Normalized();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Updates the Camera Rotation
+
+\param dt
+	Using delta time to update the Camera's Rotation
+*/
+/***********************************************************/
 void Camera3::CameraRotateUpdate(double dt)
 {
 	static const float CAMERA_SPEED = 10.f;
@@ -161,6 +193,15 @@ void Camera3::CameraRotateUpdate(double dt)
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Update the Camera Pan View
+
+\param dt
+	Using Delta Time to udate the camera's pan
+*/
+/***********************************************************/
 void Camera3::UpdatePan(double dt)
 {
 	static const float CAMERA_SPEED = 25.f;
