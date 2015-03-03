@@ -24,6 +24,7 @@ Class to define a Scene
 #include "SceneObj.h"
 #include "Interaction.h"
 #include "AI.h"
+#include "Item.h"
 #include <vector>
 #include <string>
 #include <sstream>
@@ -104,6 +105,7 @@ private:
 	void RenderTrolley();
 	void RenderMenu();
 	void RenderAI();
+	void RenderCustomerGame();
 	void InitSkyboxLevel1();
 	void InitLiftLevel1();
 	void InitSkyboxLevel2();
@@ -120,6 +122,7 @@ private:
 	void RemoveTrolley(int i);
 	void RenderCashierGame();
 	void RandCustomerList();
+	void RandShoppingList();
 	bool CalTotalPrice(int customerPayingPrice);
 
 	void CustomerNavigation();
@@ -160,6 +163,8 @@ private:
 	bool StartGame;
 	bool CashierGame;
 
+	bool CustomerGame;
+
 	bool KeyLeft, KeyRight, KeyK,KeyTab;
 
 	bool ATMMode;
@@ -189,10 +194,12 @@ private:
 	int customerPayingPrice;
 	int totalPrice;
 
-	vector<string> itemList;
+	CItem myItem;
+	vector<CItem> itemList;
 	vector<string> priceIndex;
 	vector<string> customerList;
-	vector<int> prices;
+
+	vector<string> shoppingList;
 
 	vector<int> Gantryindex;
 

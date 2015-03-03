@@ -147,6 +147,7 @@ void SceneAssignment::Init()
 	InitSkyboxLevel1();
 	InitSkyboxLevel2();
 	InitOBJs();
+	InitItemsObj();
 	InitCharacterModel();
 	InitAI();
 	InitItemListAndPriceIndex();
@@ -227,6 +228,8 @@ void SceneAssignment::Init()
 	diffDistance = 5;
 	InteractionTimer = 0;
 	
+	CustomerGame = false;
+
 	CashierGame = false;
 	customerPayingPrice = 0;
 	totalPrice = 0;
@@ -793,42 +796,75 @@ void SceneAssignment::InitItemsObj()
 {
 	meshList[CModel::GEO_SODA] = MeshBuilder::GenerateOBJ("SodaCan", "OBJ//Soda.obj");
 	meshList[CModel::GEO_SODA]->textureID = LoadTGA("Image//CanTexture.tga");
+	
+	myItem.Set(CModel::GEO_SODA,1,"Soda");
+	itemList.push_back(myItem);
 
 	meshList[CModel::GEO_HERSHEYS] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//HersheyChocolate.obj");
 	meshList[CModel::GEO_HERSHEYS]->textureID = LoadTGA("Image//FoodStorage1.tga");
 
+	myItem.Set(CModel::GEO_HERSHEYS, 3, "Hersheys");
+	itemList.push_back(myItem);
+
 	meshList[CModel::GEO_GUMMYCEREAL] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//CerealBox1.obj");
 	meshList[CModel::GEO_GUMMYCEREAL]->textureID = LoadTGA("Image//cerealBox.tga");
+
+	myItem.Set(CModel::GEO_GUMMYCEREAL, 4, "GummyCereal");
+	itemList.push_back(myItem);
 
 	meshList[CModel::GEO_CEREALKBOX] = MeshBuilder::GenerateOBJ("CeralBox", "OBJ//CerealBox2.obj");
 	meshList[CModel::GEO_CEREALKBOX]->textureID = LoadTGA("Image//displayTable2.tga");
 
+	myItem.Set(CModel::GEO_CEREALKBOX, 5, "KCereal");
+	itemList.push_back(myItem);
+
 	meshList[CModel::GEO_STITCHCEREAL] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//CerealBox3.obj");
 	meshList[CModel::GEO_STITCHCEREAL]->textureID = LoadTGA("Image//FoodStorage1.tga");
+
+	myItem.Set(CModel::GEO_STITCHCEREAL, 4, "SitchCereal");
+	itemList.push_back(myItem);
 
 	meshList[CModel::GEO_BAKEDCANS] = MeshBuilder::GenerateOBJ("BakedBeans", "OBJ//BakedBeans.obj");
 	meshList[CModel::GEO_BAKEDCANS]->textureID = LoadTGA("Image//beanCan.tga");
 
+	myItem.Set(CModel::GEO_BAKEDCANS, 3, "BakedBeans");
+	itemList.push_back(myItem);
+
 	meshList[CModel::GEO_CHIPCEREAL] = MeshBuilder::GenerateOBJ("ChipCereal", "OBJ//CerealBox4.obj");
 	meshList[CModel::GEO_CHIPCEREAL]->textureID = LoadTGA("Image//cerealBox1.tga");
 
-	meshList[CModel::GEO_APPLE] = MeshBuilder::GenerateOBJ("Apple", "OBJ//Apple.obj");
-	meshList[CModel::GEO_APPLE]->textureID = LoadTGA("Image//FruitStall1.tga");
+	myItem.Set(CModel::GEO_CHIPCEREAL, 5, "ChipCereal");
+	itemList.push_back(myItem);
 
 	meshList[CModel::GEO_ORANGE] = MeshBuilder::GenerateOBJ("Oranges", "OBJ//Oranges.obj");
 	meshList[CModel::GEO_ORANGE]->textureID = LoadTGA("Image//FruitStall.tga");
 
+	myItem.Set(CModel::GEO_ORANGE, 1, "Fruit");
+	itemList.push_back(myItem);
+
 	meshList[CModel::GEO_FERRERO] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//BoxFood.obj");
 	meshList[CModel::GEO_FERRERO]->textureID = LoadTGA("Image//FoodStorage.tga");
+
+	myItem.Set(CModel::GEO_FERRERO, 2, "Ferrero");
+	itemList.push_back(myItem);
 
 	meshList[CModel::GEO_COKEZERO] = MeshBuilder::GenerateOBJ("Coke", "OBJ//Coke.obj");
 	meshList[CModel::GEO_COKEZERO]->textureID = LoadTGA("Image//CanTexture3.tga");
 
-	meshList[CModel::GEO_MOUNTAINDEW] = MeshBuilder::GenerateOBJ("MountainDew", "OBJ//CanTexture2.obj");
+	myItem.Set(CModel::GEO_COKEZERO, 1, "CokeZero");
+	itemList.push_back(myItem);
+
+	meshList[CModel::GEO_MOUNTAINDEW] = MeshBuilder::GenerateOBJ("MountainDew", "OBJ//Coke.obj");
 	meshList[CModel::GEO_MOUNTAINDEW]->textureID = LoadTGA("Image//FoodStorage1.tga");
+
+	myItem.Set(CModel::GEO_MOUNTAINDEW, 1, "MountainDew");
+	itemList.push_back(myItem);
 
 	meshList[CModel::GEO_SHRIMPBOX] = MeshBuilder::GenerateOBJ("Frozen_Food", "OBJ//BoxFood.obj");
 	meshList[CModel::GEO_SHRIMPBOX]->textureID = LoadTGA("Image//FoodStorage2.tga");
+
+	myItem.Set(CModel::GEO_SHRIMPBOX, 6, "ShrimpBox");
+	itemList.push_back(myItem);
 }
 
 /***********************************************************/
@@ -1281,26 +1317,18 @@ void SceneAssignment::InitAI()
 /***********************************************************/
 void SceneAssignment::InitItemListAndPriceIndex()
 {
-	itemList.push_back("Fruits");
-	itemList.push_back("Mountain Dew");
-	itemList.push_back("Cereal");
-	itemList.push_back("Chocolate");
-	itemList.push_back("Ice Cream");
-	itemList.push_back("Eggs");
-	
-	priceIndex.push_back("Fruits - $3");
-	priceIndex.push_back("Mountain Dew - $1");
-	priceIndex.push_back("Cereal - $5");
-	priceIndex.push_back("Chocolate - $2");
-	priceIndex.push_back("Ice Cream - $2");
-	priceIndex.push_back("Eggs - $4");
-
-	prices.push_back(3);
-	prices.push_back(1);
-	prices.push_back(5);
-	prices.push_back(2);
-	prices.push_back(2);
-	prices.push_back(4);
+	priceIndex.push_back("Soda - $1");
+	priceIndex.push_back("Hersheys- $3");
+	priceIndex.push_back("GummyCereal - $4");
+	priceIndex.push_back("KCereal- $5");
+	priceIndex.push_back("SitchCereal - $4");
+	priceIndex.push_back("BakedBeans- $3");
+	priceIndex.push_back("ChipCereal- $5");
+	priceIndex.push_back("Fruit- $1");
+	priceIndex.push_back("Ferrero- $2");
+	priceIndex.push_back("CokeZero- $1");
+	priceIndex.push_back("MountainDew- $1");
+	priceIndex.push_back("ShrimpBox- $6");
 }
 
 static float ROT_LIMIT = 45.f;
@@ -1409,29 +1437,30 @@ void SceneAssignment::Update(double dt)
 
 	if (currentScene != MENU)
 	{
-
-		if(Application::IsKeyPressed('1') && SecurityCamera == false)
+		if(SecurityCamera == false && CashierGame == false && CustomerGame == false)
 		{
-			Character.setModel(CModel::GEO_SECURITY,CModel::GEO_SECURITYARM);
-			//Character.setModelPosition(7, 0, 9);
-			currentScene = SECURITY;
-		}
+			if(Application::IsKeyPressed('1'))
+			{
+				Character.setModel(CModel::GEO_SECURITY,CModel::GEO_SECURITYARM);
+				//Character.setModelPosition(7, 0, 9);
+				currentScene = SECURITY;
+			}
 
-		if(Application::IsKeyPressed('2') && SecurityCamera == false)
-		{
-			Character.setModel(CModel::GEO_CUSTOMER,CModel::GEO_CUSTOMERARM);
-			//Character.setModelPosition(-3, 0, 9);
-			currentScene = CUSTOMER;
-		}
+			if(Application::IsKeyPressed('2'))
+			{
+				Character.setModel(CModel::GEO_CUSTOMER,CModel::GEO_CUSTOMERARM);
+				//Character.setModelPosition(-3, 0, 9);
+				currentScene = CUSTOMER;
+			}
 
-		if(Application::IsKeyPressed('3') && SecurityCamera == false)
-		{
-			Character.setModel(CModel::GEO_CASHIER,CModel::GEO_CASHIERARM);
-			//Character.setModelPosition(7, 0, 0);
-			currentScene = CASHIER;
+			if(Application::IsKeyPressed('3'))
+			{
+				Character.setModel(CModel::GEO_CASHIER,CModel::GEO_CASHIERARM);
+				//Character.setModelPosition(7, 0, 0);
+				currentScene = CASHIER;
+			}
 		}
-
-		Vector3 TempPosition = Character.GetPosition();
+			Vector3 TempPosition = Character.GetPosition();
 		
 		if(CashierGame == false && ATMMode == false && inventory == false)
 		{
@@ -1707,6 +1736,8 @@ void SceneAssignment::InteractionCheck()
 					{
 						RemoveTrolley(i);
 						renderCart = true;
+						RandShoppingList();
+						CustomerGame = true;
 						break;
 					}
 				}
@@ -2033,23 +2064,34 @@ void SceneAssignment::Render()
 		RenderCharacter();
 		RenderAI();
 		
+		if(currentScene == CASHIER)
+		{
+			if(CashierGame)
+			{
+				RenderCashierGame();
+			}
+		}
+
 		if(currentScene == CUSTOMER)
 		{
-			CustomerNavigation();
+			if(CustomerGame == false)
+			{
+				CustomerNavigation();
+			}
 
 			if(renderCart)
 			{
 				RenderTrolley();
 			}
 
-			if(CashierGame)
-			{
-				RenderCashierGame();
-			}
-
 			if(inventory)
 			{
 				PrintInventoryBox();
+			}
+
+			if(CustomerGame && inventory == false)
+			{
+				RenderCustomerGame();
 			}
 
 			if(ATMMode)
@@ -2100,9 +2142,9 @@ bool SceneAssignment::CalTotalPrice(int customerPayingPrice)
 	{
 		for(int j = 0; j < itemList.size(); ++j)
 		{
-			if(customerList[i] == itemList[j])
+			if(customerList[i] == itemList[j].GetItemName())
 			{
-				totalPrice += prices[j];
+				totalPrice += itemList[j].GetPrice();
 			}
 		}
 	}
@@ -2130,14 +2172,25 @@ void SceneAssignment::RandCustomerList()
 
 	for(int i = 0; i < 10; ++i)
 	{
-		int value = rand() % 5;
-		customerList.push_back(itemList[value]);
+		int value = rand() % 11;
+		customerList.push_back(itemList[value].GetItemName());
 	}
 	
 	int value2 = rand() % 70 + 7;
 	customerPayingPrice = value2;
 
 	CashierGameTimer = 100;
+}
+
+void SceneAssignment::RandShoppingList()
+{
+	shoppingList.clear();
+
+	for(int i = 0; i < 10; ++i)
+	{
+		int value = rand() % 11;
+		shoppingList.push_back(itemList[value].GetItemName());
+	}
 }
 
 /***********************************************************/
@@ -2176,8 +2229,8 @@ void SceneAssignment::RenderCashierGame()
 			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (chances)), Color(1, 0, 0), 2, 26, 2);
 			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round: ", Color(1, 0, 0), 2, 29, 2);
 			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (round)), Color(1, 0, 0), 2, 36, 2);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round Timer: ", Color(1, 0, 0), 2, 1, 6);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(1, 0, 0), 2, 1, 5);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round Timer: ", Color(1, 0, 0), 2, 1, 3);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(1, 0, 0), 2, 1, 2);
 
 			if(CashierGameTimer < 0)
 			{
@@ -2245,6 +2298,19 @@ void SceneAssignment::RenderCashierGame()
 			StartGame = true;
 			CashierGameTimer = 100;
 		}
+	}
+}
+
+void SceneAssignment::RenderCustomerGame()
+{
+	int x = 1;
+	int y = 26;
+	
+	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Shopping List:", Color(1, 0, 0), 2, x, 28);
+
+	for(int i = 0; i < shoppingList.size() ; ++i)
+	{
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], shoppingList[i], Color(1, 0, 0), 2, x, y - (2*i));
 	}
 }
 

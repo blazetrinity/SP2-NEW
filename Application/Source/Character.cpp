@@ -28,7 +28,7 @@ Ccharacter::Ccharacter()
 	level = 1;
 	inventorySize = 0;
 	maxInventorySize = 2;
-	wallet = 0;
+	wallet = 1;
 }
 
 /***********************************************************/

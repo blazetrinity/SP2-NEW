@@ -90,6 +90,7 @@
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Interaction.cpp" />
+    <ClCompile Include="Source\Item.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\Interaction.h" />
+    <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
