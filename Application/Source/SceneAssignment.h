@@ -106,6 +106,8 @@ private:
 	void RenderMenu();
 	void RenderAI();
 	void RenderCustomerGame();
+	void RenderWinScreen();
+	void RenderLoseScreen();
 	void InitSkyboxLevel1();
 	void InitLiftLevel1();
 	void InitSkyboxLevel2();
@@ -125,6 +127,7 @@ private:
 	void RandShoppingList();
 	bool CheckCustomerInventory();
 	bool CalTotalPrice(int customerPayingPrice);
+	
 
 	void CustomerNavigation();
 	void PrintTextInCentre(int start, int end, string arrName[], int highlighted, int StringSize);
@@ -153,6 +156,7 @@ private:
 	float CashierGameKeyPressTimer;
 	float CashierGameTimer;
 	float CustomerGameTimer;
+	float EndTimer;
 
 	float InventRed;
 	float InventYellow;
@@ -175,6 +179,9 @@ private:
 
 	bool inventory;
 	bool selectItem;
+
+	bool winScreen;
+	bool loseScreen;
 
 	int ATMcash;
 

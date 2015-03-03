@@ -141,6 +141,9 @@ void SceneAssignment::Init()
 
 	meshList[CModel::GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", 1 ,Color(1,1,1));
 
+	meshList[CModel::GEO_BACKGROUND] = MeshBuilder::GenerateQuad("BackGround",Color(0,0,0), 10, 10);
+	meshList[CModel::GEO_BACKGROUND] ->textureID = LoadTGA("Image//BackGround.tga");
+
 	meshList[CModel::GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[CModel::GEO_TEXT] ->textureID = LoadTGA("Image//Fixedsys.tga");
 	
@@ -227,9 +230,11 @@ void SceneAssignment::Init()
 	renderCart = false;
 	diffDistance = 5;
 	InteractionTimer = 0;
-	
 	CustomerGameTimer = 0;
 	CustomerGame = false;
+	winScreen = false;
+	loseScreen = false;
+	EndTimer = 0;
 
 	CashierGame = false;
 	customerPayingPrice = 0;
@@ -885,7 +890,7 @@ void SceneAssignment::InitOBJs()
 	
 	//Atm Screen
 	meshList[CModel::GEO_ATMSCREEN] = MeshBuilder::GenerateQuad("ATM", Color(0, 0, 0), 10, 10);
-	meshList[CModel::GEO_ATMSCREEN]->textureID = LoadTGA("Image//yellow.tga");
+	meshList[CModel::GEO_ATMSCREEN]->textureID = LoadTGA("Image//ATMScreen.tga");
 
 	////Cashier1
 	meshList[CModel::GEO_COUNTER] = MeshBuilder::GenerateOBJ("cashier", "OBJ//Cashier.obj");
@@ -1473,6 +1478,11 @@ void SceneAssignment::Update(double dt)
 			AtmUpdate();
 		}
 
+		if(winScreen || loseScreen)
+		{
+			EndTimer -= 5*dt;
+		}
+
 		if(CustomerGame)
 		{
 			CustomerGameTimer -= 1*dt;
@@ -1758,7 +1768,7 @@ void SceneAssignment::InteractionCheck()
 						RandShoppingList();
 						CustomerGame = true;
 						CustomerGameState = "Playing";
-						CustomerGameTimer = 1000;
+						CustomerGameTimer = 300;
 						break;
 					}
 				}
@@ -2147,6 +2157,16 @@ void SceneAssignment::Render()
 		}
 	}
 
+	if(winScreen)
+	{
+		RenderWinScreen();
+	}
+
+	if(loseScreen)
+	{
+		RenderLoseScreen();
+	}
+
 	
 	std::ostringstream stringfps;
 
@@ -2155,6 +2175,24 @@ void SceneAssignment::Render()
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "FPS:", Color(0, 1, 0), 2, 1, 1);
 
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(0, 1, 0), 2, 5, 1);
+}
+
+void SceneAssignment::RenderWinScreen()
+{
+	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "YOU WIN!", Color(0, 1, 0), 3, 10, 10);
+	if(EndTimer < 0)
+	{
+		winScreen = false;
+	}
+}
+
+void SceneAssignment::RenderLoseScreen()
+{
+	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "YOU LOSE", Color(0, 1, 0), 3, 10, 10);
+	if(EndTimer < 0)
+	{
+		loseScreen = false;
+	}
 }
 
 /***********************************************************/
@@ -2265,7 +2303,7 @@ void SceneAssignment::RandShoppingList()
 	for(int i = 0; i < 10; ++i)
 	{
 		int value = rand() % 11;
-		shoppingList.push_back(itemList[3]);
+		shoppingList.push_back(itemList[value]);
 	}
 }
 
@@ -2277,6 +2315,8 @@ void SceneAssignment::RandShoppingList()
 /***********************************************************/
 void SceneAssignment::RenderCashierGame()
 {
+	RenderImageOnScreen(meshList[CModel::GEO_BACKGROUND], Color(0,0,0), 80.f, 0.5f, 0.4f);
+
 	if(StartGame == true)
 	{
 		if(round < 11 && chances > 0)
@@ -2284,29 +2324,29 @@ void SceneAssignment::RenderCashierGame()
 			int x1 = 1;
 			int x2 = 25;
 			int y = 28;
-	
+
 			for(int i = 0; i < priceIndex.size(); ++i)
 			{
-				RenderTextOnScreen(meshList[CModel::GEO_TEXT], priceIndex[i], Color(1, 0, 0), 2, x1, y - (2*i));
+				RenderTextOnScreen(meshList[CModel::GEO_TEXT], priceIndex[i], Color(1, 1, 1), 2, x1, y - (2*i));
 			}
 
 			for(int i = 0; i < customerList.size(); ++i)
 			{
-				RenderTextOnScreen(meshList[CModel::GEO_TEXT], customerList[i], Color(1, 0, 0), 2, x2, y - (2*i));
+				RenderTextOnScreen(meshList[CModel::GEO_TEXT], customerList[i], Color(1, 1, 1), 2, x2, y - (2*i));
 			}
 
 			std::ostringstream stringfps;
 
 			stringfps << CashierGameTimer;
 
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Customer Offers: ", Color(1, 0, 0), 2, 20, 1);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (customerPayingPrice)), Color(1, 0, 0), 2, 37, 1);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Life: ", Color(1, 0, 0), 2, 20, 2);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (chances)), Color(1, 0, 0), 2, 26, 2);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round: ", Color(1, 0, 0), 2, 29, 2);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (round)), Color(1, 0, 0), 2, 36, 2);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round Timer: ", Color(1, 0, 0), 2, 1, 3);
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(1, 0, 0), 2, 1, 2);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Customer Offers: ", Color(1, 1, 1), 2, 20, 1);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (customerPayingPrice)), Color(1, 1, 1), 2, 37, 1);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Life: ", Color(1, 1, 1), 2, 20, 2);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (chances)), Color(1, 1, 1), 2, 26, 2);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round: ", Color(1, 1, 1), 2, 29, 2);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], std::to_string(static_cast <long double> (round)), Color(1, 1, 1), 2, 36, 2);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round Timer: ", Color(1, 1, 1), 2, 1, 3);
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(1, 1, 1), 2, 1, 2);
 
 			if(CashierGameTimer < 0)
 			{
@@ -2349,25 +2389,27 @@ void SceneAssignment::RenderCashierGame()
 
 		else if(round > 10 && chances > 0)
 		{
-			std::cout << "Win" << std::endl;
 			CashierGame = false;
+			winScreen = true;
+			EndTimer = 40;
 			Character.SetCharacterPosCamTar(PlayerPosition,CameraPosition,CameraTarget);
 		}
 
 		else if(chances <= 0)
 		{
-			std::cout << "Lose" << std::endl;
 			CashierGame = false;
+			loseScreen = true;
+			EndTimer = 40;
 			Character.SetCharacterPosCamTar(PlayerPosition,CameraPosition,CameraTarget);
 		}
 	}
 
 	else if(StartGame == false)
 	{
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Cashier Game", Color(1, 0, 0), 3, 8, 15);
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Press Right Arrow to accept payment.", Color(1, 0, 0), 2, 3, 9);
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Press Left Arrow to refuse payment.", Color(1, 0, 0), 2, 3, 8);
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Press Space to begin.", Color(1, 0, 0), 2, 12, 7);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Cashier Game", Color(1, 1, 1), 3, 8, 15);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Press Right Arrow to accept payment.", Color(1, 1, 1), 2, 3, 9);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Press Left Arrow to refuse payment.", Color(1, 1, 1), 2, 3, 8);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Press Space to begin.", Color(1, 1, 1), 2, 12, 7);
 
 		if(Application::IsKeyPressed(VK_SPACE))
 		{
@@ -2384,30 +2426,34 @@ void SceneAssignment::RenderCustomerGame()
 		int x = 1;
 		int y = 26;
 	
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Shopping List:", Color(1, 0, 0), 2, x, 28);
+		//RenderImageOnScreen(meshList[CModel::GEO_BACKGROUND], Color(0,0,0), 40.f, 0.5f, 0.4f);
+
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Shopping List:", Color(0, 0, 0), 2, x, 28);
 	
 		for(int i = 0; i < shoppingList.size() ; ++i)
 		{
-			RenderTextOnScreen(meshList[CModel::GEO_TEXT], shoppingList[i].GetItemName(), Color(1, 0, 0), 2, x, y - (2*i));
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], shoppingList[i].GetItemName(), Color(0, 0, 0), 2, x, y - (2*i));
 		}
 
 		std::ostringstream stringfps;
 
 		stringfps << CustomerGameTimer;
 
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round Timer: ", Color(1, 0, 0), 2, 1, 3);
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(1, 0, 0), 2, 1, 2);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Game Timer: ", Color(0, 0, 0), 2, 1, 4);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(0, 0, 0), 2, 1, 3);
 	}
 
 	else if(CustomerGameState == "Win")
 	{
-		std::cout << "Win" << std::endl;
+		winScreen = true;
+		EndTimer = 40;
 		CustomerGame = false;
 	}
 
 	else if(CustomerGameState == "Lose")
 	{
-		std::cout << "Lose" << std::endl;
+		loseScreen = true;
+		EndTimer = 40;
 		CustomerGame = false;
 	}
 }
