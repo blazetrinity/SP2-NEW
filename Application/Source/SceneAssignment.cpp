@@ -228,6 +228,7 @@ void SceneAssignment::Init()
 	diffDistance = 5;
 	InteractionTimer = 0;
 	
+	CustomerGameTimer = 0;
 	CustomerGame = false;
 
 	CashierGame = false;
@@ -961,7 +962,7 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL1]->textureID = LoadTGA("Image//cerealBox1.tga");
 
 	MaximumBound.Set(80, 50, 31);
-	MinimumBound.Set(0, -50, -50);
+	MinimumBound.Set(0, -50, -1);
 	Translate.Set(40, -50, 0);
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(0,0,1,0);
@@ -975,7 +976,7 @@ void SceneAssignment::InitOBJs()
 	meshList[CModel::GEO_RIGHTSHELFWCEREAL2]->textureID = LoadTGA("Image//displayTable2.tga");
 
 	MaximumBound.Set(80, 50, 1);
-	MinimumBound.Set(0, -50, -35);
+	MinimumBound.Set(0, -50, -31);
 	Translate.Set(40, -50, 0);
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(180,0,1,0);
@@ -1472,8 +1473,21 @@ void SceneAssignment::Update(double dt)
 			AtmUpdate();
 		}
 
-		CashierGameTimer -= 5*dt;
-		CashierGameKeyPressTimer += 5*dt;
+		if(CustomerGame)
+		{
+			CustomerGameTimer -= 1*dt;
+		}
+
+		if(CashierGame)
+		{
+			CashierGameTimer -= 5*dt;
+			CashierGameKeyPressTimer += 5*dt;
+		}
+
+		if(CustomerGame == true && CustomerGameTimer < 0)
+		{
+			CustomerGameState = "Lose";
+		}
 
 		KeyLeft = KeyRight = KeyK = KeyTab = false;
 
@@ -1723,6 +1737,11 @@ void SceneAssignment::InteractionCheck()
 				if(Objs[i].getOBJType() == CSceneObj::SHELF)
 				{
 					Pickup(Objs[i]);
+					for(int n = 0; n < Character.GetInterventory().size(); ++n)
+					{
+						std::cout << Character.GetInterventory()[n];
+					}
+					std::cout << std::endl;
 				}
 
 				if (Objs[i].getOBJType() == CSceneObj::ATM)
@@ -1738,10 +1757,24 @@ void SceneAssignment::InteractionCheck()
 						renderCart = true;
 						RandShoppingList();
 						CustomerGame = true;
+						CustomerGameState = "Playing";
+						CustomerGameTimer = 1000;
 						break;
 					}
 				}
-			
+				
+				if(Objs[i].getOBJType() == CSceneObj::COUNTER && CustomerGame == true)
+				{
+					if(CheckCustomerInventory() == true)
+					{
+						CustomerGameState = "Win";
+					}
+
+					else if(CheckCustomerInventory() == false)
+					{
+						CustomerGameState = "Lose";
+					}
+				}
 			}
 
 			//Cashier	
@@ -2160,6 +2193,47 @@ bool SceneAssignment::CalTotalPrice(int customerPayingPrice)
 	}
 }
 
+bool SceneAssignment::CheckCustomerInventory()
+{
+	vector<bool> booleanCheck;
+
+	if(Character.GetInterventory().size() != shoppingList.size())
+	{
+		return false;
+	}
+
+	for(int n = 0; n < shoppingList.size(); ++n)
+	{
+		for(int m = 0; m < Character.GetInterventory().size(); ++m)
+		{
+			if(shoppingList[n].GetModel() == Character.GetInterventory()[m])
+			{
+				booleanCheck.push_back(true);
+				Character.RemoveFromInventory(m);
+				m = Character.GetInterventory().size();
+			}
+
+			else if(m == Character.GetInterventory().size()-1)
+			{
+				booleanCheck.push_back(false);
+			}
+		}
+	}
+
+	for(int j = 0; j < booleanCheck.size(); ++j)
+	{
+		if(booleanCheck[j] == false)
+		{
+			return false;
+		}
+
+		else if(j == booleanCheck.size()-1)
+		{
+			return true;
+		}
+	}
+}
+
 /***********************************************************/
 /*!
 \brief
@@ -2186,10 +2260,12 @@ void SceneAssignment::RandShoppingList()
 {
 	shoppingList.clear();
 
+	Character.ResetInventory();
+
 	for(int i = 0; i < 10; ++i)
 	{
 		int value = rand() % 11;
-		shoppingList.push_back(itemList[value].GetItemName());
+		shoppingList.push_back(itemList[3]);
 	}
 }
 
@@ -2303,14 +2379,36 @@ void SceneAssignment::RenderCashierGame()
 
 void SceneAssignment::RenderCustomerGame()
 {
-	int x = 1;
-	int y = 26;
-	
-	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Shopping List:", Color(1, 0, 0), 2, x, 28);
-
-	for(int i = 0; i < shoppingList.size() ; ++i)
+	if(CustomerGameState == "Playing")
 	{
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], shoppingList[i], Color(1, 0, 0), 2, x, y - (2*i));
+		int x = 1;
+		int y = 26;
+	
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Shopping List:", Color(1, 0, 0), 2, x, 28);
+	
+		for(int i = 0; i < shoppingList.size() ; ++i)
+		{
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], shoppingList[i].GetItemName(), Color(1, 0, 0), 2, x, y - (2*i));
+		}
+
+		std::ostringstream stringfps;
+
+		stringfps << CustomerGameTimer;
+
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Round Timer: ", Color(1, 0, 0), 2, 1, 3);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(1, 0, 0), 2, 1, 2);
+	}
+
+	else if(CustomerGameState == "Win")
+	{
+		std::cout << "Win" << std::endl;
+		CustomerGame = false;
+	}
+
+	else if(CustomerGameState == "Lose")
+	{
+		std::cout << "Lose" << std::endl;
+		CustomerGame = false;
 	}
 }
 

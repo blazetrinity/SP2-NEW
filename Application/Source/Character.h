@@ -44,6 +44,8 @@ public:
 	void setInventorySize();
 	void AddToInventory(CModel::GEOMETRY_TYPE ShelfObject);
 	void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar);
+	void RemoveFromInventory(int index);
+	void ResetInventory();
 
 	void SetWallet(int value);
 	int GetWallet(void);

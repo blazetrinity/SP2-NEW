@@ -123,6 +123,7 @@ private:
 	void RenderCashierGame();
 	void RandCustomerList();
 	void RandShoppingList();
+	bool CheckCustomerInventory();
 	bool CalTotalPrice(int customerPayingPrice);
 
 	void CustomerNavigation();
@@ -151,6 +152,7 @@ private:
 	float InteractionTimer;
 	float CashierGameKeyPressTimer;
 	float CashierGameTimer;
+	float CustomerGameTimer;
 
 	float InventRed;
 	float InventYellow;
@@ -199,9 +201,11 @@ private:
 	vector<string> priceIndex;
 	vector<string> customerList;
 
-	vector<string> shoppingList;
+	vector<CItem> shoppingList;
 
 	vector<int> Gantryindex;
+
+	string CustomerGameState;
 
 	CInteraction LiftDoor, Lift, Gantry;
 

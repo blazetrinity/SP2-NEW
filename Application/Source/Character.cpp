@@ -398,6 +398,11 @@ void Ccharacter::AddToInventory(CModel::GEOMETRY_TYPE ShelfObject)
 	}
 }
 
+void Ccharacter::RemoveFromInventory(int index)
+{
+	Inventory.erase(Inventory.begin()+index);
+}
+
 /***********************************************************/
 /*!
 \brief
@@ -433,4 +438,9 @@ void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar)
 	firstpersoncamera.position = Cam;
 	firstpersoncamera.target = Tar;
 	firstpersoncamera.UpdateUp(Cam,Tar);
+}
+
+void Ccharacter::ResetInventory()
+{
+	Inventory.clear();
 }
