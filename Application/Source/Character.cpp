@@ -27,7 +27,13 @@ Ccharacter::Ccharacter()
 	level = 1;
 	inventorySize = 0;
 	maxInventorySize = 2;
-	wallet = 1;
+	wallet = 0;
+	halfofwidth = 7/2;
+
+	Vector3 Min, Max;
+	Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
+	Max.Set((Position.x + (halfofwidth*Scale.x)),0,(Position.z + (halfofwidth*Scale.z)));
+	BoundCheck.setBound(Min,Max);
 }
 
 /***********************************************************/
@@ -147,13 +153,13 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs, vector<CAi> AiList)
 		firstpersoncamera.position.y += 30;
 		firstpersoncamera.target += Displacement;
 
+		Vector3 Min, Max;
+		Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
+		Max.Set((Position.x + (halfofwidth*Scale.x)),0,(Position.z + (halfofwidth*Scale.z)));
+		BoundCheck.setBound(Min,Max);
+
 		std::cout << "Character" << Position.x << " " << Position.y << " " << Position.z << std::endl;
 		std::cout << "Target" << firstpersoncamera.target.x << " " << firstpersoncamera.target.y << " " << firstpersoncamera.target.z << std::endl;
-	}
-
-	if(Application::IsKeyPressed('X'))
-	{
-		Position.Set(0,0,0);
 	}
 }
 
@@ -397,6 +403,11 @@ void Ccharacter::AddToInventory(CModel::GEOMETRY_TYPE ShelfObject)
 	}
 }
 
+void Ccharacter::RemoveFromInventory(int index)
+{
+	Inventory.erase(Inventory.begin()+index);
+}
+
 /***********************************************************/
 /*!
 \brief
@@ -432,4 +443,19 @@ void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar)
 	firstpersoncamera.position = Cam;
 	firstpersoncamera.target = Tar;
 	firstpersoncamera.UpdateUp(Cam,Tar);
+}
+
+Vector3 Ccharacter::getBoundMax()
+{
+	return BoundCheck.getBoundMax();
+}
+
+Vector3 Ccharacter::getBoundMin()
+{
+	return BoundCheck.getBoundMin();
+}
+
+void Ccharacter::ResetInventory()
+{
+	Inventory.clear();
 }

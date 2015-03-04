@@ -16,7 +16,11 @@
 #include "SceneObj.h"
 #include "Camera3.h"
 #include "AI.h"
+
 #include "SoundManager.h"
+=======
+#include "Bound.h"
+
 #include <vector>
 using std::vector;
 
@@ -44,6 +48,8 @@ public:
 	void setInventorySize();
 	void AddToInventory(CModel::GEOMETRY_TYPE ShelfObject);
 	void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar);
+	void RemoveFromInventory(int index);
+	void ResetInventory();
 
 	void SetWallet(int value);
 	int GetWallet(void);
@@ -53,6 +59,10 @@ public:
 	
 	Vector3 GetPosition();
 	Vector3 GetScale();
+
+	Vector3 getBoundMax();
+	Vector3 getBoundMin();
+
 	Camera3 GetCamera();
 	
 	void BoundChecking(vector<CSceneObj> Objs, vector<CAi> AiList);
@@ -72,6 +82,10 @@ private:
 	CModel model;
 	CModel modelArm;
 	CSoundManager mySound;
+
+	CBound BoundCheck;
+
+	float halfofwidth;
 
 	float turnbody;
 	float movebody;

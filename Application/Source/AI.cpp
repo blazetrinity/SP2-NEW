@@ -11,6 +11,9 @@ Set and Render AI
 #include"AI.h"
 #include "MyMath.h"
 
+static const float Move = 20.f;
+static const float Turn = 25.f;
+
 /******************************************************************************/
 /*!
 \brief
@@ -22,8 +25,10 @@ CAi::CAi()
 	rotatebody = 0;
 	movebody = 0;
 	angletorotate = 0;
+	rotatedangle = 0;
 	Scale.Set(12,12,12);
 	Update = true;
+	Torotate = false;
 }
 
 /******************************************************************************/
@@ -218,46 +223,48 @@ Update the path of the AI
 	Using the time to update the AI Path
 */
 /******************************************************************************/
-void CAi::UpDatePath(double dt)
+void CAi::UpDatePath(double dt, Vector3 CharacterMin, Vector3 CharacterMax, int CharacterLevel)
 {
-	static const float Move = 20.f;
-	static const float Turn = 25.f;
-
 	Vector3 Distance = Path.getCurrentPoint() - Position;
 	float Lenght = Distance.Length();
 
 	bool torotate = false;
 
-	/*if(rotatebody < angletorotate)
+	if(rotatebody < angletorotate)
 	{
 		torotate = true;
-	}*/
+	}
 
 	if(Lenght > 1)
 	{
 		movebody -= (float)(Move * dt);
 	}
 	
-	else
-	{
-		rotatebody += 90;
-		Update = true;
-	}
-	
-	/*if(Lenght < 1 && torotate == true)
+	if(Lenght < 1 && torotate == true)
 	{
 		rotatebody += (float)(Turn *dt);
+		
+		if((angletorotate - rotatebody) < 1)
+		{
+			rotatebody = angletorotate;
+		}
 	}
 	
-	else if(Lenght < 1 && rotatebody > angletorotate)
+	else if(Lenght < 1 && rotatebody == angletorotate)
 	{
 		Update = true;
-	}*/
+	}
 
 	Displacement.Set(0,0,movebody);
 	Rotation.SetToRotation(rotatebody,0,1,0);
 	Displacement = Rotation * Displacement;
+
 	Position += Displacement;
+
+	if(Position.x < CharacterMax.x && Position.x > CharacterMin.x && Position.z < CharacterMax.z && Position.z > CharacterMin.z && CharacterLevel == Level)
+	{
+		Position -= Displacement;
+	}
 
 	Vector3 Min, Max;
 	Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
@@ -278,9 +285,6 @@ Update the rotation of the model
 /******************************************************************************/
 void CAi::UpDateRotate(double dt)
 {
-	static const float Move = 20.f;
-	static const float Turn = 25.f;
-
 	if(rotatebody > angletorotate)
 	{
 		rotatebody -= (float)(Turn * dt);
@@ -486,4 +490,24 @@ Updates the Text time
 void CAi::updateText(float updateValue)
 {
 	AIText.updateTime(updateValue);
+}
+
+void CAi::UpDateAI(double dt)
+{
+	if(Torotate)
+	{
+		rotatedangle += (float)(Turn * dt);
+	}
+
+	else
+	{
+		rotatedangle -= (float)(Turn * dt);
+	}
+
+	if(rotatedangle > 30.f  || rotatedangle < -30)
+	{
+		Torotate = !Torotate;
+	}
+
+	Rotation.SetToRotation((rotatebody + rotatedangle),0,1,0);
 }

@@ -27,8 +27,9 @@ public:
 	void AddPath(Vector3 Point);
 	void CalMovementAndRotation();
 	void CalTarget(Vector3 NewTarget);
-	void UpDatePath(double dt);
+	void UpDatePath(double dt, Vector3 CharacterMin, Vector3 CharacterMax, int CharacterLevel);
 	void UpDateRotate(double dt);
+	void UpDateAI(double dt);
 	void SetText();
 	void initAIText();
 	void updateText(float updateValue);
@@ -63,12 +64,14 @@ private:
 	float rotatebody;
 	float result;
 	float angletorotate;
+	float rotatedangle;
 	CModel model;
 	CModel modelArm;
 	AI_TYPE Type;
 	CAiPath Path;
 	int Level;
 	bool Update;
+	bool Torotate;
 	float halfofwidth;
 	CAIInteraction AIText;
 };

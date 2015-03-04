@@ -56,12 +56,24 @@ class SceneAssignment : public Scene
 		U_LIGHT0_KC,
 		U_LIGHT0_KL,
 		U_LIGHT0_KQ,
-		U_LIGHTENABLED,
 		U_LIGHT0_TYPE,
 		U_LIGHT0_SPOTDIRECTION,
 		U_LIGHT0_COSCUTOFF,
 		U_LIGHT0_COSINNER,
 		U_LIGHT0_EXPONENT,
+		U_LIGHT1_POSITION,
+		U_LIGHT1_COLOR,
+		U_LIGHT1_POWER,
+		U_LIGHT1_KC,
+		U_LIGHT1_KL,
+		U_LIGHT1_KQ,
+		U_LIGHT1_TYPE,
+		U_LIGHT1_SPOTDIRECTION,
+		U_LIGHT1_COSCUTOFF,
+		U_LIGHT1_COSINNER,
+		U_LIGHT1_EXPONENT,
+		U_LIGHTENABLED,
+		
 		U_NUMLIGHTS, //in case you missed out practical 7
 		U_COLOR_TEXTURE_ENABLED,
 		U_COLOR_TEXTURE,
@@ -94,7 +106,7 @@ private:
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 
-	Light lights[1];
+	Light lights[2];
 
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderText(Mesh *mesh, std::string text, Color color);
@@ -106,6 +118,8 @@ private:
 	void RenderMenu();
 	void RenderAI();
 	void RenderCustomerGame();
+	void RenderWinScreen();
+	void RenderLoseScreen();
 	void InitSkyboxLevel1();
 	void InitLiftLevel1();
 	void InitSkyboxLevel2();
@@ -123,7 +137,9 @@ private:
 	void RenderCashierGame();
 	void RandCustomerList();
 	void RandShoppingList();
+	bool CheckCustomerInventory();
 	bool CalTotalPrice(int customerPayingPrice);
+	
 
 	void CustomerNavigation();
 	void PrintTextInCentre(int start, int end, string arrName[], int highlighted, int StringSize);
@@ -151,6 +167,8 @@ private:
 	float InteractionTimer;
 	float CashierGameKeyPressTimer;
 	float CashierGameTimer;
+	float CustomerGameTimer;
+	float EndTimer;
 
 	float InventRed;
 	float InventYellow;
@@ -174,6 +192,7 @@ private:
 	bool inventory;
 	bool selectItem;
 
+
 	bool atmEnterSound;
 	bool atmExitSound;
 
@@ -182,6 +201,10 @@ private:
 
 	bool gantryDoorOpenSound;
 	bool gantryDoorCloseSound;
+
+	bool winScreen;
+	bool loseScreen;
+
 
 	int ATMcash;
 
@@ -208,9 +231,11 @@ private:
 	vector<string> priceIndex;
 	vector<string> customerList;
 
-	vector<string> shoppingList;
+	vector<CItem> shoppingList;
 
 	vector<int> Gantryindex;
+
+	string CustomerGameState;
 
 	CInteraction LiftDoor, Lift, Gantry;
 
