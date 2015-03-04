@@ -28,7 +28,7 @@ Ccharacter::Ccharacter()
 	level = 1;
 	inventorySize = 0;
 	maxInventorySize = 2;
-	wallet = 0;
+	wallet = 1;
 	halfofwidth = 7/2;
 
 	Vector3 Min, Max;
@@ -407,6 +407,7 @@ void Ccharacter::AddToInventory(CModel::GEOMETRY_TYPE ShelfObject)
 void Ccharacter::RemoveFromInventory(int index)
 {
 	Inventory.erase(Inventory.begin()+index);
+	inventorySize--;
 }
 
 /***********************************************************/
@@ -459,4 +460,5 @@ Vector3 Ccharacter::getBoundMin()
 void Ccharacter::ResetInventory()
 {
 	Inventory.clear();
+	inventorySize = 0;
 }

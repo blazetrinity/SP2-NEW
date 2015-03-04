@@ -259,30 +259,34 @@ void SceneAssignment::Init()
 	change[3] = " ";
 
 	CameraMode = -1;
-	SecurityCamera = false;
 	fps = 0;
 	RotateGantry = 0;
 	MoveDoor = 0;
+	diffDistance = 5;
 	MoveDoorUpperLimit = 45;
 	MoveDoorLowerLimit = 0;
-	FloorTimer = 0;
-	renderCart = false;
-	diffDistance = 5;
-	InteractionTimer = 0;
-	CustomerGameTimer = 0;
-	CustomerGame = false;
-	winScreen = false;
-	loseScreen = false;
-	EndTimer = 0;
-
-	CashierGame = false;
 	customerPayingPrice = 0;
 	totalPrice = 0;
 	round = 1;
 	chances = 3;
-	CashierGameKeyPressTimer = 0;
-	CashierGameTimer = 0;
+	IndexCounter = 0;
+	TranslateItem = 0;
+
+	SecurityCamera = false;
+	CustomerGame = false;
+	winScreen = false;
+	loseScreen = false;
+	renderCart = false;
+	CashierGame = false;
 	StartGame = false;
+	RenderItems = false;
+
+	FloorTimer = 0;
+	EndTimer = 0;
+	InteractionTimer = 0;
+	CustomerGameTimer = 0;
+	CashierGameKeyPressTimer = 0;
+	CashierGameTimer = 0;	
 }
 
 /***********************************************************/
@@ -841,7 +845,7 @@ void SceneAssignment::InitItemsObj()
 {
 	meshList[CModel::GEO_SODA] = MeshBuilder::GenerateOBJ("SodaCan", "OBJ//OBJs//SodaCan.obj");
 	meshList[CModel::GEO_SODA]->textureID = LoadTGA("Image//Items//SodaCan.tga");
-
+	
 	myItem.Set(CModel::GEO_SODA,1,"Soda");
 	itemList.push_back(myItem);
 
@@ -859,13 +863,13 @@ void SceneAssignment::InitItemsObj()
 
 	meshList[CModel::GEO_CEREALKBOX] = MeshBuilder::GenerateOBJ("KCereal", "OBJ//OBJs//CerealKillerCereal.obj");
 	meshList[CModel::GEO_CEREALKBOX]->textureID = LoadTGA("Image//Items//CerealKillerCereal.tga");
-
+	
 	myItem.Set(CModel::GEO_CEREALKBOX, 5, "KCereal");
 	itemList.push_back(myItem);
 
 	meshList[CModel::GEO_STITCHCEREAL] = MeshBuilder::GenerateOBJ("StitchCereal", "OBJ//OBJs//StitchCereal.obj");
 	meshList[CModel::GEO_STITCHCEREAL]->textureID = LoadTGA("Image//Items//stitchCereal.tga");
-
+	
 	myItem.Set(CModel::GEO_STITCHCEREAL, 4, "SitchCereal");
 	itemList.push_back(myItem);
 
@@ -1060,7 +1064,7 @@ void SceneAssignment::InitOBJs()
 	MaximumBound.Set(-63, 50, -143);
 	MinimumBound.Set(-139, -50, -189);
 	Translate.Set(-125, -37, -180);
-	Scale.Set(15, 15, 15);
+	Scale.Set(10, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 
 	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
@@ -1072,7 +1076,7 @@ void SceneAssignment::InitOBJs()
 	/*MaximumBound.Set(54, 50, -3);
 	MinimumBound.Set(-12, -50, -28);*/
 	Translate.Set(-115, -37, -180);
-	Scale.Set(15, 15, 15);
+	Scale.Set(10, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 
 	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
@@ -1084,7 +1088,7 @@ void SceneAssignment::InitOBJs()
 	/*MaximumBound.Set(54, 50, -3);
 	MinimumBound.Set(-12, -50, -28);*/
 	Translate.Set(-105, -37, -180);
-	Scale.Set(15, 15, 15);
+	Scale.Set(10, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
 
@@ -1122,7 +1126,7 @@ void SceneAssignment::InitOBJs()
 	Objs.push_back(myObj);
 
 	//SecurityCamera4
-	Translate.Set(SecurityCamera4.position.x, 25, SecurityCamera4.position.z+20);
+	Translate.Set(SecurityCamera4.position.x+10, 25, SecurityCamera4.position.z+20);
 	Scale.Set(10, 10, 10);
 	Rotate.SetToRotation(0,0,1,0);
 
@@ -1130,7 +1134,7 @@ void SceneAssignment::InitOBJs()
 
 	Objs.push_back(myObj);
 
-	meshList[CModel::GEO_GANTRY] = MeshBuilder::GenerateOBJ("Oranges", "OBJ//Gantry.obj");
+	meshList[CModel::GEO_GANTRY] = MeshBuilder::GenerateOBJ("Gantry", "OBJ//Gantry.obj");
 	meshList[CModel::GEO_GANTRY]->textureID = LoadTGA("Image//GantryTexture.tga");
 
 	MaximumBound.Set(-104, 50, -18);
@@ -1533,6 +1537,11 @@ void SceneAssignment::Update(double dt)
 			CashierGameKeyPressTimer += 5*dt;
 		}
 
+		if(RenderItems)
+		{
+			TranslateItem -= (float)(15*dt);
+		}
+
 		if(CustomerGame == true && CustomerGameTimer < 0)
 		{
 			CustomerGameState = "Lose";
@@ -1752,6 +1761,11 @@ void SceneAssignment::UpdateSelectedItem()
 		Selected = Selected%10;
 		delay = 10;
 	}
+	
+	if (Application::IsKeyPressed('Q') && Selected < Character.GetInterventory().size())
+	{
+		Character.RemoveFromInventory(Selected);
+	}
 
 	if (delay > 0)
 	{
@@ -1802,7 +1816,7 @@ void SceneAssignment::InteractionCheck()
 
 				if (Objs[i].getOBJType() == CSceneObj::ATM)
 				{
-						ATMMode = true;
+					ATMMode = true;
 				}
 
 				if(Objs[i].getOBJType() == CSceneObj::CART)
@@ -1819,18 +1833,30 @@ void SceneAssignment::InteractionCheck()
 					}
 				}
 				
-				if(Objs[i].getOBJType() == CSceneObj::COUNTER && CustomerGame == true)
+				if(Objs[i].getOBJType() == CSceneObj::COUNTER)
 				{
-					if(CheckCustomerInventory() == true)
+					RenderItems = true;
+					ItemRenderLocation = Objs[i].getTranslate();
+					
+					if(itemRenderList.size() == 0)
 					{
-						CustomerGameState = "Win";
-						Character.ResetInventory();
+						for(int i = 0; i < Character.GetInterventory().size(); ++i)
+						{
+							itemRenderList.push_back(Character.GetInterventory()[i]);
+						}
 					}
-
-					else if(CheckCustomerInventory() == false)
+					
+					if(CustomerGame == true)
 					{
-						CustomerGameState = "Lose";
-						Character.ResetInventory();
+						if(CheckCustomerInventory() == true)
+						{
+							CustomerGameState = "Win";
+						}
+
+						else if(CheckCustomerInventory() == false)
+						{
+							CustomerGameState = "Lose";
+						}
 					}
 				}
 			}
@@ -2235,6 +2261,11 @@ void SceneAssignment::Render()
 		RenderLoseScreen();
 	}
 
+	if(RenderItems)
+	{
+		RenderItemOnCounter();
+	}
+
 	
 	std::ostringstream stringfps;
 
@@ -2260,6 +2291,32 @@ void SceneAssignment::RenderLoseScreen()
 	if(EndTimer < 0)
 	{
 		loseScreen = false;
+	}
+}
+
+void SceneAssignment::RenderItemOnCounter()
+{
+	if(IndexCounter < itemRenderList.size())
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate((ItemRenderLocation.x + 15) +TranslateItem, ItemRenderLocation.y + 20, ItemRenderLocation.z);
+		modelStack.Scale(10, 10, 10);
+		RenderMesh(meshList[itemRenderList[IndexCounter]], true);
+		modelStack.PopMatrix();
+
+		if(TranslateItem < -20)
+		{
+			IndexCounter++;
+			TranslateItem = 0;
+		}
+	}
+
+	else if(IndexCounter == itemRenderList.size())
+	{
+		RenderItems = false;
+		IndexCounter = 0;
+		itemRenderList.clear();
+		Character.ResetInventory();
 	}
 }
 
@@ -2371,7 +2428,7 @@ void SceneAssignment::RandShoppingList()
 	for(int i = 0; i < 10; ++i)
 	{
 		int value = rand() % 11;
-		shoppingList.push_back(itemList[value]);
+		shoppingList.push_back(itemList[3]);
 	}
 }
 
@@ -2581,19 +2638,14 @@ void SceneAssignment::RenderAI()
 /***********************************************************/
 void SceneAssignment::RenderTrolley()
 {
-	trolleyPos.Set(0,0,0);
-	DirectionVector = Character.GetCamera().target - Character.GetPosition();
-	DirectionVector.Normalize();
-	trolleyPos = (DirectionVector * diffDistance) + Character.GetPosition();
-
 	for(int a = 0; a < Objs.size(); ++a)
 	{
 		if(Objs[a].getOBJType() == CSceneObj::CART)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(trolleyPos.x, trolleyPos.y + 10, trolleyPos.z);
+			modelStack.Translate(Character.GetPosition().x, Character.GetPosition().y + 10, Character.GetPosition().z);
 			modelStack.Rotate(Character.GetRotation() + 90, 0, 1, 0);
-			modelStack.Translate(35, 0, 0);
+			modelStack.Translate(25, 0, -3);
 			modelStack.Scale(Objs[a].getScale().x, Objs[a].getScale().y, Objs[a].getScale().z);
 			RenderMesh(meshList[Objs[a].getModel()], true);
 			modelStack.PopMatrix();
@@ -2754,7 +2806,10 @@ void SceneAssignment::PrintInventoryBox()
 				RenderImageOnScreen(meshList[CModel::GEO_INVENT_YELLOW], Color(0,0,0), BoxSize, x + (column * 1.2f), y - (row * 1.2f));
 			}
 
-			
+			if (count < Character.GetInterventory().size() != NULL)
+			{
+				RenderImageOnScreen(meshList[Character.GetInterventory()[count]], Color(0,0,0), BoxSize, x + (column * 1.2f), (y - 0.3f) - (row * 1.2f));
+			}
 			count++;
 		}
 	}
