@@ -79,20 +79,34 @@ void SceneAssignment::Init()
 	m_parameters[U_MATERIAL_DIFFUSE] = glGetUniformLocation(m_programID, "material.kDiffuse");
 	m_parameters[U_MATERIAL_SPECULAR] = glGetUniformLocation(m_programID, "material.kSpecular");
 	m_parameters[U_MATERIAL_SHININESS] = glGetUniformLocation(m_programID, "material.kShininess");
+	
 	m_parameters[U_LIGHT0_POSITION] = glGetUniformLocation(m_programID, "lights[0].position_cameraspace");
 	m_parameters[U_LIGHT0_COLOR] = glGetUniformLocation(m_programID, "lights[0].color");
 	m_parameters[U_LIGHT0_POWER] = glGetUniformLocation(m_programID, "lights[0].power");
 	m_parameters[U_LIGHT0_KC] = glGetUniformLocation(m_programID, "lights[0].kC");
 	m_parameters[U_LIGHT0_KL] = glGetUniformLocation(m_programID, "lights[0].kL");
 	m_parameters[U_LIGHT0_KQ] = glGetUniformLocation(m_programID, "lights[0].kQ");
-	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
-	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights");
 	m_parameters[U_LIGHT0_TYPE] = glGetUniformLocation(m_programID, "lights[0].type");
 	m_parameters[U_LIGHT0_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[0].spotDirection");
 	m_parameters[U_LIGHT0_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[0].cosCutoff");
 	m_parameters[U_LIGHT0_COSINNER] = glGetUniformLocation(m_programID, "lights[0].cosInner");
 	m_parameters[U_LIGHT0_EXPONENT] = glGetUniformLocation(m_programID, "lights[0].exponent");
 
+	m_parameters[U_LIGHT1_POSITION] = glGetUniformLocation(m_programID, "lights[1].position_cameraspace");
+	m_parameters[U_LIGHT1_COLOR] = glGetUniformLocation(m_programID, "lights[1].color");
+	m_parameters[U_LIGHT1_POWER] = glGetUniformLocation(m_programID, "lights[1].power");
+	m_parameters[U_LIGHT1_KC] = glGetUniformLocation(m_programID, "lights[1].kC");
+	m_parameters[U_LIGHT1_KL] = glGetUniformLocation(m_programID, "lights[1].kL");
+	m_parameters[U_LIGHT1_KQ] = glGetUniformLocation(m_programID, "lights[1].kQ");
+	m_parameters[U_LIGHT1_TYPE] = glGetUniformLocation(m_programID, "lights[1].type");
+	m_parameters[U_LIGHT1_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[1].spotDirection");
+	m_parameters[U_LIGHT1_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[1].cosCutoff");
+	m_parameters[U_LIGHT1_COSINNER] = glGetUniformLocation(m_programID, "lights[1].cosInner");
+	m_parameters[U_LIGHT1_EXPONENT] = glGetUniformLocation(m_programID, "lights[1].exponent");
+	
+	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
+	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights");
+	
 	// Get a handle for our "colorTexture" uniform
 	m_parameters[U_COLOR_TEXTURE_ENABLED] = glGetUniformLocation(m_programID, "colorTextureEnabled");
 	m_parameters[U_COLOR_TEXTURE] = glGetUniformLocation(m_programID, "colorTexture");
@@ -102,10 +116,11 @@ void SceneAssignment::Init()
 
 	glUseProgram(m_programID);
 
-	lights[0].type = Light::LIGHT_POINT;
-	lights[0].position.Set(0, 450, 1000);
+	//Light 1
+	lights[0].type = Light::LIGHT_DIRECTIONAL;
+	lights[0].position.Set(1, 1, 1);
 	lights[0].color.Set(1, 1, 1);
-	lights[0].power = 70;
+	lights[0].power = 2;
 	lights[0].kC = 1.f;
 	lights[0].kL = 0.01f;
 	lights[0].kQ = 0.001f;
@@ -125,7 +140,31 @@ void SceneAssignment::Init()
 	glUniform1f(m_parameters[U_LIGHT0_COSINNER], lights[0].cosInner);
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], lights[0].exponent);
 
-	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
+	//Light 2
+	lights[1].type = Light::LIGHT_DIRECTIONAL;
+	lights[1].position.Set(-1, -1, -1);
+	lights[1].color.Set(1, 1, 1);
+	lights[1].power = 2;
+	lights[1].kC = 1.f;
+	lights[1].kL = 0.01f;
+	lights[1].kQ = 0.001f;
+	lights[1].cosCutoff = cos(Math::DegreeToRadian(45));
+	lights[1].cosInner = cos(Math::DegreeToRadian(30));
+	lights[1].exponent = 3.f;
+	lights[1].spotDirection.Set(0.f, 1.f, 0.f);
+
+	// Make sure you pass uniform parameters after glUseProgram()
+	glUniform1i(m_parameters[U_LIGHT1_TYPE], lights[1].type);
+	glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &lights[1].color.r);
+	glUniform1f(m_parameters[U_LIGHT1_POWER], lights[1].power);
+	glUniform1f(m_parameters[U_LIGHT1_KC], lights[1].kC);
+	glUniform1f(m_parameters[U_LIGHT1_KL], lights[1].kL);
+	glUniform1f(m_parameters[U_LIGHT1_KQ], lights[1].kQ);
+	glUniform1f(m_parameters[U_LIGHT1_COSCUTOFF], lights[1].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT1_COSINNER], lights[1].cosInner);
+	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], lights[1].exponent);
+
+	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
 
 	//Initialize camera settings
 	//Paning camera 
@@ -1300,13 +1339,12 @@ void SceneAssignment::InitAI()
 	myAI.Set(Vector3(-121,-50, 3), 0, CModel::GEO_ADULT2, CModel::GEO_ARM2,CAi::STATIONARY,2,7);
 	AiList.push_back(myAI);
 
-	myAI.Set(Vector3(-90, -50, 40), 90, CModel::GEO_CASHIER, CModel::GEO_CASHIERARM,CAi::STATIONARY,1,7);
+	myAI.Set(Vector3(-80, -50, 40), 90, CModel::GEO_CASHIER, CModel::GEO_CASHIERARM,CAi::STATIONARY,1,7);
 	AiList.push_back(myAI);
 
 	myAI.Set(Vector3( 52, -50, 89), 0, CModel::GEO_CLEANER, CModel::GEO_CLEANERARMS,CAi::STATIONARY,1,7);
 	AiList.push_back(myAI);
 
-	myAI.Set(Vector3(-50,-50,-50),180,CModel::GEO_ADULT2,CModel::GEO_ARM2,CAi::MOVING,2,7);
 	myAI.Set(Vector3(-50,-50,-50),180, CModel::GEO_ADULT2, CModel::GEO_ARM2,CAi::MOVING,2,7);
 	myAI.AddPath(Vector3(-50,-50,-50));
 	myAI.AddPath(Vector3(-50,-50,50));
@@ -1466,7 +1504,8 @@ void SceneAssignment::Update(double dt)
 				currentScene = CASHIER;
 			}
 		}
-			Vector3 TempPosition = Character.GetPosition();
+			
+		Vector3 TempPosition = Character.GetPosition();
 		
 		if(CashierGame == false && ATMMode == false && inventory == false)
 		{
@@ -1566,21 +1605,28 @@ void SceneAssignment::Update(double dt)
 		//UpdateAi
 		for(int i = 0; i <AiList.size(); ++i)
 		{
-			if(AiList[i].getAiType() == CAi::STATIONARY && Character.GetPosition() != TempPosition && AiList[i].GetModel() == CModel::GEO_SECURITY)
-			{
-				AiList[i].CalTarget(Character.GetPosition());
-			}
 			
-			if(AiList[i].GetModel() == CModel::GEO_SECURITY && AiList[i].getAiType() == CAi::STATIONARY)
-			{
-				AiList[i].UpDateRotate(dt);
-			}
+				if(AiList[i].getAiType() == CAi::STATIONARY && Character.GetPosition() != TempPosition && AiList[i].GetModel() == CModel::GEO_SECURITY)
+				{
+					AiList[i].CalTarget(Character.GetPosition());
+				}
+			
+				else if(AiList[i].GetModel() == CModel::GEO_SECURITY && AiList[i].getAiType() == CAi::STATIONARY)
+				{
+					AiList[i].UpDateRotate(dt);
+				}
 
-			if(AiList[i].getAiType() == CAi::MOVING)
-			{
-				AiList[i].CalMovementAndRotation();
-				AiList[i].UpDatePath(dt);
-			}
+				else if(AiList[i].getAiType() == CAi::MOVING)
+				{
+					AiList[i].CalMovementAndRotation();
+					AiList[i].UpDatePath(dt, Character.getBoundMin(), Character.getBoundMax(), Character.getLevel());
+				}
+
+				else if(AiList[i].getAiType() == CAi::STATIONARY && AiList[i].GetModel() != CModel::GEO_SECURITY)
+				{
+					AiList[i].UpDateAI(dt);
+				}
+			
 		}
 	}
 
@@ -1778,11 +1824,13 @@ void SceneAssignment::InteractionCheck()
 					if(CheckCustomerInventory() == true)
 					{
 						CustomerGameState = "Win";
+						Character.ResetInventory();
 					}
 
 					else if(CheckCustomerInventory() == false)
 					{
 						CustomerGameState = "Lose";
+						Character.ResetInventory();
 					}
 				}
 			}
@@ -2091,6 +2139,26 @@ void SceneAssignment::Render()
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * lights[0].position;
 		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+	}
+
+	//Light 2
+	if(lights[1].type == Light::LIGHT_DIRECTIONAL)
+	{
+		Vector3 lightDir(lights[1].position.x, lights[1].position.y, lights[1].position.z);
+		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightDirection_cameraspace.x);
+	}
+	else if(lights[1].type == Light::LIGHT_SPOT)
+	{
+		Position lightPosition_cameraspace = viewStack.Top() * lights[1].position;
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
+		Vector3 spotDirection_cameraspace = viewStack.Top() * lights[1].spotDirection;
+		glUniform3fv(m_parameters[U_LIGHT1_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
+	}
+	else
+	{
+		Position lightPosition_cameraspace = viewStack.Top() * lights[1].position;
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
 	}
 
 	RenderMesh(meshList[CModel::GEO_AXES], false);
@@ -2474,19 +2542,19 @@ void SceneAssignment::RenderAI()
 			modelStack.Translate(AiList[i].GetPosition().x, AiList[i].GetPosition().y,	AiList[i].GetPosition().z);
 			modelStack.MultMatrix(AiList[i].GetRotation());
 			modelStack.Scale(AiList[i].GetScale().x,AiList[i].GetScale().y,AiList[i].GetScale().z);
-			RenderMesh(meshList[AiList[i].GetModel()], false);
+			RenderMesh(meshList[AiList[i].GetModel()], true);
 			{
 				modelStack.PushMatrix();
 				{
 					modelStack.PushMatrix();
 					modelStack.Translate(-1.3, 0, 0);
 					modelStack.Rotate(-90, 0, 1, 0);
-					RenderMesh(meshList[AiList[i].GetModelArm()], false);
+					RenderMesh(meshList[AiList[i].GetModelArm()], true);
 					modelStack.PopMatrix();
 				}
 				modelStack.Translate(1.3, 0, 0);
 				modelStack.Rotate(90, 0, 1, 0);
-				RenderMesh(meshList[AiList[i].GetModelArm()], false);
+				RenderMesh(meshList[AiList[i].GetModelArm()], true);
 				modelStack.PopMatrix();
 			}
 	
@@ -2527,7 +2595,7 @@ void SceneAssignment::RenderTrolley()
 			modelStack.Rotate(Character.GetRotation() + 90, 0, 1, 0);
 			modelStack.Translate(35, 0, 0);
 			modelStack.Scale(Objs[a].getScale().x, Objs[a].getScale().y, Objs[a].getScale().z);
-			RenderMesh(meshList[Objs[a].getModel()], false);
+			RenderMesh(meshList[Objs[a].getModel()], true);
 			modelStack.PopMatrix();
 			break;
 		}
@@ -2546,19 +2614,19 @@ void SceneAssignment::RenderCharacter()
 	modelStack.Translate(Character.GetPosition().x,Character.GetPosition().y,Character.GetPosition().z);
 	modelStack.Rotate(Character.GetRotation(),0,1,0);
 	modelStack.Scale(Character.GetScale().x,Character.GetScale().y,Character.GetScale().z);
-	RenderMesh(meshList[Character.GetModel()], false);
+	RenderMesh(meshList[Character.GetModel()], true);
 	{
 		modelStack.PushMatrix();
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(-1.3, 0, 0);
 			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[Character.GetModelArm()], false);
+			RenderMesh(meshList[Character.GetModelArm()], true);
 			modelStack.PopMatrix();
 		}
 		modelStack.Translate(1.3, 0, 0);
 		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[Character.GetModelArm()], false);
+		RenderMesh(meshList[Character.GetModelArm()], true);
 		modelStack.PopMatrix();
 	}
 	
@@ -2611,7 +2679,7 @@ void SceneAssignment::RenderObjs()
 			modelStack.Translate(Objs[i].getTranslate().x, Objs[i].getTranslate().y, Objs[i].getTranslate().z);
 			modelStack.MultMatrix(Objs[i].getRotate());
 			modelStack.Scale(Objs[i].getScale().x, Objs[i].getScale().y, Objs[i].getScale().z);
-			RenderMesh(meshList[Objs[i].getModel()],false);
+			RenderMesh(meshList[Objs[i].getModel()],true);
 			modelStack.PopMatrix();
 		}
 	}

@@ -16,6 +16,7 @@
 #include "SceneObj.h"
 #include "Camera3.h"
 #include "AI.h"
+#include "Bound.h"
 #include <vector>
 
 using std::vector;
@@ -55,6 +56,10 @@ public:
 	
 	Vector3 GetPosition();
 	Vector3 GetScale();
+
+	Vector3 getBoundMax();
+	Vector3 getBoundMin();
+
 	Camera3 GetCamera();
 	
 	void BoundChecking(vector<CSceneObj> Objs, vector<CAi> AiList);
@@ -72,6 +77,10 @@ private:
 	
 	CModel model;
 	CModel modelArm;
+
+	CBound BoundCheck;
+
+	float halfofwidth;
 
 	float turnbody;
 	float movebody;
