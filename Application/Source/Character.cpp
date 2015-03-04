@@ -28,8 +28,8 @@ Ccharacter::Ccharacter()
 	inventorySize = 0;
 	maxInventorySize = 2;
 	wallet = 0;
+	walkingTimer = 0.0f;
 	halfofwidth = 7/2;
-
 	Vector3 Min, Max;
 	Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
 	Max.Set((Position.x + (halfofwidth*Scale.x)),0,(Position.z + (halfofwidth*Scale.z)));
@@ -69,6 +69,30 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs, vector<CAi> AiList)
 
 	tempPosition = Position;
 	updatePosition = false;
+
+	
+
+	//sound footsteps
+	if(Application::IsKeyPressed('W') && walkingTimer == 0|| Application::IsKeyPressed('A') && walkingTimer == 0|| Application::IsKeyPressed('S') && walkingTimer == 0|| Application::IsKeyPressed('D') && walkingTimer == 0)
+	{
+		if(Application::IsKeyPressed(VK_LEFT) ||Application::IsKeyPressed(VK_RIGHT))
+		{
+			//mySound.footstep();
+			//walkingTimer = 25.0f;
+		}
+		else
+		{
+			mySound.footstep();
+			walkingTimer = 22.0f;
+		}
+	}
+
+
+	if(walkingTimer > 0)
+	{
+		walkingTimer--;
+	}
+	
 
 	if(Application::IsKeyPressed('W'))
 	{

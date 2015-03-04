@@ -26,11 +26,13 @@ public:
 	bool liftDoor();
 	bool gantryDoor();
 	bool changeFloor();
-	bool cashierGameMusic();
-	bool securityGameMusic();
-	bool customerGameMusic();
+	//bool cashierGameMusic();
+	//bool securityGameMusic();
+	//bool customerGameMusic();
 	bool wrongAns();
 	bool correctAns();
+	bool winGame();
+	bool loseGame();
 };
 
 #endif

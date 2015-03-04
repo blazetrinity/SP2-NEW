@@ -18,7 +18,7 @@
 #include "AI.h"
 
 #include "SoundManager.h"
-=======
+
 #include "Bound.h"
 
 #include <vector>
@@ -71,7 +71,6 @@ public:
 	
 private:
 	bool updatePosition;
-	bool walkingSound;
 	Vector3 Position;
 	Vector3 Scale;
 	Vector3 Displacement;
@@ -89,6 +88,8 @@ private:
 
 	float turnbody;
 	float movebody;
+
+	float walkingTimer;
 
 	int level;
 

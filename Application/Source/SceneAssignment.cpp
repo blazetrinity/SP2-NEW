@@ -51,8 +51,6 @@ void SceneAssignment::Init()
 {
 	//Init music here
 	SP_SND.mallMusic();
-	//SP_SND.CashierBeep();
-
 	// Init VBO here
 
 	// Set background color to dark blue
@@ -235,6 +233,8 @@ void SceneAssignment::Init()
 	liftDoorCloseSound = true;
 	gantryDoorOpenSound = true;
 	gantryDoorCloseSound = true;
+	winScreenSound = true;
+	loseScreenSound = true;
 
 	Ask = false;
 	Left = false;
@@ -2313,6 +2313,13 @@ void SceneAssignment::Render()
 void SceneAssignment::RenderWinScreen()
 {
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "YOU WIN!", Color(0, 1, 0), 3, 10, 10);
+
+	if(winScreenSound == true)
+	{
+		SP_SND.winGame();
+		winScreenSound = false;
+	}
+
 	if(EndTimer < 0)
 	{
 		winScreen = false;
@@ -2322,6 +2329,13 @@ void SceneAssignment::RenderWinScreen()
 void SceneAssignment::RenderLoseScreen()
 {
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "YOU LOSE", Color(0, 1, 0), 3, 10, 10);
+
+	if(loseScreenSound == true)
+	{
+		SP_SND.loseGame();
+		loseScreenSound = false;
+	}
+
 	if(EndTimer < 0)
 	{
 		loseScreen = false;
@@ -2526,6 +2540,7 @@ void SceneAssignment::RenderCashierGame()
 
 		else if(round > 10 && chances > 0)
 		{
+			winScreenSound = true;
 			CashierGame = false;
 			winScreen = true;
 			EndTimer = 40;
@@ -2534,6 +2549,7 @@ void SceneAssignment::RenderCashierGame()
 
 		else if(chances <= 0)
 		{
+			loseScreenSound = true;
 			CashierGame = false;
 			loseScreen = true;
 			EndTimer = 40;
@@ -2582,6 +2598,7 @@ void SceneAssignment::RenderCustomerGame()
 
 	else if(CustomerGameState == "Win")
 	{
+		winScreenSound = true;
 		winScreen = true;
 		EndTimer = 40;
 		CustomerGame = false;
@@ -2589,6 +2606,7 @@ void SceneAssignment::RenderCustomerGame()
 
 	else if(CustomerGameState == "Lose")
 	{
+		loseScreenSound = true;
 		loseScreen = true;
 		EndTimer = 40;
 		CustomerGame = false;

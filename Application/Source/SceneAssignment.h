@@ -202,6 +202,9 @@ private:
 	bool gantryDoorOpenSound;
 	bool gantryDoorCloseSound;
 
+	bool winScreenSound;
+	bool loseScreenSound;
+
 	bool winScreen;
 	bool loseScreen;
 

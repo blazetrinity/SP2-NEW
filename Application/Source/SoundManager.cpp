@@ -20,15 +20,16 @@ bool CSoundManager::mallMusic()
       return false; // error starting up the engine
 
 	 if (engine)
-		 std::cout << "main nusic" << std::endl;
+		 std::cout << "main Music sound played" << std::endl;
 	 //play main song
-	/* ISound* music = engine->play2D("../irrKlang/media/mainMusic.mp3",
-	                                true, false, true); */
+	 ISound* music = engine->play2D("../irrKlang/media/mainMusic.mp3",
+	                                true, false, true); 
 
-	 ISound* music = engine->play2D("../irrKlang/media/GameOfThrones.mp3",
-	                                true, false, true);
+	// ISound* music = engine->play2D("../irrKlang/media/GameOfThrones.mp3",
+	                            //    true, false, true);
 
-	 engine->setSoundVolume(0.15f);
+	 engine->setSoundVolume(0.5f);
+
 
 	return true;
 
@@ -39,11 +40,11 @@ bool CSoundManager::footstep()
 		return false;
 
 	if(engine)
-		std::cout << "footstep" << std::endl;
+		std::cout << "footstep sound played" << std::endl;
 
 	//play footstep sound
-	ISound* music = engine->play2D("../irrKlang/media/footsteps.wav",
-	                               false, false, false);
+	ISound* music = engine->play2D("../irrKlang/media/footsteps_cut.mp3",
+	                               false, false, true);
 	
 	return true;
 
@@ -54,7 +55,7 @@ bool CSoundManager::ATMEnter()
 		return false;
 
 	if(engine)
-		std::cout << "ATM Enter" << std::endl;
+		std::cout << "ATM Enter sound played" << std::endl;
 
 	//play ATM enter sound
 	ISound* music = engine->play2D("../irrKlang/media/atm_login.wav",
@@ -70,7 +71,7 @@ bool CSoundManager::ATMExit()
 		return false;
 
 	if(engine)
-		std::cout << "ATM exit" << std::endl;
+		std::cout << "ATM exit sound played" << std::endl;
 
 	//play ATM exit sound
 	ISound* music = engine->play2D("../irrKlang/media/atm_logout.wav",
@@ -85,7 +86,7 @@ bool CSoundManager::scrollChoice()
 		return false;
 
 	if(engine)
-		std::cout << "Scroll choice" << std::endl;
+		std::cout << "Scroll choice sound played" << std::endl;
 
 	//play scroll menu sound
 	ISound* music = engine->play2D("../irrKlang/media/atm_Choice.wav",
@@ -100,7 +101,7 @@ bool CSoundManager::ButtonPress()
 		return false;
 
 	if(engine)
-		std::cout << "button press" << std::endl;
+		std::cout << "button press sound played" << std::endl;
 
 	//play Button press sound
 	ISound* music = engine->play2D("../irrKlang/media/atm_Confirm.wav",
@@ -115,7 +116,7 @@ bool CSoundManager::CashierBeep()
 		return false;
 
 	if(engine)
-		std::cout << "cashier Beep" << std::endl;
+		std::cout << "cashier Beep sound played" << std::endl;
 
 	// play cashier scanning sound
 	ISound* music = engine->play3D("../irrKlang/media/Cashier_scan.wav",
@@ -136,7 +137,7 @@ bool CSoundManager::pickItem()
 		return false;
 
 	if(engine)
-		std::cout << "pick item" << std::endl;
+		std::cout << "pick item sound played" << std::endl;
 
 	// play pickup item sound
 	ISound* music = engine->play3D("../irrKlang/media/pickup.wav",
@@ -151,7 +152,7 @@ bool CSoundManager::liftDoor()
 		return false;
 
 	if(engine)
-		std::cout << "lift door" << std::endl;
+		std::cout << "lift door sound played" << std::endl;
 
 	// play lift door sound
 	ISound* music = engine->play2D("../irrKlang/media/liftdoor.wav",
@@ -167,7 +168,7 @@ bool CSoundManager::changeFloor()
 		return false;
 
 	if(engine)
-		std::cout << "change floor " << std::endl;
+		std::cout << "change floor sound played" << std::endl;
 
 	// play lift door sound
 	ISound* music = engine->play2D("../irrKlang/media/changefloor.wav",
@@ -183,7 +184,7 @@ bool CSoundManager::gantryDoor()
 		return false;
 
 	if(engine)
-		std::cout << "open gantry door " << std::endl;
+		std::cout << "open gantry door sound played" << std::endl;
 
 	// play lift door sound
 	ISound* music = engine->play2D("../irrKlang/media/gantrySound.wav",
@@ -199,10 +200,10 @@ bool CSoundManager::wrongAns()
 		return false;
 
 	if(engine)
-		std::cout << "wrong answer" << std::endl;
+		std::cout << "wrong answer sound played" << std::endl;
 
 	// play lift door sound
-	ISound* music = engine->play2D("../irrKlang/media/wrong.wav",
+	ISound* music = engine->play2D("../irrKlang/media/wrong.mp3",
 	                               false, false, true);
 
 	
@@ -215,10 +216,42 @@ bool CSoundManager::correctAns()
 		return false;
 
 	if(engine)
-		std::cout << "correct answer" << std::endl;
+		std::cout << "correct answer sound played" << std::endl;
 
 	// play lift door sound
-	ISound* music = engine->play2D("../irrKlang/media/correct.wav",
+	ISound* music = engine->play2D("../irrKlang/media/correct.mp3",
+	                               false, false, true);
+
+	
+	return true;
+}
+
+bool CSoundManager::winGame()
+{
+		if(!engine)
+		return false;
+
+	if(engine)
+		std::cout << "win game sound played" << std::endl;
+
+	// play lift door sound
+	ISound* music = engine->play2D("../irrKlang/media/win.mp3",
+	                               false, false, true);
+
+	
+	return true;
+}
+
+bool CSoundManager::loseGame()
+{
+		if(!engine)
+		return false;
+
+	if(engine)
+		std::cout << "lose game sound played" << std::endl;
+
+	// play lift door sound
+	ISound* music = engine->play2D("../irrKlang/media/lose.mp3",
 	                               false, false, true);
 
 	
