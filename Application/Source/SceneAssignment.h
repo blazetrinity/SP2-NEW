@@ -186,7 +186,7 @@ private:
 
 	bool CustomerGame;
 
-	bool KeyLeft, KeyRight, KeyK,KeyTab;
+	bool KeyLeft, KeyRight, KeyE, KeyTab, KeyC;
 
 	bool ATMMode;
 	bool Ask;
