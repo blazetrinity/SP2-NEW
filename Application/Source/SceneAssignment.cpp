@@ -18,6 +18,7 @@ Define the SceneAssignment and it's method
 #include "Application.h"
 #include "MeshBuilder.h"
 
+
 SceneAssignment::SELECT SceneAssignment::currentScene = MENU;
 
 /***********************************************************/
@@ -48,6 +49,10 @@ SceneAssignment::~SceneAssignment()
 /***********************************************************/
 void SceneAssignment::Init()
 {
+	//Init music here
+	SP_SND.mallMusic();
+	//SP_SND.CashierBeep();
+
 	// Init VBO here
 
 	// Set background color to dark blue
@@ -182,6 +187,13 @@ void SceneAssignment::Init()
 	delay = 0;
 
 	ATMMode = false;
+	atmEnterSound = true;
+	atmExitSound = true;
+	liftDoorOpenSound = true;
+	liftDoorCloseSound = true;
+	gantryDoorOpenSound = true;
+	gantryDoorCloseSound = true;
+
 	Ask = false;
 	Left = false;
 
@@ -884,7 +896,7 @@ void SceneAssignment::InitOBJs()
 	
 	//Atm Screen
 	meshList[CModel::GEO_ATMSCREEN] = MeshBuilder::GenerateQuad("ATM", Color(0, 0, 0), 10, 10);
-	meshList[CModel::GEO_ATMSCREEN]->textureID = LoadTGA("Image//yellow.tga");
+	meshList[CModel::GEO_ATMSCREEN]->textureID = LoadTGA("Image//ATMScreen.tga");
 
 	////Cashier1
 	meshList[CModel::GEO_COUNTER] = MeshBuilder::GenerateOBJ("cashier", "OBJ//Cashier.obj");
@@ -1404,6 +1416,7 @@ void SceneAssignment::Update(double dt)
 		//selection of scene
 		if (Application::IsKeyPressed(VK_RETURN))
 		{
+			SP_SND.ButtonPress();
 			int selection = highlight - 1;
 			SELECT val = static_cast<SELECT>(selection);
 			currentScene = val;
@@ -1469,6 +1482,13 @@ void SceneAssignment::Update(double dt)
 
 		else if (ATMMode == true)
 		{
+			if(atmEnterSound == true)
+			{
+				SP_SND.ATMEnter();
+				atmEnterSound = false;
+				atmExitSound = true;
+			}
+			
 			AtmUpdate();
 		}
 
@@ -1499,6 +1519,7 @@ void SceneAssignment::Update(double dt)
 
 		if(InteractionTimer > 5 &&Application::IsKeyPressed(VK_TAB) && Character.GetModel() == CModel::GEO_CUSTOMER)
 		{
+			SP_SND.ButtonPress();
 			KeyTab = true;
 			InteractionTimer = 0;
 		}
@@ -1565,6 +1586,7 @@ void SceneAssignment::Update(double dt)
 
 void SceneAssignment::AtmUpdate()
 {
+
 	int selection = 0;
 
 	if(Ask == false)
@@ -1587,6 +1609,7 @@ void SceneAssignment::AtmUpdate()
 	//selected on ATM
 	if(Application::IsKeyPressed(VK_RETURN) && delay == 0)
 	{
+		SP_SND.ButtonPress();
 		//get $10
 		if(selection == 2)
 		{
@@ -1645,6 +1668,12 @@ void SceneAssignment::AtmUpdate()
 		// End||No
 		if (selection == 5 || selection == 10)
 		{
+			if(atmExitSound == true)
+			{
+				SP_SND.ATMExit();
+				atmExitSound = false;
+				atmEnterSound = true;
+			}
 			Ask = false;
 			ATMMode = false;
 			Left = true;
@@ -1660,6 +1689,7 @@ void SceneAssignment::AtmUpdate()
 		{
 			--delay;
 		}	
+
 	}
 }
 
@@ -1667,6 +1697,7 @@ void SceneAssignment::UpdateSelectedItem()
 {
 	if (Application::IsKeyPressed(VK_LEFT) && delay == 0)
 	{
+		SP_SND.scrollChoice();
 		Selected -= 1;
 		if(Selected == -1)
 		{
@@ -1678,6 +1709,7 @@ void SceneAssignment::UpdateSelectedItem()
 	}
 	if (Application::IsKeyPressed(VK_RIGHT) && delay == 0)
 	{
+		SP_SND.scrollChoice();
 		Selected += 1;
 		Selected = Selected%10;
 		delay = 10;
@@ -1822,16 +1854,31 @@ void SceneAssignment::LiftInteraction(double dt)
 			MoveDoor += (float)(DOORSPEED * dt);
 			Objs[Doorindex[0]].setTranslate(50,-50,-175+MoveDoor);
 			Objs[Doorindex[1]].setTranslate(50,-50,-175+MoveDoor);
+
+			if(liftDoorOpenSound == true)
+			{
+				SP_SND.liftDoor();
+				liftDoorOpenSound = false;
+				liftDoorCloseSound = true;
+			}
 		}
 	}
 
 	else
 	{
+		
 		if(MoveDoor > MoveDoorLowerLimit)
 		{
 			MoveDoor -= (float)(DOORSPEED * dt);
 			Objs[Doorindex[0]].setTranslate(50,-50,-175+MoveDoor);
 			Objs[Doorindex[1]].setTranslate(50,-50,-175+MoveDoor);
+			
+			if(liftDoorCloseSound == true)
+			{
+				SP_SND.liftDoor();
+				liftDoorCloseSound = false;
+				liftDoorOpenSound = true;
+			}
 		}
 	}
 
@@ -1839,6 +1886,7 @@ void SceneAssignment::LiftInteraction(double dt)
 
 	if(Application::IsKeyPressed('F') && Character.GetPosition().x > Lift.getMinBound().x && Character.GetPosition().x < Lift.getMaxBound().x && Character.GetPosition().z > Lift.getMinBound().z && Character.GetPosition().z < Lift.getMaxBound().z && FloorTimer > 20)
 	{
+		SP_SND.changeFloor();
 		if(Character.getLevel() == 1)
 		{
 			Character.setLevel(2);
@@ -1850,6 +1898,7 @@ void SceneAssignment::LiftInteraction(double dt)
 		}
 		FloorTimer = 0;
 	}
+
 }
 
 void SceneAssignment::GantryInteraction(double dt)
@@ -1872,6 +1921,13 @@ void SceneAssignment::GantryInteraction(double dt)
 			RotateGantry += (float)(40 *dt);
 			Objs[Gantryindex[0]].setRotate(0-RotateGantry,0,1,0);
 			Objs[Gantryindex[1]].setRotate(180+RotateGantry,0,1,0);
+
+			if(gantryDoorOpenSound == true)
+			{
+				SP_SND.gantryDoor();
+				gantryDoorOpenSound = false;
+				gantryDoorCloseSound = true;
+			}
 		}
 	}
 
@@ -1882,6 +1938,13 @@ void SceneAssignment::GantryInteraction(double dt)
 			RotateGantry -= (float)(40 *dt);
 			Objs[Gantryindex[0]].setRotate(0-RotateGantry,0,1,0);
 			Objs[Gantryindex[1]].setRotate(180+RotateGantry,0,1,0);
+
+			if(gantryDoorCloseSound == true)
+			{
+				SP_SND.gantryDoor();
+				gantryDoorCloseSound = false;
+				gantryDoorOpenSound = true;
+			}
 		}
 	}
 }
@@ -1890,11 +1953,13 @@ void SceneAssignment::MenuSelections(int &highlighted, int max, int min)
 {
 	if (Application::IsKeyPressed(VK_DOWN) && delay == 0 && highlighted < max)
 	{
+		SP_SND.scrollChoice();
 		highlighted += 1;
 		delay = 15;
 	}
 	if (Application::IsKeyPressed(VK_UP) && delay == 0 && highlighted > min)
 	{
+		SP_SND.scrollChoice();
 		highlighted -= 1;
 		delay = 15;
 	}
@@ -2244,11 +2309,13 @@ void SceneAssignment::RenderCashierGame()
 			{
 				if(CalTotalPrice(customerPayingPrice) == true)
 				{
+					SP_SND.correctAns();
 					round++;
 				}
 	
 				else if(CalTotalPrice(customerPayingPrice) == false)
 				{
+					SP_SND.wrongAns();
 					round++;
 					chances--;
 				}
@@ -2259,12 +2326,14 @@ void SceneAssignment::RenderCashierGame()
 			{
 				if(CalTotalPrice(customerPayingPrice) == true)
 				{
+					SP_SND.wrongAns();
 					round++;
 					chances--;
 				}
 
 				else if(CalTotalPrice(customerPayingPrice) == false)
 				{
+					SP_SND.correctAns();
 					round++;
 				}
 				RandCustomerList();

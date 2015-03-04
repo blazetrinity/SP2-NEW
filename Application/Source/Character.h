@@ -16,8 +16,8 @@
 #include "SceneObj.h"
 #include "Camera3.h"
 #include "AI.h"
+#include "SoundManager.h"
 #include <vector>
-
 using std::vector;
 
 /***********************************************************/
@@ -61,6 +61,7 @@ public:
 	
 private:
 	bool updatePosition;
+	bool walkingSound;
 	Vector3 Position;
 	Vector3 Scale;
 	Vector3 Displacement;
@@ -70,6 +71,7 @@ private:
 	
 	CModel model;
 	CModel modelArm;
+	CSoundManager mySound;
 
 	float turnbody;
 	float movebody;

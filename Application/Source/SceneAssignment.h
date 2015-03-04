@@ -25,10 +25,10 @@ Class to define a Scene
 #include "Interaction.h"
 #include "AI.h"
 #include "Item.h"
+#include "SoundManager.h"
 #include <vector>
 #include <string>
 #include <sstream>
-
 using std::vector;
 using std::string;
 
@@ -174,6 +174,15 @@ private:
 	bool inventory;
 	bool selectItem;
 
+	bool atmEnterSound;
+	bool atmExitSound;
+
+	bool liftDoorOpenSound;
+	bool liftDoorCloseSound;
+
+	bool gantryDoorOpenSound;
+	bool gantryDoorCloseSound;
+
 	int ATMcash;
 
 	int round;
@@ -210,6 +219,8 @@ private:
 	Camera3 SecurityCamera1, SecurityCamera2, SecurityCamera3, SecurityCamera4;
 
 	Camera3 PanCam;
+
+	CSoundManager SP_SND;
 
 	CSceneObj myObj;
 	vector<CSceneObj> Objs;
