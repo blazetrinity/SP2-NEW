@@ -239,7 +239,8 @@ void SceneAssignment::Init()
 	Ask = false;
 	Left = false;
 
-	KeyK = false;
+	KeyE = false;
+	KeyC = false;
 
 	std::stringstream amount;
 	amount << ATMcash;
@@ -258,7 +259,7 @@ void SceneAssignment::Init()
 	cash[11] = "->NO";
 
 	navigate[0] = "Press 'TAB' for Inventory";
-	navigate[1] = "Press 'K' to Interact";
+	navigate[1] = "Press 'E' to Interact";
 
 	Selected = 0;
 
@@ -271,30 +272,34 @@ void SceneAssignment::Init()
 	change[3] = " ";
 
 	CameraMode = -1;
-	SecurityCamera = false;
 	fps = 0;
 	RotateGantry = 0;
 	MoveDoor = 0;
+	diffDistance = 5;
 	MoveDoorUpperLimit = 45;
 	MoveDoorLowerLimit = 0;
-	FloorTimer = 0;
-	renderCart = false;
-	diffDistance = 5;
-	InteractionTimer = 0;
-	CustomerGameTimer = 0;
-	CustomerGame = false;
-	winScreen = false;
-	loseScreen = false;
-	EndTimer = 0;
-
-	CashierGame = false;
 	customerPayingPrice = 0;
 	totalPrice = 0;
 	round = 1;
 	chances = 3;
-	CashierGameKeyPressTimer = 0;
-	CashierGameTimer = 0;
+	IndexCounter = 0;
+	TranslateItem = 0;
+
+	SecurityCamera = false;
+	CustomerGame = false;
+	winScreen = false;
+	loseScreen = false;
+	renderCart = false;
+	CashierGame = false;
 	StartGame = false;
+	RenderItems = false;
+
+	FloorTimer = 0;
+	EndTimer = 0;
+	InteractionTimer = 0;
+	CustomerGameTimer = 0;
+	CashierGameKeyPressTimer = 0;
+	CashierGameTimer = 0;	
 }
 
 /***********************************************************/
@@ -853,7 +858,7 @@ void SceneAssignment::InitItemsObj()
 {
 	meshList[CModel::GEO_SODA] = MeshBuilder::GenerateOBJ("SodaCan", "OBJ//OBJs//SodaCan.obj");
 	meshList[CModel::GEO_SODA]->textureID = LoadTGA("Image//Items//SodaCan.tga");
-
+	
 	myItem.Set(CModel::GEO_SODA,1,"Soda");
 	itemList.push_back(myItem);
 
@@ -871,13 +876,13 @@ void SceneAssignment::InitItemsObj()
 
 	meshList[CModel::GEO_CEREALKBOX] = MeshBuilder::GenerateOBJ("KCereal", "OBJ//OBJs//CerealKillerCereal.obj");
 	meshList[CModel::GEO_CEREALKBOX]->textureID = LoadTGA("Image//Items//CerealKillerCereal.tga");
-
+	
 	myItem.Set(CModel::GEO_CEREALKBOX, 5, "KCereal");
 	itemList.push_back(myItem);
 
 	meshList[CModel::GEO_STITCHCEREAL] = MeshBuilder::GenerateOBJ("StitchCereal", "OBJ//OBJs//StitchCereal.obj");
 	meshList[CModel::GEO_STITCHCEREAL]->textureID = LoadTGA("Image//Items//stitchCereal.tga");
-
+	
 	myItem.Set(CModel::GEO_STITCHCEREAL, 4, "SitchCereal");
 	itemList.push_back(myItem);
 
@@ -968,6 +973,45 @@ void SceneAssignment::InitOBJs()
 	Rotate.SetToRotation(0,0,1,0);
 
 	myObj.Set(CModel::GEO_COUNTER, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::COUNTER);
+
+	Objs.push_back(myObj);
+
+	meshList[CModel::GEO_CAMERA] = MeshBuilder::GenerateOBJ("Camera", "OBJ//securityCamera2.obj");
+	meshList[CModel::GEO_CAMERA]->textureID = LoadTGA("Image//texture camera.tga");
+
+	//SecurityCamera1
+	Translate.Set(SecurityCamera1.position.x, 25, SecurityCamera1.position.z);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
+
+	Objs.push_back(myObj);
+
+	//SecurityCamera2
+	Translate.Set(SecurityCamera2.position.x-5, 25, SecurityCamera2.position.z-20);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(180,0,1,0);
+
+	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
+
+	Objs.push_back(myObj);
+
+	//SecurityCamera3
+	Translate.Set(SecurityCamera3.position.x+20, 25, SecurityCamera3.position.z-5);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(90,0,1,0);
+
+	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
+
+	Objs.push_back(myObj);
+
+	//SecurityCamera4
+	Translate.Set(SecurityCamera4.position.x+10, 25, SecurityCamera4.position.z+20);
+	Scale.Set(10, 10, 10);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
 
 	Objs.push_back(myObj);
 
@@ -1072,7 +1116,7 @@ void SceneAssignment::InitOBJs()
 	MaximumBound.Set(-63, 50, -143);
 	MinimumBound.Set(-139, -50, -189);
 	Translate.Set(-125, -37, -180);
-	Scale.Set(15, 15, 15);
+	Scale.Set(10, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 
 	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
@@ -1084,7 +1128,7 @@ void SceneAssignment::InitOBJs()
 	/*MaximumBound.Set(54, 50, -3);
 	MinimumBound.Set(-12, -50, -28);*/
 	Translate.Set(-115, -37, -180);
-	Scale.Set(15, 15, 15);
+	Scale.Set(10, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 
 	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
@@ -1096,53 +1140,13 @@ void SceneAssignment::InitOBJs()
 	/*MaximumBound.Set(54, 50, -3);
 	MinimumBound.Set(-12, -50, -28);*/
 	Translate.Set(-105, -37, -180);
-	Scale.Set(15, 15, 15);
+	Scale.Set(10, 15, 15);
 	Rotate.SetToRotation(180,0,1,0);
 	myObj.Set(CModel::GEO_TROLLEY, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::CART);
 
 	Objs.push_back(myObj);
 
-	
-	meshList[CModel::GEO_CAMERA] = MeshBuilder::GenerateOBJ("Camera", "OBJ//securityCamera2.obj");
-	meshList[CModel::GEO_CAMERA]->textureID = LoadTGA("Image//texture camera.tga");
-
-	//SecurityCamera1
-	Translate.Set(SecurityCamera1.position.x, 25, SecurityCamera1.position.z);
-	Scale.Set(10, 10, 10);
-	Rotate.SetToRotation(0,0,1,0);
-
-	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
-
-	Objs.push_back(myObj);
-
-	//SecurityCamera2
-	Translate.Set(SecurityCamera2.position.x-5, 25, SecurityCamera2.position.z-20);
-	Scale.Set(10, 10, 10);
-	Rotate.SetToRotation(180,0,1,0);
-
-	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
-
-	Objs.push_back(myObj);
-
-	//SecurityCamera3
-	Translate.Set(SecurityCamera3.position.x+20, 25, SecurityCamera3.position.z-5);
-	Scale.Set(10, 10, 10);
-	Rotate.SetToRotation(90,0,1,0);
-
-	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
-
-	Objs.push_back(myObj);
-
-	//SecurityCamera4
-	Translate.Set(SecurityCamera4.position.x, 25, SecurityCamera4.position.z+20);
-	Scale.Set(10, 10, 10);
-	Rotate.SetToRotation(0,0,1,0);
-
-	myObj.Set(CModel::GEO_CAMERA, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::SECURITY_CAM);
-
-	Objs.push_back(myObj);
-
-	meshList[CModel::GEO_GANTRY] = MeshBuilder::GenerateOBJ("Oranges", "OBJ//Gantry.obj");
+	meshList[CModel::GEO_GANTRY] = MeshBuilder::GenerateOBJ("Gantry", "OBJ//Gantry.obj");
 	meshList[CModel::GEO_GANTRY]->textureID = LoadTGA("Image//GantryTexture.tga");
 
 	MaximumBound.Set(-104, 50, -18);
@@ -1412,38 +1416,6 @@ void SceneAssignment::Update(double dt)
 	if(Application::IsKeyPressed('0'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
 	
-	if(Application::IsKeyPressed('E') && SecurityCamera == false)
-	{
-		SecurityCamera = true;
-		CameraMode = 1;
-	}
-	
-	else if(Application::IsKeyPressed('E') && SecurityCamera == true)
-	{
-		SecurityCamera = false;
-		CameraMode = 0;
-	}
-
-	if(Application::IsKeyPressed('1') && SecurityCamera == true)
-	{
-		CameraMode = 1;
-	}
-
-	if(Application::IsKeyPressed('2') && SecurityCamera == true)
-	{
-		CameraMode = 2;
-	}
-
-	if(Application::IsKeyPressed('3') && SecurityCamera == true)
-	{
-		CameraMode = 3;
-	}
-
-	if(Application::IsKeyPressed('4') && SecurityCamera == true)
-	{
-		CameraMode = 4;
-	}
-	
 	SecurityCamera1.CameraRotateUpdate(dt);
 	SecurityCamera2.CameraRotateUpdate(dt);
 	SecurityCamera3.CameraRotateUpdate(dt);
@@ -1520,7 +1492,7 @@ void SceneAssignment::Update(double dt)
 			
 		Vector3 TempPosition = Character.GetPosition();
 		
-		if(CashierGame == false && ATMMode == false && inventory == false)
+		if(CashierGame == false && ATMMode == false && inventory == false && SecurityCamera == false)
 		{
 			Character.Update(dt, Objs, AiList);
 		}
@@ -1553,12 +1525,17 @@ void SceneAssignment::Update(double dt)
 			CashierGameKeyPressTimer += 5*dt;
 		}
 
+		if(RenderItems)
+		{
+			TranslateItem -= (float)(15*dt);
+		}
+
 		if(CustomerGame == true && CustomerGameTimer < 0)
 		{
 			CustomerGameState = "Lose";
 		}
 
-		KeyLeft = KeyRight = KeyK = KeyTab = false;
+		KeyLeft = KeyRight = KeyE = KeyTab = KeyC = false;
 
 		if(CashierGame == true && CashierGameKeyPressTimer > 5)
 		{
@@ -1574,10 +1551,27 @@ void SceneAssignment::Update(double dt)
 			CashierGameKeyPressTimer = 0;
 		}
 
-		if(InteractionTimer > 20 && Application::IsKeyPressed('K'))
+		
+		InteractionTimer += 10*dt;
+
+		if(InteractionTimer > 20 && Application::IsKeyPressed('E'))
 		{
-			KeyK = true;
+			KeyE = true;
 			InteractionTimer = 0;
+		}
+
+		if(InteractionTimer > 20 && Application::IsKeyPressed('C'))
+		{
+			KeyC = true;
+			InteractionTimer = 0;
+		}
+
+		if(SecurityCamera == true && KeyE)
+		{
+			SecurityCamera = false;
+			CameraMode = 0;
+			Character.setLevel(1);
+			KeyE = false;
 		}
 
 		if(InteractionTimer > 5 &&Application::IsKeyPressed(VK_TAB) && Character.GetModel() == CModel::GEO_CUSTOMER)
@@ -1587,9 +1581,37 @@ void SceneAssignment::Update(double dt)
 			InteractionTimer = 0;
 		}
 
-		InteractionTimer += 10*dt;
+		if(Application::IsKeyPressed('1') && SecurityCamera == true)
+		{
+			CameraMode = 1;
+		}
 
-		if(KeyK)
+		if(Application::IsKeyPressed('2') && SecurityCamera == true)
+		{
+			CameraMode = 2;
+		}
+
+		if(Application::IsKeyPressed('3') && SecurityCamera == true)
+		{
+			CameraMode = 3;
+		}
+
+		if(Application::IsKeyPressed('4') && SecurityCamera == true)
+		{
+			CameraMode = 4;
+		}
+
+		if(KeyC && SecurityCamera == true && Character.getLevel() == 1)
+		{
+			Character.setLevel(2);
+		}
+	
+		else if(KeyC && SecurityCamera == true && Character.getLevel() == 2)
+		{
+			Character.setLevel(1);
+		}
+
+		if(KeyE)
 		{
 			InteractionCheck();
 		}
@@ -1784,6 +1806,12 @@ void SceneAssignment::UpdateSelectedItem()
 		Selected = Selected%10;
 		delay = 10;
 	}
+	
+	if (Application::IsKeyPressed('Q') && Selected < Character.GetInterventory().size() && delay == 0)
+	{
+		Character.RemoveFromInventory(Selected);
+		delay = 10;
+	}
 
 	if (delay > 0)
 	{
@@ -1815,9 +1843,20 @@ void SceneAssignment::RemoveTrolley(int i){
 /***********************************************************/
 void SceneAssignment::InteractionCheck()
 {
+	Vector3 Target;
+	if(renderCart && Character.GetModel() == CModel::GEO_CUSTOMER)
+	{
+		Target = Character.getTarget();
+	}
+
+	else
+	{
+		Target = Character.GetCamera().target;
+	}
+
 	for(int i = 0; i < Objs.size(); ++i)
 	{
-		if(Character.GetCamera().target.x > Objs[i].getBoundMin().x && Character.GetCamera().target.x < Objs[i].getBoundMax().x && Character.GetCamera().target.z > Objs[i].getBoundMin().z && Character.GetCamera().target.z < Objs[i].getBoundMax().z && Character.getLevel() == Objs[i].getLevel())
+		if(Target.x > Objs[i].getBoundMin().x && Target.x < Objs[i].getBoundMax().x && Target.z > Objs[i].getBoundMin().z && Target.z < Objs[i].getBoundMax().z && Character.getLevel() == Objs[i].getLevel())
 		{
 			//Customer
 			if(currentScene == CUSTOMER)
@@ -1834,7 +1873,7 @@ void SceneAssignment::InteractionCheck()
 
 				if (Objs[i].getOBJType() == CSceneObj::ATM)
 				{
-						ATMMode = true;
+					ATMMode = true;
 				}
 
 				if(Objs[i].getOBJType() == CSceneObj::CART)
@@ -1847,22 +1886,35 @@ void SceneAssignment::InteractionCheck()
 						CustomerGame = true;
 						CustomerGameState = "Playing";
 						CustomerGameTimer = 300;
+						Character.EnableTrolley();
 						break;
 					}
 				}
 				
-				if(Objs[i].getOBJType() == CSceneObj::COUNTER && CustomerGame == true)
+				if(Objs[i].getOBJType() == CSceneObj::COUNTER)
 				{
-					if(CheckCustomerInventory() == true)
+					RenderItems = true;
+					ItemRenderLocation = Objs[i].getTranslate();
+					
+					if(itemRenderList.size() == 0)
 					{
-						CustomerGameState = "Win";
-						Character.ResetInventory();
+						for(int i = 0; i < Character.GetInterventory().size(); ++i)
+						{
+							itemRenderList.push_back(Character.GetInterventory()[i]);
+						}
 					}
-
-					else if(CheckCustomerInventory() == false)
+					
+					if(CustomerGame == true)
 					{
-						CustomerGameState = "Lose";
-						Character.ResetInventory();
+						if(CheckCustomerInventory() == true)
+						{
+							CustomerGameState = "Win";
+						}
+
+						else if(CheckCustomerInventory() == false)
+						{
+							CustomerGameState = "Lose";
+						}
 					}
 				}
 			}
@@ -1887,7 +1939,15 @@ void SceneAssignment::InteractionCheck()
 			//Security
 			else if(currentScene == SECURITY)
 			{
-
+				if(Objs[i].getOBJType() == CSceneObj::MONITOR)
+				{
+					if(SecurityCamera == false)
+					{
+						SecurityCamera = true;
+						CameraMode = 1;
+						break;
+					}
+				}
 			}
 		}	
 	}
@@ -2300,7 +2360,11 @@ void SceneAssignment::Render()
 		RenderLoseScreen();
 	}
 
-	
+	if(RenderItems)
+	{
+		RenderItemOnCounter();
+	}
+
 	std::ostringstream stringfps;
 
 	stringfps << fps;
@@ -2339,6 +2403,32 @@ void SceneAssignment::RenderLoseScreen()
 	if(EndTimer < 0)
 	{
 		loseScreen = false;
+	}
+}
+
+void SceneAssignment::RenderItemOnCounter()
+{
+	if(IndexCounter < itemRenderList.size())
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate((ItemRenderLocation.x + 15) +TranslateItem, ItemRenderLocation.y + 20, ItemRenderLocation.z);
+		modelStack.Scale(10, 10, 10);
+		RenderMesh(meshList[itemRenderList[IndexCounter]], true);
+		modelStack.PopMatrix();
+
+		if(TranslateItem < -20)
+		{
+			IndexCounter++;
+			TranslateItem = 0;
+		}
+	}
+
+	else if(IndexCounter == itemRenderList.size())
+	{
+		RenderItems = false;
+		IndexCounter = 0;
+		itemRenderList.clear();
+		Character.ResetInventory();
 	}
 }
 
@@ -2450,7 +2540,7 @@ void SceneAssignment::RandShoppingList()
 	for(int i = 0; i < 10; ++i)
 	{
 		int value = rand() % 11;
-		shoppingList.push_back(itemList[value]);
+		shoppingList.push_back(itemList[3]);
 	}
 }
 
@@ -2668,19 +2758,14 @@ void SceneAssignment::RenderAI()
 /***********************************************************/
 void SceneAssignment::RenderTrolley()
 {
-	trolleyPos.Set(0,0,0);
-	DirectionVector = Character.GetCamera().target - Character.GetPosition();
-	DirectionVector.Normalize();
-	trolleyPos = (DirectionVector * diffDistance) + Character.GetPosition();
-
 	for(int a = 0; a < Objs.size(); ++a)
 	{
 		if(Objs[a].getOBJType() == CSceneObj::CART)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(trolleyPos.x, trolleyPos.y + 10, trolleyPos.z);
+			modelStack.Translate(Character.GetPosition().x, Character.GetPosition().y + 10, Character.GetPosition().z);
 			modelStack.Rotate(Character.GetRotation() + 90, 0, 1, 0);
-			modelStack.Translate(35, 0, 0);
+			modelStack.Translate(25, 0, -3);
 			modelStack.Scale(Objs[a].getScale().x, Objs[a].getScale().y, Objs[a].getScale().z);
 			RenderMesh(meshList[Objs[a].getModel()], true);
 			modelStack.PopMatrix();
@@ -2814,7 +2899,7 @@ void SceneAssignment::CustomerNavigation()
 
 	for (int text = 0; text < 3; text++)
 	{
-	RenderTextOnScreen(meshList[CModel::GEO_TEXT], navigate[text], Color(0, 0, 1), textSize, topLeftStart, topLeftHeight - (text - 1));
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], navigate[text], Color(0, 0, 1), textSize, topLeftStart, topLeftHeight - (text - 1));
 	}
 }
 
@@ -2841,7 +2926,10 @@ void SceneAssignment::PrintInventoryBox()
 				RenderImageOnScreen(meshList[CModel::GEO_INVENT_YELLOW], Color(0,0,0), BoxSize, x + (column * 1.2f), y - (row * 1.2f));
 			}
 
-			
+			if (count < Character.GetInterventory().size() != NULL)
+			{
+				RenderImageOnScreen(meshList[Character.GetInterventory()[count]], Color(0,0,0), BoxSize, x + (column * 1.2f), (y - 0.3f) - (row * 1.2f));
+			}
 			count++;
 		}
 	}

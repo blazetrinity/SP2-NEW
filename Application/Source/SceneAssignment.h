@@ -120,6 +120,7 @@ private:
 	void RenderCustomerGame();
 	void RenderWinScreen();
 	void RenderLoseScreen();
+	void RenderItemOnCounter();
 	void InitSkyboxLevel1();
 	void InitLiftLevel1();
 	void InitSkyboxLevel2();
@@ -175,6 +176,8 @@ private:
 	float InventX;
 	float InventY;
 
+	float TranslateItem;
+
 	bool SecurityCamera;
 	bool renderCart;
 
@@ -183,7 +186,7 @@ private:
 
 	bool CustomerGame;
 
-	bool KeyLeft, KeyRight, KeyK,KeyTab;
+	bool KeyLeft, KeyRight, KeyE, KeyTab, KeyC;
 
 	bool ATMMode;
 	bool Ask;
@@ -209,6 +212,10 @@ private:
 	bool loseScreen;
 
 
+
+	bool RenderItems;
+
+
 	int ATMcash;
 
 	int round;
@@ -221,6 +228,8 @@ private:
 	int atmHigh;
 	int anotherHigh;
 
+	int IndexCounter;
+
 	vector<int> Doorindex;
 	int MoveDoorUpperLimit;
 	int MoveDoorLowerLimit;
@@ -231,11 +240,13 @@ private:
 
 	CItem myItem;
 	vector<CItem> itemList;
-	vector<string> priceIndex;
-	vector<string> customerList;
-
 	vector<CItem> shoppingList;
 
+	vector<CModel::GEOMETRY_TYPE> itemRenderList;
+	
+	vector<string> priceIndex;
+	vector<string> customerList;
+	
 	vector<int> Gantryindex;
 
 	string CustomerGameState;
@@ -256,11 +267,11 @@ private:
 	CAi myAI;
 	vector<CAi> AiList;
 
-	Vector3 DirectionVector;
-	Vector3 trolleyPos;
 	Vector3 MaximumBound, MinimumBound;
 	Vector3 Translate, Scale;
 	Vector3 PlayerPosition, CameraPosition, CameraTarget;
+
+	Vector3 ItemRenderLocation;
 	Mtx44 Rotate;
 
 	MS modelStack, viewStack, projectionStack;

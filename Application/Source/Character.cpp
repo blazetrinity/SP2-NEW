@@ -27,9 +27,18 @@ Ccharacter::Ccharacter()
 	level = 1;
 	inventorySize = 0;
 	maxInventorySize = 2;
+
 	wallet = 0;
 	walkingTimer = 0.0f;
 	halfofwidth = 7/2;
+
+
+	trolley = false;
+	TrolleyPos = firstpersoncamera.target;
+	TrolleyMin.Set(TrolleyPos.x - ((3/2) * 10),0,TrolleyPos.z - ((3.5/2) * 15));
+	TrolleyMax.Set(TrolleyPos.x + ((3/2) * 10),0,TrolleyPos.z + ((3.5/2) * 15));
+	TargetWithTrolley = ((((firstpersoncamera.target - firstpersoncamera.position).Normalize()) * 45) + firstpersoncamera.position);
+
 	Vector3 Min, Max;
 	Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
 	Max.Set((Position.x + (halfofwidth*Scale.x)),0,(Position.z + (halfofwidth*Scale.z)));
@@ -170,12 +179,17 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs, vector<CAi> AiList)
 
 	firstpersoncamera.Update(dt);
 
+	TrolleyPos = firstpersoncamera.target;
+	TrolleyMin.Set(TrolleyPos.x - ((3/2) * 10),0,TrolleyPos.z - ((3.5/2) * 15));
+	TrolleyMax.Set(TrolleyPos.x + ((3/2) * 10),0,TrolleyPos.z + ((3.5/2) * 15));
+
 	if(updatePosition)
 	{
 		Position += Displacement;
 		firstpersoncamera.position = Position;
 		firstpersoncamera.position.y += 30;
 		firstpersoncamera.target += Displacement;
+		TargetWithTrolley = ((((firstpersoncamera.target - firstpersoncamera.position).Normalize()) * 45) + firstpersoncamera.position);
 
 		Vector3 Min, Max;
 		Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
@@ -184,6 +198,7 @@ void Ccharacter::Update(double dt,vector<CSceneObj> Objs, vector<CAi> AiList)
 
 		std::cout << "Character" << Position.x << " " << Position.y << " " << Position.z << std::endl;
 		std::cout << "Target" << firstpersoncamera.target.x << " " << firstpersoncamera.target.y << " " << firstpersoncamera.target.z << std::endl;
+		std::cout << "Target2" << TargetWithTrolley.x << " " << TargetWithTrolley.y << " " << TargetWithTrolley.z << std::endl;
 	}
 }
 
@@ -271,6 +286,15 @@ void Ccharacter::BoundChecking(vector<CSceneObj> Objs, vector<CAi> AiList)
 	{
 		for(int i = 0; i < Objs.size(); ++i)
 		{
+			if(trolley && model.getModel() == CModel::GEO_CUSTOMER && Objs[i].getModel() != CModel::GEO_TROLLEY)
+			{
+				if(TrolleyMin.x < Objs[i].getBoundMax().x && TrolleyMax.x > Objs[i].getBoundMin().x && TrolleyMin.z < Objs[i].getBoundMax().z && TrolleyMax.z > Objs[i].getBoundMin().z && Objs[i].getLevel() == level)
+				{
+					updatePosition = false;
+					return;
+				}
+			}
+
 			if(tempPosition.x < Objs[i].getBoundMax().x && tempPosition.x > Objs[i].getBoundMin().x && tempPosition.z < Objs[i].getBoundMax().z && tempPosition.z > Objs[i].getBoundMin().z && Objs[i].getLevel() == level)
 			{
 				updatePosition = false;
@@ -430,6 +454,7 @@ void Ccharacter::AddToInventory(CModel::GEOMETRY_TYPE ShelfObject)
 void Ccharacter::RemoveFromInventory(int index)
 {
 	Inventory.erase(Inventory.begin()+index);
+	inventorySize--;
 }
 
 /***********************************************************/
@@ -482,4 +507,15 @@ Vector3 Ccharacter::getBoundMin()
 void Ccharacter::ResetInventory()
 {
 	Inventory.clear();
+	inventorySize = 0;
+}
+
+Vector3 Ccharacter::getTarget()
+{
+	return TargetWithTrolley;
+}
+
+void Ccharacter::EnableTrolley()
+{
+	trolley = true;
 }
