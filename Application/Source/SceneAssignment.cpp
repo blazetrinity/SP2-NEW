@@ -839,76 +839,76 @@ void SceneAssignment::InitLiftLevel2()
 /***********************************************************/
 void SceneAssignment::InitItemsObj()
 {
-	meshList[CModel::GEO_SODA] = MeshBuilder::GenerateOBJ("SodaCan", "OBJ//Soda.obj");
-	meshList[CModel::GEO_SODA]->textureID = LoadTGA("Image//CanTexture.tga");
-	
+	meshList[CModel::GEO_SODA] = MeshBuilder::GenerateOBJ("SodaCan", "OBJ//OBJs//SodaCan.obj");
+	meshList[CModel::GEO_SODA]->textureID = LoadTGA("Image//Items//SodaCan.tga");
+
 	myItem.Set(CModel::GEO_SODA,1,"Soda");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_HERSHEYS] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//HersheyChocolate.obj");
-	meshList[CModel::GEO_HERSHEYS]->textureID = LoadTGA("Image//FoodStorage1.tga");
+	meshList[CModel::GEO_HERSHEYS] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//OBJs//Hershey.obj");
+	meshList[CModel::GEO_HERSHEYS]->textureID = LoadTGA("Image//Items//hershey.tga");
 
 	myItem.Set(CModel::GEO_HERSHEYS, 3, "Hersheys");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_GUMMYCEREAL] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//CerealBox1.obj");
-	meshList[CModel::GEO_GUMMYCEREAL]->textureID = LoadTGA("Image//cerealBox.tga");
+	meshList[CModel::GEO_GUMMYCEREAL] = MeshBuilder::GenerateOBJ("GummyCereal", "OBJ//OBJs//GummyBearsCereal.obj");
+	meshList[CModel::GEO_GUMMYCEREAL]->textureID = LoadTGA("Image//Items//GummyBears.tga");
 
 	myItem.Set(CModel::GEO_GUMMYCEREAL, 4, "GummyCereal");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_CEREALKBOX] = MeshBuilder::GenerateOBJ("CeralBox", "OBJ//CerealBox2.obj");
-	meshList[CModel::GEO_CEREALKBOX]->textureID = LoadTGA("Image//displayTable2.tga");
+	meshList[CModel::GEO_CEREALKBOX] = MeshBuilder::GenerateOBJ("KCereal", "OBJ//OBJs//CerealKillerCereal.obj");
+	meshList[CModel::GEO_CEREALKBOX]->textureID = LoadTGA("Image//Items//CerealKillerCereal.tga");
 
 	myItem.Set(CModel::GEO_CEREALKBOX, 5, "KCereal");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_STITCHCEREAL] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//CerealBox3.obj");
-	meshList[CModel::GEO_STITCHCEREAL]->textureID = LoadTGA("Image//FoodStorage1.tga");
+	meshList[CModel::GEO_STITCHCEREAL] = MeshBuilder::GenerateOBJ("StitchCereal", "OBJ//OBJs//StitchCereal.obj");
+	meshList[CModel::GEO_STITCHCEREAL]->textureID = LoadTGA("Image//Items//stitchCereal.tga");
 
 	myItem.Set(CModel::GEO_STITCHCEREAL, 4, "SitchCereal");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_BAKEDCANS] = MeshBuilder::GenerateOBJ("BakedBeans", "OBJ//BakedBeans.obj");
-	meshList[CModel::GEO_BAKEDCANS]->textureID = LoadTGA("Image//beanCan.tga");
+	meshList[CModel::GEO_BAKEDCANS] = MeshBuilder::GenerateOBJ("BakedBeans", "OBJ//OBJs//BakedBeans.obj");
+	meshList[CModel::GEO_BAKEDCANS]->textureID = LoadTGA("Image//Items//beanCan.tga");
 
 	myItem.Set(CModel::GEO_BAKEDCANS, 3, "BakedBeans");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_CHIPCEREAL] = MeshBuilder::GenerateOBJ("ChipCereal", "OBJ//CerealBox4.obj");
-	meshList[CModel::GEO_CHIPCEREAL]->textureID = LoadTGA("Image//cerealBox1.tga");
+	meshList[CModel::GEO_CHIPCEREAL] = MeshBuilder::GenerateOBJ("ChipCereal", "OBJ//OBJs//ChipMatesCereal.obj");
+	meshList[CModel::GEO_CHIPCEREAL]->textureID = LoadTGA("Image//Items//ChipMatesCereal.tga");
 
 	myItem.Set(CModel::GEO_CHIPCEREAL, 5, "ChipCereal");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_ORANGE] = MeshBuilder::GenerateOBJ("Oranges", "OBJ//Oranges.obj");
-	meshList[CModel::GEO_ORANGE]->textureID = LoadTGA("Image//FruitStall.tga");
+	meshList[CModel::GEO_ORANGE] = MeshBuilder::GenerateOBJ("Oranges", "OBJ//OBJs//Oranges.obj");
+	meshList[CModel::GEO_ORANGE]->textureID = LoadTGA("Image//Items//Oranges.tga");
 
-	myItem.Set(CModel::GEO_ORANGE, 1, "Fruit");
+	myItem.Set(CModel::GEO_ORANGE, 1, "Oranges");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_FERRERO] = MeshBuilder::GenerateOBJ("HerSheys", "OBJ//BoxFood.obj");
-	meshList[CModel::GEO_FERRERO]->textureID = LoadTGA("Image//FoodStorage.tga");
+	meshList[CModel::GEO_FERRERO] = MeshBuilder::GenerateOBJ("Ferrero", "OBJ//OBJs//Ferrero.obj");
+	meshList[CModel::GEO_FERRERO]->textureID = LoadTGA("Image//Items//Ferrero.tga");
 
 	myItem.Set(CModel::GEO_FERRERO, 2, "Ferrero");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_COKEZERO] = MeshBuilder::GenerateOBJ("Coke", "OBJ//Coke.obj");
-	meshList[CModel::GEO_COKEZERO]->textureID = LoadTGA("Image//CanTexture3.tga");
+	meshList[CModel::GEO_COKEZERO] = MeshBuilder::GenerateOBJ("CokeZero", "OBJ//OBJs//Coke.obj");
+	meshList[CModel::GEO_COKEZERO]->textureID = LoadTGA("Image//Items//Coke.tga");
 
 	myItem.Set(CModel::GEO_COKEZERO, 1, "CokeZero");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_MOUNTAINDEW] = MeshBuilder::GenerateOBJ("MountainDew", "OBJ//Coke.obj");
-	meshList[CModel::GEO_MOUNTAINDEW]->textureID = LoadTGA("Image//FoodStorage1.tga");
+	meshList[CModel::GEO_MOUNTAINDEW] = MeshBuilder::GenerateOBJ("MountainDew", "OBJ//OBJs//MountainDew.obj");
+	meshList[CModel::GEO_MOUNTAINDEW]->textureID = LoadTGA("Image//Items//MountainDew.tga");
 
 	myItem.Set(CModel::GEO_MOUNTAINDEW, 1, "MountainDew");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_SHRIMPBOX] = MeshBuilder::GenerateOBJ("Frozen_Food", "OBJ//BoxFood.obj");
-	meshList[CModel::GEO_SHRIMPBOX]->textureID = LoadTGA("Image//FoodStorage2.tga");
+	meshList[CModel::GEO_SPRINGROLLS] = MeshBuilder::GenerateOBJ("SpringRolls", "OBJ//OBJs//SpringRolls.obj");
+	meshList[CModel::GEO_SPRINGROLLS]->textureID = LoadTGA("Image//Items//Springrolls.tga");
 
-	myItem.Set(CModel::GEO_SHRIMPBOX, 6, "ShrimpBox");
+	myItem.Set(CModel::GEO_SPRINGROLLS, 6, "SpringRolls");
 	itemList.push_back(myItem);
 }
 
