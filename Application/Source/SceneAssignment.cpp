@@ -1606,18 +1606,18 @@ void SceneAssignment::Update(double dt)
 
 		if(winScreen || loseScreen)
 		{
-			EndTimer -= 5*dt;
+			EndTimer -= (float)(5*dt);
 		}
 
 		if(CustomerGame)
 		{
-			CustomerGameTimer -= 1*dt;
+			CustomerGameTimer -= (float)(1*dt);
 		}
 
 		if(CashierGame)
 		{
-			CashierGameTimer -= 5*dt;
-			CashierGameKeyPressTimer += 5*dt;
+			CashierGameTimer -= (float)(5*dt);
+			CashierGameKeyPressTimer += (float)(5*dt);
 		}
 
 		if(RenderItems)
@@ -1647,15 +1647,15 @@ void SceneAssignment::Update(double dt)
 		}
 
 		
-		InteractionTimer += 10*dt;
+		InteractionTimer += (float)(10*dt);
 
-		if(InteractionTimer > 20 && Application::IsKeyPressed('E'))
+		if(InteractionTimer > 15 && Application::IsKeyPressed('E'))
 		{
 			KeyE = true;
 			InteractionTimer = 0;
 		}
 
-		if(InteractionTimer > 20 && Application::IsKeyPressed('C'))
+		if(InteractionTimer > 15 && Application::IsKeyPressed('C'))
 		{
 			KeyC = true;
 			InteractionTimer = 0;
@@ -1958,12 +1958,7 @@ void SceneAssignment::InteractionCheck()
 				if(Objs[i].getOBJType() == CSceneObj::SHELF)
 				{
 					Pickup(Objs[i]);
-					for(int n = 0; n < Character.GetInterventory().size(); ++n)
-					{
-						SP_SND.pickItem();
-						std::cout << Character.GetInterventory()[n];
-					}
-					std::cout << std::endl;
+					SP_SND.pickItem();
 				}
 
 				if (Objs[i].getOBJType() == CSceneObj::ATM)
@@ -3011,7 +3006,7 @@ void SceneAssignment::PrintInventoryBox()
 
 			if (count < Character.GetInterventory().size() != NULL)
 			{
-				RenderImageOnScreen(meshList[Character.GetInterventory()[count]], Color(0,0,0), BoxSize, BoxSize, x + (column * 1.2f), (y - 0.2f) - (row * 1.2f));
+				RenderImageOnScreen(meshList[Character.GetInterventory()[count]], Color(0,0,0), BoxSize, BoxSize, x + (column * 1.2f), (y - 0.3f) - (row * 1.2f));
 			}
 			count++;
 		}
