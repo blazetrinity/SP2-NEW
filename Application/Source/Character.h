@@ -50,7 +50,6 @@ public:
 	void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar);
 	void RemoveFromInventory(int index);
 	void ResetInventory();
-	void EnableTrolley();
 	void SetWallet(int value);
 	int GetWallet(void);
 
@@ -63,8 +62,6 @@ public:
 	Vector3 getBoundMax();
 	Vector3 getBoundMin();
 
-	Vector3 getTarget();
-
 	Camera3 GetCamera();
 	
 	void BoundChecking(vector<CSceneObj> Objs, vector<CAi> AiList);
@@ -73,15 +70,10 @@ public:
 	
 private:
 	bool updatePosition;
-	bool trolley;
 	Vector3 Position;
 	Vector3 Scale;
 	Vector3 Displacement;
 	Vector3 tempPosition;
-	Vector3 TrolleyMax;
-	Vector3 TrolleyMin;
-	Vector3 TrolleyPos;
-	Vector3 TargetWithTrolley;
 	Mtx44 Rotation;
 	Camera3 firstpersoncamera;
 	
