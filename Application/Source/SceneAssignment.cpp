@@ -949,12 +949,6 @@ void SceneAssignment::InitItemsObj()
 	myItem.Set(CModel::GEO_CEREALKBOX, 5, "KCereal");
 	itemList.push_back(myItem);
 
-	meshList[CModel::GEO_STITCHCEREAL] = MeshBuilder::GenerateOBJ("StitchCereal", "OBJ//OBJs//StitchCereal.obj");
-	meshList[CModel::GEO_STITCHCEREAL]->textureID = LoadTGA("Image//Items//stitchCereal.tga");
-	
-	myItem.Set(CModel::GEO_STITCHCEREAL, 4, "SitchCereal");
-	itemList.push_back(myItem);
-
 	meshList[CModel::GEO_BAKEDCANS] = MeshBuilder::GenerateOBJ("BakedBeans", "OBJ//OBJs//BakedBeans.obj");
 	meshList[CModel::GEO_BAKEDCANS]->textureID = LoadTGA("Image//Items//beanCan.tga");
 
@@ -1439,10 +1433,7 @@ void SceneAssignment::InitAI()
 	myAI.Set(Vector3(130, -50, -39), 90, CModel::GEO_GIRL_CLEANER, CModel::GEO_GIRL_CLEANERARMS, CAi::STATIONARY,2,7);
 	AiList.push_back(myAI);
 
-	myAI.Set(Vector3(63, -50, 74), 45, CModel::GEO_ADULT3, CModel::GEO_ARM3,CAi::STATIONARY,2,7);
-	AiList.push_back(myAI);
-
-	myAI.Set(Vector3(-55, -50, 79), -45, CModel::GEO_ADULT3, CModel::GEO_ARM3,CAi::STATIONARY,2,7);
+	myAI.Set(Vector3(30, -50, 74), 45, CModel::GEO_ADULT3, CModel::GEO_ARM3,CAi::STATIONARY,2,7);
 	AiList.push_back(myAI);
 
 	myAI.Set(Vector3(-121,-50, 3), 0, CModel::GEO_ADULT2, CModel::GEO_ARM2,CAi::STATIONARY,2,7);
@@ -1474,7 +1465,6 @@ void SceneAssignment::InitItemListAndPriceIndex()
 	priceIndex.push_back("Hersheys- $3");
 	priceIndex.push_back("GummyCereal - $4");
 	priceIndex.push_back("KCereal- $5");
-	priceIndex.push_back("SitchCereal - $4");
 	priceIndex.push_back("BakedBeans- $3");
 	priceIndex.push_back("ChipCereal- $5");
 	priceIndex.push_back("Fruit- $1");
@@ -1592,7 +1582,7 @@ void SceneAssignment::Update(double dt)
 			else if(currentScene == CUSTOMER)
 				MenuSelections(InteractHighLight, 11, 0);
 
-		if(Application::IsKeyPressed(VK_SPACE) && TextMenuMode == false)
+		if(Application::IsKeyPressed(VK_SPACE) && TextMenuMode == false && CustomerGame == false && CashierGame == false)
 		{
 			InteractHighLight = 0;
 

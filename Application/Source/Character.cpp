@@ -66,7 +66,7 @@ Ccharacter::~Ccharacter()
 /***********************************************************/
 void Ccharacter::Update(double dt,vector<CSceneObj> Objs, vector<CAi> AiList)
 {
-	static const float Move = 20.f;
+	static const float Move = 30.f;
 	static const float Turn = 25.f;
 
 	tempPosition = Position;
