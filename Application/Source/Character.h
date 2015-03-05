@@ -16,9 +16,12 @@
 #include "SceneObj.h"
 #include "Camera3.h"
 #include "AI.h"
-#include "Bound.h"
-#include <vector>
 
+#include "SoundManager.h"
+
+#include "Bound.h"
+
+#include <vector>
 using std::vector;
 
 /***********************************************************/
@@ -76,6 +79,7 @@ private:
 	
 	CModel model;
 	CModel modelArm;
+	CSoundManager mySound;
 
 	CBound BoundCheck;
 
@@ -83,6 +87,8 @@ private:
 
 	float turnbody;
 	float movebody;
+
+	float walkingTimer;
 
 	int level;
 

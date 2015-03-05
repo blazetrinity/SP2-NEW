@@ -25,10 +25,10 @@ Class to define a Scene
 #include "Interaction.h"
 #include "AI.h"
 #include "Item.h"
+#include "SoundManager.h"
 #include <vector>
 #include <string>
 #include <sstream>
-
 using std::vector;
 using std::string;
 
@@ -111,11 +111,10 @@ private:
 	void RenderMesh(Mesh *mesh, bool enableLight);
 	void RenderText(Mesh *mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh *mesh, std::string text, Color color, float size, float x, float y);
-	void RenderImageOnScreen(Mesh *mesh, Color color, float size, float x, float y);
+	void RenderImageOnScreen(Mesh *mesh, Color color, float sizeX, float sizeY, float x, float y);
 	void RenderObjs();
 	void RenderCharacter();
 	void RenderTrolley();
-	void RenderMenu();
 	void RenderAI();
 	void RenderCustomerGame();
 	void RenderWinScreen();
@@ -142,7 +141,7 @@ private:
 	bool CalTotalPrice(int customerPayingPrice);
 	
 
-	void CustomerNavigation();
+	void Navigation(int increase);
 	void PrintTextInCentre(int start, int end, string arrName[], int highlighted, int StringSize);
 	void PrintInventoryBox();
 	void UpdateSelectedItem();
@@ -152,14 +151,19 @@ private:
 	void AtmUpdate();
 
 	string menu[6];
-	string navigate[3];
+	string navigate[4];
 	string cash[12];
 	string change[4];
+	string pause[4];
+
+	string switch1;
+	string switch2;
 
 	string amountLeft;
 
 	int box[10];
 	int Selected;
+	int NavChange;
 
 	float fps;
 	float FloorTimer;
@@ -195,6 +199,22 @@ private:
 	bool inventory;
 	bool selectItem;
 
+	bool pauseGame;
+
+	bool atmEnterSound;
+	bool atmExitSound;
+
+	bool liftDoorOpenSound;
+	bool liftDoorCloseSound;
+
+	bool gantryDoorOpenSound;
+	bool gantryDoorCloseSound;
+
+	bool winScreenSound;
+	bool loseScreenSound;
+
+	bool dropItemSound;
+
 	bool winScreen;
 	bool loseScreen;
 
@@ -211,6 +231,7 @@ private:
 	int delay;
 	int atmHigh;
 	int anotherHigh;
+	int pauseHigh;
 
 	int IndexCounter;
 
@@ -242,6 +263,8 @@ private:
 	Camera3 SecurityCamera1, SecurityCamera2, SecurityCamera3, SecurityCamera4;
 
 	Camera3 PanCam;
+
+	CSoundManager SP_SND;
 
 	CSceneObj myObj;
 	vector<CSceneObj> Objs;
