@@ -1649,27 +1649,26 @@ void SceneAssignment::Update(double dt)
 		for(int i = 0; i <AiList.size(); ++i)
 		{
 			
-				if(AiList[i].getAiType() == CAi::STATIONARY && Character.GetPosition() != TempPosition && AiList[i].GetModel() == CModel::GEO_SECURITY)
-				{
-					AiList[i].CalTarget(Character.GetPosition());
-				}
+			if(AiList[i].getAiType() == CAi::STATIONARY && Character.GetPosition() != TempPosition && AiList[i].GetModel() == CModel::GEO_SECURITY)
+			{
+				AiList[i].CalTarget(Character.GetPosition());
+			}
 			
-				else if(AiList[i].GetModel() == CModel::GEO_SECURITY && AiList[i].getAiType() == CAi::STATIONARY)
-				{
-					AiList[i].UpDateRotate(dt);
-				}
+			else if(AiList[i].GetModel() == CModel::GEO_SECURITY && AiList[i].getAiType() == CAi::STATIONARY)
+			{
+				AiList[i].UpDateRotate(dt);
+			}
 
-				else if(AiList[i].getAiType() == CAi::MOVING)
-				{
-					AiList[i].CalMovementAndRotation();
-					AiList[i].UpDatePath(dt, Character.getBoundMin(), Character.getBoundMax(), Character.getLevel());
-				}
+			else if(AiList[i].getAiType() == CAi::MOVING)
+			{
+				AiList[i].CalMovementAndRotation();
+				AiList[i].UpDatePath(dt, Character.getBoundMin(), Character.getBoundMax(), Character.getLevel());
+			}
 
-				else if(AiList[i].getAiType() == CAi::STATIONARY && AiList[i].GetModel() != CModel::GEO_SECURITY)
-				{
-					AiList[i].UpDateAI(dt);
-				}
-			
+			else if(AiList[i].getAiType() == CAi::STATIONARY && AiList[i].GetModel() != CModel::GEO_SECURITY)
+			{
+				AiList[i].UpDateAI(dt);
+			}	
 		}
 	}
 
