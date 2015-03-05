@@ -1,3 +1,13 @@
+/******************************************************************************/
+/*!
+\file	MeshBuilder.cpp
+\author Tang Wen Sheng
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Define the MeshBuilder and it's method
+*/
+/******************************************************************************/
+
 #include "MeshBuilder.h"
 #include <GL\glew.h>
 #include <vector>
@@ -234,6 +244,20 @@ Mesh* MeshBuilder::GenerateCube(const std::string &meshName, Color color, float 
 	return mesh;
 }
 
+
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a Circle; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param radius - radius of a circle
+\param color - color of a circle
+
+\return Pointer to mesh storing VBO/IBO of color
+*/
+/******************************************************************************/
 Mesh* MeshBuilder::GenerateCircle(const std::string &meshName, int radius, Color color)
 {
 	Vertex v;
@@ -273,6 +297,20 @@ Mesh* MeshBuilder::GenerateCircle(const std::string &meshName, int radius, Color
 	return mesh;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a ring; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param Innter_radius - inner radius of a ring
+\param outer_radius - outer radius of a ring
+\param color - color of a ring
+
+\return Pointer to mesh storing VBO/IBO of ring
+*/
+/******************************************************************************/
 Mesh* MeshBuilder::GenerateRing(const std::string &meshName, int inner_radius, int outer_radius, Color color)
 {
 	Vertex v;
@@ -311,6 +349,19 @@ Mesh* MeshBuilder::GenerateRing(const std::string &meshName, int inner_radius, i
 	return mesh;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a sphere; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param radius - radius of a sphere
+\param color - color of a sphere
+
+\return Pointer to mesh storing VBO/IBO of sphere
+*/
+/******************************************************************************/
 Mesh* MeshBuilder::GenerateSphere(const std::string &meshName, int radius, Color color)
 {
 
@@ -353,6 +404,19 @@ Mesh* MeshBuilder::GenerateSphere(const std::string &meshName, int radius, Color
 	return mesh;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a Circle; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param radius - radius of a circle
+\param color - color of a circle
+
+\return Pointer to mesh storing VBO/IBO of color
+*/
+/******************************************************************************/
 Mesh* MeshBuilder::GenerateOBJ(const std::string &meshName, const std::string &file_path) {
 	//Read vertices, texcoords & normals from OBJ
 	std::vector<Position> vertices;
@@ -381,6 +445,22 @@ Mesh* MeshBuilder::GenerateOBJ(const std::string &meshName, const std::string &f
 	return mesh;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a cylinder; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param height - height of a cylinder
+\param color - color of a cylinder
+\param bottomradius - bottom radius of a cylinder
+\param topradius - top radius of a cylinder
+\param bottomcircle - bottom circle of a cylinder
+
+\return Pointer to mesh storing VBO/IBO of color
+*/
+/******************************************************************************/
 Mesh* MeshBuilder::GenerateCylinder(const std::string &meshName, Color color,int height, float bottomradius, float topradius, bool bottomcircle)
 {
 	Vertex v;
@@ -437,6 +517,20 @@ Mesh* MeshBuilder::GenerateCylinder(const std::string &meshName, Color color,int
 	return mesh;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a cone; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param radius - radius of a cone
+\param color - color of a cone
+\param height - height of a cone
+
+\return Pointer to mesh storing VBO/IBO of color
+*/
+/******************************************************************************/
 Mesh* MeshBuilder::GenerateCone(const std::string &meshName, Color color, int height, float radius)
 {
 	Vertex v;
@@ -477,6 +571,19 @@ Mesh* MeshBuilder::GenerateCone(const std::string &meshName, Color color, int he
 	return mesh;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a hemisphere; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param radius - radius of a hemisphere
+\param color - color of a hemisphere
+
+\return Pointer to mesh storing VBO/IBO of color
+*/
+/******************************************************************************/
 Mesh* MeshBuilder::GenerateHemiSphere(const std::string &meshName, float radius, Color color)
 {
 	Vertex v;
@@ -538,6 +645,20 @@ Mesh* MeshBuilder::GenerateHemiSphere(const std::string &meshName, float radius,
 	return mesh;
 }
 
+
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a Text; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param numRow - numRow of a text
+\param numCol - numCol of a text
+
+\return Pointer to mesh storing VBO/IBO of color
+*/
+/******************************************************************************/
 Mesh* MeshBuilder::GenerateText(const std::string &meshName,unsigned numRow,unsigned numCol)
 {
 	Vertex v;

@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	AiPath.h
+\author	Malcolm Lim
+\par
+\brief	Creates an AI Path and storing the Information
+*/
+/***********************************************************/
+
 #ifndef AIPATH_H
 #define AIPATH_H
 #include <vector>
@@ -5,6 +14,13 @@
 
 using std::vector;
 
+
+/***********************************************************/
+/*!
+	class CAiPath
+\brief	Defines an AI Path and it's method
+*/
+/***********************************************************/
 class CAiPath
 {
 public:

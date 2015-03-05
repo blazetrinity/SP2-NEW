@@ -1,15 +1,52 @@
+/******************************************************************************/
+/*!
+\file	Camera2.cpp
+\author Malcolm Lim
+\par	email: Malcolm_Lim\@nyp.edu.sg
+\brief
+Sets the Camera
+*/
+/******************************************************************************/
+
 #include "Camera2.h"
 #include "Application.h"
 #include "Mtx44.h"
 
+/***********************************************************/
+/*!
+\brief
+	Camera2 constructor
+*/
+/***********************************************************/
 Camera2::Camera2()
 {
 }
 
+/***********************************************************/
+/*!
+\brief
+	Camera2 deconstructor
+*/
+/***********************************************************/
 Camera2::~Camera2()
 {
 }
 
+/***********************************************************/
+/*!
+\brief
+	Initialises a camera
+
+\param pos
+	Sets the position for the camera
+
+\param target
+	Sets the target for the camera
+
+\param up
+	Sets the up view for the camera
+*/
+/***********************************************************/
 void Camera2::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 {
 	this->position = defaultPosition = pos;
@@ -21,6 +58,15 @@ void Camera2::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	this->up = defaultUp = right.Cross(view).Normalized();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Updates the Camera
+
+\param dt
+	Using time to update the camera
+*/
+/***********************************************************/
 void Camera2::Update(double dt)
 {
 	static const float CAMERA_SPEED = 50.f;
@@ -84,6 +130,12 @@ void Camera2::Update(double dt)
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Resets the camera to its default position
+*/
+/***********************************************************/
 void Camera2::Reset()
 {
 	position = defaultPosition;

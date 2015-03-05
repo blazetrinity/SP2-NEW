@@ -1,0 +1,7 @@
+1 theme for cashier game
+1 theme for security game
+1 theme for customer game
+1 for main game
+
+add footstep sound to character.cpp
+

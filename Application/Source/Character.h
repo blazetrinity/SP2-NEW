@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	Character.h
+\author	Malcolm Lim & Jenny Liang Leran
+\par
+\brief	Creates a character Model and storing the Information
+*/
+/***********************************************************/
+
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
@@ -7,10 +16,20 @@
 #include "SceneObj.h"
 #include "Camera3.h"
 #include "AI.h"
-#include <vector>
 
+#include "SoundManager.h"
+
+#include "Bound.h"
+
+#include <vector>
 using std::vector;
 
+/***********************************************************/
+/*!
+	class Ccharacter
+\brief	Defines a Character and it's method
+*/
+/***********************************************************/
 class Ccharacter
 {
 public:
@@ -28,12 +47,21 @@ public:
 	void setModelPosition(float x, float y, float z);
 	void setInventorySize();
 	void AddToInventory(CModel::GEOMETRY_TYPE ShelfObject);
+	void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar);
+	void RemoveFromInventory(int index);
+	void ResetInventory();
+	void SetWallet(int value);
+	int GetWallet(void);
 
 	CModel::GEOMETRY_TYPE GetModel();
 	CModel::GEOMETRY_TYPE GetModelArm();
 	
 	Vector3 GetPosition();
 	Vector3 GetScale();
+
+	Vector3 getBoundMax();
+	Vector3 getBoundMin();
+
 	Camera3 GetCamera();
 	
 	void BoundChecking(vector<CSceneObj> Objs, vector<CAi> AiList);
@@ -51,14 +79,23 @@ private:
 	
 	CModel model;
 	CModel modelArm;
+	CSoundManager mySound;
+
+	CBound BoundCheck;
+
+	float halfofwidth;
 
 	float turnbody;
 	float movebody;
+
+	float walkingTimer;
 
 	int level;
 
 	int inventorySize;
 	int maxInventorySize;
+
+	int wallet;
 
 	vector<CModel::GEOMETRY_TYPE> Inventory;
 };

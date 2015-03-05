@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	Mesh.cpp
+\author Tang Wen Sheng
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Sets the mesh
+*/
+/******************************************************************************/
 
 #include "Mesh.h"
 #include "GL\glew.h"
@@ -98,6 +107,18 @@ void Mesh::Render()
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+OpenGL render code
+
+\param offset
+	Sets the offset to render
+
+\param count
+	sets the count to render
+*/
+/******************************************************************************/
 void Mesh::Render(unsigned offset, unsigned count)
 {
 	glEnableVertexAttribArray(0); // 1st attribute buffer : vertices

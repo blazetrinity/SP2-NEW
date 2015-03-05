@@ -1,8 +1,24 @@
+/******************************************************************************/
+/*!
+\file	Vertex.h
+\author Wen Sheng Tang
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Struct to define a Vertex
+*/
+/******************************************************************************/
+
 #ifndef VERTEX_H
 #define VERTEX_H
 
 #include "Vector3.h"
 
+/******************************************************************************/
+/*!
+		Struct Position:
+\brief	Defines a Position and its methods
+*/
+/******************************************************************************/
 struct Position
 {
 	float x, y, z;
@@ -16,6 +32,12 @@ struct Position
 	}
 };
 
+/******************************************************************************/
+/*!
+		Struct Color:
+\brief	Defines a Color and its methods
+*/
+/******************************************************************************/
 struct Color
 {
 	float r, g, b;
@@ -29,6 +51,12 @@ struct Color
 	}
 };
 
+/******************************************************************************/
+/*!
+		Struct TexCoord:
+\brief	Defines the Text Coordinate and its methods
+*/
+/******************************************************************************/
 struct TexCoord
 {
 	float u, v;
@@ -36,6 +64,12 @@ struct TexCoord
 	void Set(float u, float v) {this->u = u; this->v = v;}
 };
 
+/******************************************************************************/
+/*!
+		Struct Vertex:
+\brief	Defines the Vertex and its methods
+*/
+/******************************************************************************/
 struct Vertex
 {
 	Position pos;

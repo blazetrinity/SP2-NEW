@@ -1,20 +1,74 @@
+/******************************************************************************/
+/*!
+\file	AI.cpp
+\author Malcolm Lim
+\par	email: Malcolm_Lim\@nyp.edu.sg
+\brief
+Set and Render AI
+*/
+/******************************************************************************/
+
 #include"AI.h"
 #include "MyMath.h"
 
+static const float Move = 20.f;
+static const float Turn = 25.f;
+
+/******************************************************************************/
+/*!
+\brief
+CAi default constructor
+*/
+/******************************************************************************/
 CAi::CAi()
 {
 	rotatebody = 0;
 	movebody = 0;
 	angletorotate = 0;
+	rotatedangle = 0;
 	Scale.Set(12,12,12);
 	Update = true;
+	Torotate = false;
 }
 
+/******************************************************************************/
+/*!
+\brief
+CAi deconstructor
+*/
+/******************************************************************************/
 CAi::~CAi()
 {
 
 }
 
+/******************************************************************************/
+/*!
+\brief
+Set the Position, Target, Model, Level and Size
+
+\param NewPosition
+	Set a new Position to the AI
+
+\param NewTarget
+	Set a new Target for the AI
+
+\param Model
+	Set a Model for the AI
+
+\param ModelArm
+	Set a ModelArm to the AI
+
+\param Type
+	Set a Type to the AI
+
+\param level
+	Set the level for the AI to render
+
+\param size
+	Set the size for the AI
+*/
+/******************************************************************************/
 void CAi::Set(Vector3 NewPosition, Vector3 NewTarget, CModel::GEOMETRY_TYPE Model, CModel::GEOMETRY_TYPE ModelArm, AI_TYPE type, int level, int size)
 {
 	Position = NewPosition;
@@ -32,6 +86,34 @@ void CAi::Set(Vector3 NewPosition, Vector3 NewTarget, CModel::GEOMETRY_TYPE Mode
 	initAIText();
 }
 
+
+/******************************************************************************/
+/*!
+\brief
+Set the Position, Target, Model, Level and Size
+
+\param NewPosition
+	Set a new Position to the AI
+
+\param RotationAngle
+	Set the rotation Angle for the AI to rotate
+
+\param Model
+	Set a Model for the AI
+
+\param ModelArm
+	Set a ModelArm to the AI
+
+\param Type
+	Set a Type to the AI
+
+\param level
+	Set the level for the AI to render
+
+\param size
+	Set the size for the AI
+*/
+/******************************************************************************/
 void CAi::Set(Vector3 NewPosition, float RotationAngle, CModel::GEOMETRY_TYPE Model, CModel::GEOMETRY_TYPE ModelArm, AI_TYPE type, int level, int size)
 {
 	Position = NewPosition;
@@ -49,26 +131,68 @@ void CAi::Set(Vector3 NewPosition, float RotationAngle, CModel::GEOMETRY_TYPE Mo
 	initAIText();
 }
 
+/******************************************************************************/
+/*!
+\brief
+Get the models that is set
+
+\return 
+	Returns the Model
+*/
+/******************************************************************************/
 CModel::GEOMETRY_TYPE CAi::GetModel()
 {
 	return model.getModel();
 }
 	
+/******************************************************************************/
+/*!
+\brief
+Get the models arms that is set
+
+\return 
+	Returns the Model Arms
+*/
+/******************************************************************************/
 CModel::GEOMETRY_TYPE CAi::GetModelArm()
 {
 	return modelArm.getModel();
 }
 
+/******************************************************************************/
+/*!
+\brief
+Get the Models Position
+
+\return 
+	Returns the Position
+*/
+/******************************************************************************/
 Vector3 CAi::GetPosition()
 {
 	return Position;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Get the Models Scale
+
+\return 
+	Returns the Model Scale
+*/
+/******************************************************************************/
 Vector3 CAi::GetScale()
 {
 	return Scale;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Calculate the Movement and the Rotation of the AI
+*/
+/******************************************************************************/
 void CAi::CalMovementAndRotation()
 {
 	if(Update)
@@ -90,46 +214,57 @@ void CAi::CalMovementAndRotation()
 	}
 }
 	
-void CAi::UpDatePath(double dt)
-{
-	static const float Move = 20.f;
-	static const float Turn = 25.f;
+/******************************************************************************/
+/*!
+\brief
+Update the path of the AI
 
+\param dt
+	Using the time to update the AI Path
+*/
+/******************************************************************************/
+void CAi::UpDatePath(double dt, Vector3 CharacterMin, Vector3 CharacterMax, int CharacterLevel)
+{
 	Vector3 Distance = Path.getCurrentPoint() - Position;
 	float Lenght = Distance.Length();
 
 	bool torotate = false;
 
-	/*if(rotatebody < angletorotate)
+	if(rotatebody < angletorotate)
 	{
 		torotate = true;
-	}*/
+	}
 
 	if(Lenght > 1)
 	{
 		movebody -= (float)(Move * dt);
 	}
 	
-	else
-	{
-		rotatebody += 90;
-		Update = true;
-	}
-	
-	/*if(Lenght < 1 && torotate == true)
+	if(Lenght < 1 && torotate == true)
 	{
 		rotatebody += (float)(Turn *dt);
+		
+		if((angletorotate - rotatebody) < 1)
+		{
+			rotatebody = angletorotate;
+		}
 	}
 	
-	else if(Lenght < 1 && rotatebody > angletorotate)
+	else if(Lenght < 1 && rotatebody == angletorotate)
 	{
 		Update = true;
-	}*/
+	}
 
 	Displacement.Set(0,0,movebody);
 	Rotation.SetToRotation(rotatebody,0,1,0);
 	Displacement = Rotation * Displacement;
+
 	Position += Displacement;
+
+	if(Position.x < CharacterMax.x && Position.x > CharacterMin.x && Position.z < CharacterMax.z && Position.z > CharacterMin.z && CharacterLevel == Level)
+	{
+		Position -= Displacement;
+	}
 
 	Vector3 Min, Max;
 	Min.Set((Position.x - (halfofwidth*Scale.x)),0,(Position.z - (halfofwidth*Scale.z)));
@@ -139,11 +274,17 @@ void CAi::UpDatePath(double dt)
 	movebody = 0;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Update the rotation of the model
+
+\param dt
+	Using the time to update the rotation value
+*/
+/******************************************************************************/
 void CAi::UpDateRotate(double dt)
 {
-	static const float Move = 20.f;
-	static const float Turn = 25.f;
-
 	if(rotatebody > angletorotate)
 	{
 		rotatebody -= (float)(Turn * dt);
@@ -165,6 +306,15 @@ void CAi::UpDateRotate(double dt)
 	AIText.Set(AITextRotation, AITextTranslation, AITextScale);
 }
 
+/******************************************************************************/
+/*!
+\brief
+Calculate the Target for the AI
+
+\param NewTarget	
+	Sets the new target for the AI
+*/
+/******************************************************************************/
 void CAi::CalTarget(Vector3 NewTarget)
 {
 	Vector3 OldVector;
@@ -181,10 +331,21 @@ void CAi::CalTarget(Vector3 NewTarget)
 
 	result = OldVector.Dot(NewVector);
 
+	if(result > 1.0f)
+	{
+		result = 1.0f;
+	}
+
+	else if(result < -1.0f)
+	{
+		result = -1.0f;
+	}
+
     if(CrossProductResult.y > 0)
 	{
 		angletorotate += (acos(result) * 180/3.14159265);
 	}
+	
 	else if(CrossProductResult.y < 0)
 	{
 		angletorotate -= (acos(result) * 180/3.14159265);
@@ -193,56 +354,169 @@ void CAi::CalTarget(Vector3 NewTarget)
 	Target = NewTarget;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Get the rotation value
+
+\return 
+	Returns the rotation value
+*/
+/******************************************************************************/
 Mtx44 CAi::GetRotation()
 {
 	return Rotation;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Gets the Maximum Bound for the AI
+
+\return 
+	Returns AI Maximum Bound
+*/
+/******************************************************************************/
 Vector3 CAi::getBoundMax()
 {
 	return BoundCheck.getBoundMax();
 }
 
+/******************************************************************************/
+/*!
+\brief
+Gets the Minimum Bound for the AI
+
+\return 
+	Returns AI Minimum Bound
+*/
+/******************************************************************************/
 Vector3 CAi::getBoundMin()
 {
 	return BoundCheck.getBoundMin();
 }
 
+/******************************************************************************/
+/*!
+\brief
+Gets the level for the AI to render
+
+\return 
+	Returns level for AI to render
+*/
+/******************************************************************************/
 int CAi::getLevel()
 {
 	return Level;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Adds the path for the AI to move
+
+\param Point
+	Adds the point for the AI to move
+*/
+/******************************************************************************/
 void CAi::AddPath(Vector3 Point)
 {
 	Path.AddPoint(Point);
 }
 
+/******************************************************************************/
+/*!
+\brief
+Gets the AI Type 
+
+\return 
+	Returns AI Type
+*/
+/******************************************************************************/
 CAi::AI_TYPE CAi::getAiType()
 {
 	return Type;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Sets the text for the AI Interaction 
+*/
+/******************************************************************************/
 void CAi::SetText(){
 	AIText.randomText();
 }
 
+/******************************************************************************/
+/*!
+\brief
+Initialise the AI Text
+*/
+/******************************************************************************/
 void CAi::initAIText(){
 	AIText.InitAIText();
 	Mtx44 AITextRotation;
-	AITextRotation.SetToRotation(-rotatebody, 0, 1, 0);
+	AITextRotation.SetToRotation(rotatebody + 180, 0, 1, 0);
 	Vector3 AITextTranslation;
 	AITextTranslation.Set(Position.x, Position.y + 55, Position.z);
 	Vector3 AITextScale;
-	AITextScale.Set(5, 5, 5);
+	AITextScale.Set(4, 4, 4);
 	AIText.Set(AITextRotation, AITextTranslation, AITextScale);
 }
 
+/******************************************************************************/
+/*!
+\brief
+Getst the AI Text 
+
+\return 
+	Returns the AI Text
+*/
+/******************************************************************************/
 CAIInteraction CAi::getAIText(){
 	return AIText;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Updates the Text time
+
+\param updateValue
+	Updates the Value for the timer to render the Text	
+*/
+/******************************************************************************/
 void CAi::updateText(float updateValue)
 {
 	AIText.updateTime(updateValue);
+}
+
+/******************************************************************************/
+/*!
+\brief
+Updates the AI time
+
+\param dt
+	Updates the dt for the timer to render the AI	
+*/
+/******************************************************************************/
+void CAi::UpDateAI(double dt)
+{
+	if(Torotate)
+	{
+		rotatedangle += (float)(Turn * dt);
+	}
+
+	else
+	{
+		rotatedangle -= (float)(Turn * dt);
+	}
+
+	if(rotatedangle > 30.f  || rotatedangle < -30)
+	{
+		Torotate = !Torotate;
+	}
+
+	Rotation.SetToRotation((rotatebody + rotatedangle),0,1,0);
 }

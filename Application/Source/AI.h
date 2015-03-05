@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	AI.h
+\author	Malcolm Lim
+\par
+\brief	Creates an AI Model and storing the Information
+*/
+/***********************************************************/
+
 #ifndef AI_H
 #define AI_H
 
@@ -9,6 +18,12 @@
 #include "MyMath.h"
 #include "AIInteractions.h"
 
+/***********************************************************/
+/*!
+	class CAi
+\brief	Defines an AI and it's method
+*/
+/***********************************************************/
 class CAi
 {
 public:
@@ -27,8 +42,9 @@ public:
 	void AddPath(Vector3 Point);
 	void CalMovementAndRotation();
 	void CalTarget(Vector3 NewTarget);
-	void UpDatePath(double dt);
+	void UpDatePath(double dt, Vector3 CharacterMin, Vector3 CharacterMax, int CharacterLevel);
 	void UpDateRotate(double dt);
+	void UpDateAI(double dt);
 	void SetText();
 	void initAIText();
 	void updateText(float updateValue);
@@ -63,12 +79,14 @@ private:
 	float rotatebody;
 	float result;
 	float angletorotate;
+	float rotatedangle;
 	CModel model;
 	CModel modelArm;
 	AI_TYPE Type;
 	CAiPath Path;
 	int Level;
 	bool Update;
+	bool Torotate;
 	float halfofwidth;
 	CAIInteraction AIText;
 };

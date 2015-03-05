@@ -1,8 +1,23 @@
+/***********************************************************/
+/*!
+\file	Camera2.h
+\author	Malcolm Lim
+\par
+\brief	Create a camera to view the scene
+*/
+/***********************************************************/
+
 #ifndef CAMERA_2_H
 #define CAMERA_2_H
 
 #include "Camera.h"
 
+/***********************************************************/
+/*!
+	class Camera2
+\brief	Defines a camera and its properties
+*/
+/***********************************************************/
 class Camera2 : public Camera
 {
 public:
