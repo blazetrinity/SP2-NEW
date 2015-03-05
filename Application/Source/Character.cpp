@@ -28,7 +28,7 @@ Ccharacter::Ccharacter()
 	inventorySize = 0;
 	maxInventorySize = 2;
 
-	wallet = 1;
+	wallet = 0;
 	walkingTimer = 0.0f;
 	halfofwidth = 7/2;
 

@@ -261,7 +261,7 @@ void SceneAssignment::Init()
 	cash[10] = "->YES";
 	cash[11] = "->NO";
 
-	navigate[0] = "Press 'TAB' for Inventory";
+	navigate[0] = "Press 'SPACEBAR' to Pause";
 	navigate[1] = "Press 'E' to Interact";
 	navigate[2] = "Press 'TAB' for Inventory";
 	navigate[3] = "$0";
