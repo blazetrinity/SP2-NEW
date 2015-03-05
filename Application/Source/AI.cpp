@@ -492,6 +492,15 @@ void CAi::updateText(float updateValue)
 	AIText.updateTime(updateValue);
 }
 
+/******************************************************************************/
+/*!
+\brief
+Updates the AI time
+
+\param dt
+	Updates the dt for the timer to render the AI	
+*/
+/******************************************************************************/
 void CAi::UpDateAI(double dt)
 {
 	if(Torotate)

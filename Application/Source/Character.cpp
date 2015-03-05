@@ -472,16 +472,40 @@ void Ccharacter::SetCharacterPosCamTar(Vector3 Pos, Vector3 Cam, Vector3 Tar)
 	firstpersoncamera.UpdateUp(Cam,Tar);
 }
 
+/***********************************************************/
+/*!
+\brief
+	Gets the Maximum Bound for Character
+
+\return
+	Returns the Characters Maximum Bound
+*/
+/***********************************************************/
 Vector3 Ccharacter::getBoundMax()
 {
 	return BoundCheck.getBoundMax();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Gets the Minimum Bound for Character
+
+\return
+	Returns the Characters Minimum Bound
+*/
+/***********************************************************/
 Vector3 Ccharacter::getBoundMin()
 {
 	return BoundCheck.getBoundMin();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Clears the Inventory
+*/
+/***********************************************************/
 void Ccharacter::ResetInventory()
 {
 	Inventory.clear();

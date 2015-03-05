@@ -39,6 +39,7 @@ public:
 		WALL,
 		DOOR,
 		MONITOR,
+		MONITOR2,
 		GANTRY,
 		TYPE_TOTAL,
 	};

@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	AIInteraction.h
+\author	Sean Leng
+\par
+\brief	Adds AI Interaction and storing the Information
+*/
+/***********************************************************/
+
 #ifndef AIINTERACTION_H
 #define AIINTERACTION_H
 #include <vector>
@@ -9,6 +18,12 @@ using std::random_shuffle;
 using std::vector;
 using std::string;
 
+/***********************************************************/
+/*!
+	class CAIInteraction
+\brief	Defines an AI Interaction and it's method
+*/
+/***********************************************************/
 class CAIInteraction
 {
 public:
