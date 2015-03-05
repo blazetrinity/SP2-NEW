@@ -237,6 +237,7 @@ void SceneAssignment::Init()
 	winScreenSound = true;
 	loseScreenSound = true;
 	dropItemSound = true;
+	pauseGame = false;
 
 	Ask = false;
 	Left = false;
@@ -262,6 +263,8 @@ void SceneAssignment::Init()
 
 	navigate[0] = "Press 'TAB' for Inventory";
 	navigate[1] = "Press 'E' to Interact";
+	navigate[2] = "Press 'TAB' for Inventory";
+	navigate[3] = "$0";
 
 	Selected = 0;
 
@@ -272,6 +275,11 @@ void SceneAssignment::Init()
 	change[1] = "DETACTED";
 	change[2] = "BANK OVERDRAFT";
 	change[3] = " ";
+
+	pause[0] = "Return back";
+	pause[1] = "Switch to" + switch1;
+	pause[2] = "Switch to" + switch2;
+	pause[3] = "End Game";
 
 	CameraMode = -1;
 	fps = 0;
@@ -286,6 +294,8 @@ void SceneAssignment::Init()
 	chances = 3;
 	IndexCounter = 0;
 	TranslateItem = 0;
+	NavChange = 0;
+	pauseHigh = 0;
 
 	SecurityCamera = false;
 	CustomerGame = false;
@@ -939,6 +949,14 @@ void SceneAssignment::InitItemsObj()
 /***********************************************************/
 void SceneAssignment::InitOBJs()
 {
+	//Menu
+	meshList[CModel::GEO_MENU] = MeshBuilder::GenerateQuad("Menu", Color(0, 0, 0), 5, 15);
+	meshList[CModel::GEO_MENU]->textureID = LoadTGA("Image//black.tga");
+
+	//Shopping List
+	meshList[CModel::GEO_SHOPPING] = MeshBuilder::GenerateQuad("Shopping List", Color(0, 0, 0), 10, 10);
+	meshList[CModel::GEO_SHOPPING]->textureID = LoadTGA("Image//grid.tga");
+
 	//Inventory boxes
 	meshList[CModel::GEO_INVENT_RED] = MeshBuilder::GenerateQuad("Inventory", Color(0, 0, 0), 10, 10);
 	meshList[CModel::GEO_INVENT_RED]->textureID = LoadTGA("Image//red.tga");
@@ -1468,33 +1486,108 @@ void SceneAssignment::Update(double dt)
 
 	if (currentScene != MENU)
 	{
-		if(SecurityCamera == false && CashierGame == false && CustomerGame == false)
+		if (currentScene != CUSTOMER)
 		{
-			if(Application::IsKeyPressed('1'))
-			{
-				Character.setModel(CModel::GEO_SECURITY,CModel::GEO_SECURITYARM);
-				//Character.setModelPosition(7, 0, 9);
-				currentScene = SECURITY;
-			}
+			NavChange = 2;
+		}
 
-			if(Application::IsKeyPressed('2'))
+		if (currentScene == SECURITY)
+		{
+			switch1 = "Cashier";
+			switch2 = "Customer";
+		}
+		else if(currentScene == CASHIER)
+		{
+			switch1 = "Customer";
+			switch2 = "Security";
+		}
+		else if(currentScene == CUSTOMER)
+		{
+			switch1 = "Cashier";
+			switch2 = "Security";
+			if (inventory == false)
 			{
-				Character.setModel(CModel::GEO_CUSTOMER,CModel::GEO_CUSTOMERARM);
-				//Character.setModelPosition(-3, 0, 9);
-				currentScene = CUSTOMER;
-			}
-
-			if(Application::IsKeyPressed('3'))
-			{
-				Character.setModel(CModel::GEO_CASHIER,CModel::GEO_CASHIERARM);
-				//Character.setModelPosition(7, 0, 0);
-				currentScene = CASHIER;
+				NavChange = 4;
 			}
 		}
-			
+
+		pause[1] = "Switch to " + switch1;
+		pause[2] = "Switch to " + switch2;
+
+		if(Application::IsKeyPressed(VK_SPACE))
+		{
+			pauseGame = true;
+		}
+
+		if(pauseGame)
+		{
+			MenuSelections(pauseHigh, 3, 0);
+
+			//selection of scene
+			if (Application::IsKeyPressed(VK_RETURN))
+			{
+				switch (pauseHigh)
+				{
+				case 0:
+
+					pauseGame = false;
+					break;
+
+				case 1:
+
+					if(currentScene == SECURITY)
+					{
+						Character.setModel(CModel::GEO_CASHIER,CModel::GEO_CASHIERARM);
+						currentScene = CASHIER;
+					}
+
+					else if(currentScene == CASHIER)
+					{
+						Character.setModel(CModel::GEO_CUSTOMER,CModel::GEO_CUSTOMERARM);
+						currentScene = CUSTOMER;
+					}
+
+					else if(currentScene == CUSTOMER)
+					{
+						Character.setModel(CModel::GEO_CASHIER,CModel::GEO_CASHIERARM);
+						currentScene = CASHIER;
+					}
+
+					pauseGame = false;
+					break;
+
+				case 2:
+
+					if(currentScene == SECURITY)
+					{
+						Character.setModel(CModel::GEO_CUSTOMER,CModel::GEO_CUSTOMERARM);
+						currentScene = CUSTOMER;
+					}
+					else if(currentScene == CASHIER)
+					{
+						Character.setModel(CModel::GEO_SECURITY,CModel::GEO_SECURITYARM);
+						currentScene = SECURITY;
+					}
+					else if(currentScene == CUSTOMER)
+					{
+						Character.setModel(CModel::GEO_SECURITY,CModel::GEO_SECURITYARM);
+						currentScene = SECURITY;
+					}
+					
+					pauseGame = false;
+					break;
+
+				case 3:
+
+					exit(0);
+					break;
+				}
+			}
+		}
+
 		Vector3 TempPosition = Character.GetPosition();
 		
-		if(CashierGame == false && ATMMode == false && inventory == false && SecurityCamera == false)
+		if(CashierGame == false && ATMMode == false && inventory == false && SecurityCamera == false && pauseGame == false)
 		{
 			Character.Update(dt, Objs, AiList);
 		}
@@ -1633,7 +1726,7 @@ void SceneAssignment::Update(double dt)
 			inventory = false;
 		}
 
-		navigate[2] = "$" + std::to_string(static_cast<long long> (Character.GetWallet()));
+		navigate[3] = "$" + std::to_string(static_cast<long long> (Character.GetWallet()));
 
 		//UpdateAiText
 		float TextTimer = 0;
@@ -2294,13 +2387,30 @@ void SceneAssignment::Render()
 	if (currentScene == MENU)
 	{
 		//RenderMenu
-		RenderMenu();
+		RenderImageOnScreen(meshList[CModel::GEO_MENU], Color(0,0,0), 57.f, 25.f, 0.7f, 1.2f);
+		PrintTextInCentre(0, 6, menu, highlight, 5);
 	}
 	else
 	{
 		RenderCharacter();
 		RenderAI();
 		
+		if(CustomerGame == false && CashierGame == false)
+		{
+			if(inventory == false && pauseGame == false)
+			{
+				if(NavChange == 2)
+				{
+					RenderImageOnScreen(meshList[CModel::GEO_INVENT_YELLOW], Color(0,0,0), 80, 8, 0.5, 7);
+				}
+				else if(NavChange == 4)
+				{
+					RenderImageOnScreen(meshList[CModel::GEO_INVENT_YELLOW], Color(0,0,0), 80, 15, 0.5, 3.5);
+				}
+			}
+			Navigation(NavChange);
+		}
+
 		if(currentScene == CASHIER)
 		{
 			if(CashierGame)
@@ -2311,11 +2421,6 @@ void SceneAssignment::Render()
 
 		if(currentScene == CUSTOMER)
 		{
-			if(CustomerGame == false)
-			{
-				CustomerNavigation();
-			}
-
 			if(renderCart)
 			{
 				RenderTrolley();
@@ -2334,7 +2439,7 @@ void SceneAssignment::Render()
 			if(ATMMode)
 			{
 				//Render ATM background
-				RenderImageOnScreen(meshList[CModel::GEO_ATMSCREEN], Color(0,0,0), 80.f, 0.5f, 0.4f);
+				RenderImageOnScreen(meshList[CModel::GEO_ATMSCREEN], Color(0,0,0), 80.f, 80.f, 0.5f, 0.4f);
 
 				if (Ask == false)
 				{
@@ -2364,6 +2469,12 @@ void SceneAssignment::Render()
 	if(RenderItems)
 	{
 		RenderItemOnCounter();
+	}
+
+	if(pauseGame)
+	{
+		RenderImageOnScreen(meshList[CModel::GEO_MENU], Color(0, 0, 0), 80.f, 80.f, 0.5f, 0.5f);
+		PrintTextInCentre(0, 4, pause, pauseHigh, 4);
 	}
 
 	std::ostringstream stringfps;
@@ -2553,7 +2664,7 @@ void SceneAssignment::RandShoppingList()
 /***********************************************************/
 void SceneAssignment::RenderCashierGame()
 {
-	RenderImageOnScreen(meshList[CModel::GEO_BACKGROUND], Color(0,0,0), 80.f, 0.5f, 0.4f);
+	RenderImageOnScreen(meshList[CModel::GEO_BACKGROUND], Color(0,0,0), 80.f, 80.f, 0.5f, 0.4f);
 
 	if(StartGame == true)
 	{
@@ -2668,11 +2779,9 @@ void SceneAssignment::RenderCustomerGame()
 	if(CustomerGameState == "Playing")
 	{
 		int x = 1;
-		int y = 26;
+		int y = 25;
 	
-		//RenderImageOnScreen(meshList[CModel::GEO_BACKGROUND], Color(0,0,0), 40.f, 0.5f, 0.4f);
-
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Shopping List:", Color(0, 0, 0), 2, x, 28);
+		RenderImageOnScreen(meshList[CModel::GEO_SHOPPING], Color(0, 0, 0), 25.f, 63.f, 0.5f, 0.5f);
 	
 		for(int i = 0; i < shoppingList.size() ; ++i)
 		{
@@ -2809,36 +2918,6 @@ void SceneAssignment::RenderCharacter()
 /***********************************************************/
 /*!
 \brief
-	Render Menu in SceneAssignment
-*/
-/***********************************************************/
-void SceneAssignment::RenderMenu()
-{
-	int a = 1;
-	//menu
-	for (int text = 0; text < 6; text++)
-	{
-		const float TextSize = 3;
-		int x = 80/TextSize/2 - menu[text].length()/2;
-		int y = 60/TextSize/2 + 3 - text;
-
-		if(highlight == text)
-		{
-			a = 0;
-		}
-
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], menu[text], Color(1, a, a), TextSize, x, y);
-
-		if(highlight == text)
-		{
-			a = 1;
-		}
-	}
-}
-
-/***********************************************************/
-/*!
-\brief
 	Render Objects in SceneAssignment
 */
 /***********************************************************/
@@ -2892,15 +2971,18 @@ void SceneAssignment::Money(int amount)
 	cash[2] = "YOU HAVE $" + amountLeft.str();
 }
 
-void SceneAssignment::CustomerNavigation()
+void SceneAssignment::Navigation(int increase)
 {
 	float textSize = 2.5f;
 	float topLeftHeight = 80.f/(textSize*1.5);
 	float topLeftStart = 0.5f;
 
-	for (int text = 0; text < 3; text++)
+	if(currentScene != MENU && pauseGame == false && inventory == false)
 	{
-		RenderTextOnScreen(meshList[CModel::GEO_TEXT], navigate[text], Color(0, 0, 1), textSize, topLeftStart, topLeftHeight - (text - 1));
+		for (int text = 0; text < increase; text++)
+		{	
+			RenderTextOnScreen(meshList[CModel::GEO_TEXT], navigate[text], Color(0, 0, 1), textSize, topLeftStart, topLeftHeight - (text - 1));
+		}
 	}
 }
 
@@ -2918,22 +3000,24 @@ void SceneAssignment::PrintInventoryBox()
 			if(count == Selected)
 			{
 				selectItem = true;
-				RenderImageOnScreen(meshList[CModel::GEO_INVENT_RED], Color(0,0,0), BoxSize, x + (column * 1.2f), y - (row * 1.2f));	
+				RenderImageOnScreen(meshList[CModel::GEO_INVENT_RED], Color(0,0,0), BoxSize, BoxSize, x + (column * 1.2f), y - (row * 1.2f));
 			}
 			
 			else
 			{
 				selectItem = false;
-				RenderImageOnScreen(meshList[CModel::GEO_INVENT_YELLOW], Color(0,0,0), BoxSize, x + (column * 1.2f), y - (row * 1.2f));
+				RenderImageOnScreen(meshList[CModel::GEO_INVENT_YELLOW], Color(0,0,0), BoxSize, BoxSize, x + (column * 1.2f), y - (row * 1.2f));
 			}
 
 			if (count < Character.GetInterventory().size() != NULL)
 			{
-				RenderImageOnScreen(meshList[Character.GetInterventory()[count]], Color(0,0,0), BoxSize, x + (column * 1.2f), (y - 0.3f) - (row * 1.2f));
+				RenderImageOnScreen(meshList[Character.GetInterventory()[count]], Color(0,0,0), BoxSize, BoxSize, x + (column * 1.2f), (y - 0.2f) - (row * 1.2f));
 			}
 			count++;
 		}
 	}
+
+	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "Press 'Q' to delete item", Color (1,1,1), 3.f, 1.f, 2.f);
 }
 
 /***********************************************************/
@@ -3015,7 +3099,7 @@ void SceneAssignment::RenderTextOnScreen(Mesh *mesh, std::string text, Color col
 	modelStack.PopMatrix();
 }
 
-void SceneAssignment::RenderImageOnScreen(Mesh *mesh, Color color, float size, float x, float y)
+void SceneAssignment::RenderImageOnScreen(Mesh *mesh, Color color, float sizeX, float sizeY, float x, float y)
 {
 	glDisable(GL_DEPTH_TEST);
 	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
@@ -3032,7 +3116,7 @@ void SceneAssignment::RenderImageOnScreen(Mesh *mesh, Color color, float size, f
 	viewStack.LoadIdentity(); //No need camera for ortho mode
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity(); //Reset modelStack
-	modelStack.Scale(size, size, size);
+	modelStack.Scale(sizeX, sizeY, 0);
 	modelStack.Translate(x, y, 0);
 
 	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();

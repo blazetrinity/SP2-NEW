@@ -28,7 +28,7 @@ bool CSoundManager::mallMusic()
 	// ISound* music = engine->play2D("../irrKlang/media/GameOfThrones.mp3",
 	                            //    true, false, true);
 
-	 engine->setSoundVolume(0.5f);
+	 engine->setSoundVolume(0.75f);
 
 
 	return true;
