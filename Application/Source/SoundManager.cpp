@@ -127,7 +127,7 @@ bool CSoundManager::CashierBeep()
 	
 	//music2->setMaxDistance(25.0f);
 	music->setMinDistance(5.0f);
-	music->setMaxDistance(25.0f);
+	music->setMaxDistance(15.0f);
 	return true;
 }
 
@@ -140,7 +140,22 @@ bool CSoundManager::pickItem()
 		std::cout << "pick item sound played" << std::endl;
 
 	// play pickup item sound
-	ISound* music = engine->play3D("../irrKlang/media/pickup.wav",
+	ISound* music = engine->play3D("../irrKlang/media/pickup.mp3",
+	                              vec3df(0,0,0), false, false, true);
+
+	return true;
+}
+
+bool CSoundManager::dropItem()
+{
+	if(!engine)
+		return false;
+
+	if(engine)
+		std::cout << "drop item sound played" << std::endl;
+
+	// play pickup item sound
+	ISound* music = engine->play3D("../irrKlang/media/dropItem.mp3",
 	                              vec3df(0,0,0), false, false, true);
 
 	return true;

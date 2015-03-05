@@ -22,13 +22,11 @@ public:
 	bool ATMExit();
 	bool CashierBeep();
 	bool pickItem();
+	bool dropItem();
 	bool footstep();
 	bool liftDoor();
 	bool gantryDoor();
 	bool changeFloor();
-	//bool cashierGameMusic();
-	//bool securityGameMusic();
-	//bool customerGameMusic();
 	bool wrongAns();
 	bool correctAns();
 	bool winGame();

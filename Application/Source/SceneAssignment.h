@@ -208,6 +208,8 @@ private:
 	bool winScreenSound;
 	bool loseScreenSound;
 
+	bool dropItemSound;
+
 	bool winScreen;
 	bool loseScreen;
 

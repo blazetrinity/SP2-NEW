@@ -51,6 +51,7 @@ void SceneAssignment::Init()
 {
 	//Init music here
 	SP_SND.mallMusic();
+	SP_SND.CashierBeep();
 	// Init VBO here
 
 	// Set background color to dark blue
@@ -235,6 +236,7 @@ void SceneAssignment::Init()
 	gantryDoorCloseSound = true;
 	winScreenSound = true;
 	loseScreenSound = true;
+	dropItemSound = true;
 
 	Ask = false;
 	Left = false;
@@ -1808,6 +1810,12 @@ void SceneAssignment::UpdateSelectedItem()
 	
 	if (Application::IsKeyPressed('Q') && Selected < Character.GetInterventory().size() && delay == 0)
 	{
+		if(dropItemSound == true)
+		{
+			SP_SND.dropItem();
+			dropItemSound = false;
+		}
+
 		Character.RemoveFromInventory(Selected);
 		delay = 10;
 	}
@@ -1815,6 +1823,7 @@ void SceneAssignment::UpdateSelectedItem()
 	if (delay > 0)
 	{
 		--delay;
+		dropItemSound = true;
 	}
 
 }
@@ -1858,6 +1867,7 @@ void SceneAssignment::InteractionCheck()
 					Pickup(Objs[i]);
 					for(int n = 0; n < Character.GetInterventory().size(); ++n)
 					{
+						SP_SND.pickItem();
 						std::cout << Character.GetInterventory()[n];
 					}
 					std::cout << std::endl;
