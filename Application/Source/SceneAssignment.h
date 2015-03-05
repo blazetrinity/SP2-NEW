@@ -139,7 +139,13 @@ private:
 	void RandShoppingList();
 	bool CheckCustomerInventory();
 	bool CalTotalPrice(int customerPayingPrice);
-	
+
+	void RenderPlayerQuestions();
+	void RenderAIReply();
+	void RenderSecurityReply();
+	void RenderSecurityQuestion();
+	void RenderCashierReply();
+	void RenderCashierQuestion();
 
 	void Navigation(int increase);
 	void PrintTextInCentre(int start, int end, string arrName[], int highlighted, int StringSize);
@@ -155,6 +161,13 @@ private:
 	string cash[12];
 	string change[4];
 	string pause[4];
+
+	string playerText[12];
+	string securityText[6];
+	string cashierText[6];
+	string AIText1[12];
+	string AIText2[6];
+	string AIText3[6];
 
 	string switch1;
 	string switch2;
@@ -220,6 +233,9 @@ private:
 
 	bool RenderItems;
 
+	bool InteractAIMode;
+	bool TextMenuMode;
+
 	int ATMcash;
 
 	int round;
@@ -228,6 +244,7 @@ private:
 	int CameraMode;
 
 	int highlight;
+	int InteractHighLight;
 	int delay;
 	int atmHigh;
 	int anotherHigh;

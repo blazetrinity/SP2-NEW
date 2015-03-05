@@ -1,7 +1,22 @@
+/***********************************************************/
+/*!
+\file	Bound.h
+\author	Malcolm Lim
+\par	
+\brief	Creates a bound and storing the Information
+*/
+/***********************************************************/
+
 #ifndef BOUND_H
 #define BOUND_H
 #include "Vector3.h"
 
+/***********************************************************/
+/*!
+	class CBound
+\brief	Defines a bound and it's method
+*/
+/***********************************************************/
 class CBound
 {
 public:

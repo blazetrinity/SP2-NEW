@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	Item.h
+\author	Malcolm Lim
+\par	
+\brief	Creates an Item and storing the Information
+*/
+/***********************************************************/
+
 #ifndef ITEM_H
 #define ITEM_H
 
@@ -6,6 +15,12 @@
 
 using std::string;
 
+/***********************************************************/
+/*!
+	class CItem
+\brief	Defines an Item and it's method
+*/
+/***********************************************************/
 class CItem
 {
 public:

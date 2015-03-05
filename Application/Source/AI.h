@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	AI.h
+\author	Malcolm Lim
+\par
+\brief	Creates an AI Model and storing the Information
+*/
+/***********************************************************/
+
 #ifndef AI_H
 #define AI_H
 
@@ -9,6 +18,12 @@
 #include "MyMath.h"
 #include "AIInteractions.h"
 
+/***********************************************************/
+/*!
+	class CAi
+\brief	Defines an AI and it's method
+*/
+/***********************************************************/
 class CAi
 {
 public:

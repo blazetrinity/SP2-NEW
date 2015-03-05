@@ -1,3 +1,12 @@
+/***********************************************************/
+/*!
+\file	SoundManager.h
+\author	Vincent Ang
+\par	
+\brief	Creates a Sound and storing the Information
+*/
+/***********************************************************/
+
 #ifndef SOUND_MANAGER_H
 #define SOUND_MANAGER_H
 
@@ -7,6 +16,12 @@
 
 using namespace irrklang;
 
+/***********************************************************/
+/*!
+	class CSoundManager
+\brief	Defines a Sound Manager and it's method
+*/
+/***********************************************************/
 class CSoundManager
 {
 	ISoundEngine* engine;

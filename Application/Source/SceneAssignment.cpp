@@ -266,6 +266,64 @@ void SceneAssignment::Init()
 	navigate[2] = "Press 'TAB' for Inventory";
 	navigate[3] = "$0";
 
+
+
+	playerText[0] = "How Are You?";
+	playerText[1] = "Why can't I get the Shopping Cart?";
+	playerText[2] = "Hello";
+	playerText[3] = "What Should I Buy?";
+	playerText[4] = "Where is the ATM Located at?";
+	playerText[5] = "Do you know where is the cashier?";
+	playerText[6] = "What do you think of the Supermarket?";
+	playerText[7] = "Is the food cheap?";
+	playerText[8] = "Where can I buy Frozen Food?";
+	playerText[9] = "The weather is good today right?";
+	playerText[10] = "Are you local?";
+	playerText[11] = "Can you lend me some money?";
+
+	securityText[0] = "Is there a problem?";
+	securityText[1] = "How are you feeling today?";
+	securityText[2] = "Call me when you need help okay?";
+	securityText[3] = "Do you like the Supermarket?";
+	securityText[4] = "Help us look out for Shoplifters okay?";
+	securityText[5] = "Becareful of Pickpockets okay?";
+
+	cashierText[0] = "Have a Nice Day Ahead!";
+	cashierText[1] = "Is that all?";
+	cashierText[2] = "Is there anything else you need?";
+	cashierText[3] = "Hope to see you again!";
+	cashierText[4] = "Oranges are good, want to get some?";
+	cashierText[5] = "It's my first day of work today!";
+
+	AIText1[0] = "AI: I'm good, Thanks for Asking!";
+	AIText1[1] = "AI: You need at least $1 to get it!";
+	AIText1[2] = "AI: What's Up!";
+	AIText1[3] = "AI: You should get some Fruits!";
+	AIText1[4] = "AI: The ATM is located at Level 2";
+	AIText1[5] = "AI: It is at Level 1 entrance";
+	AIText1[6] = "AI: The Supermarket is Awesome!";
+	AIText1[7] = "AI: The food here is very Cheap!";
+	AIText1[8] = "AI: Frozen food is at level 2";
+	AIText1[9] = "AI: Yes it is. Love the Weather!";
+	AIText1[10] = "AI: Yes I am!";
+	AIText1[11] = "AI: NO! Sorry, I don't know you well!";
+
+	AIText2[0] = "AI: No problem at all!";
+	AIText2[1] = "AI: I'm feeling good, thanks for asking!";
+	AIText2[2] = "AI: Alright!";
+	AIText2[3] = "AI: Yes, I love this Supermarket!";
+	AIText2[4] = "AI: Sure, I'll keep a look out!";
+	AIText2[5] = "AI: Definitely, I'll take note of that!";
+
+	AIText3[0] = "AI: Thank you, You too!";
+	AIText3[1] = "AI: Yup that's all!";
+	AIText3[2] = "AI: Nope, that's all I need for now!";
+	AIText3[3] = "AI: Hope to see you too!";
+	AIText3[4] = "AI: Really? I'll get some later!";
+	AIText3[5] = "AI: Good Luck on your First Day!";
+
+
+
 	Selected = 0;
 
 	inventory = false;
@@ -305,6 +363,8 @@ void SceneAssignment::Init()
 	CashierGame = false;
 	StartGame = false;
 	RenderItems = false;
+	InteractAIMode = false;
+	TextMenuMode = false;
 
 	FloorTimer = 0;
 	EndTimer = 0;
@@ -312,6 +372,7 @@ void SceneAssignment::Init()
 	CustomerGameTimer = 0;
 	CashierGameKeyPressTimer = 0;
 	CashierGameTimer = 0;	
+	InteractHighLight = 0;
 }
 
 /***********************************************************/
@@ -963,6 +1024,9 @@ void SceneAssignment::InitOBJs()
 
 	meshList[CModel::GEO_INVENT_YELLOW] = MeshBuilder::GenerateQuad("Inventory", Color(0, 0, 0), 10, 10);
 	meshList[CModel::GEO_INVENT_YELLOW]->textureID = LoadTGA("Image//yellow.tga");
+
+	meshList[CModel::GEO_TEXT_BG] = MeshBuilder::GenerateQuad("Text_BG", Color(0, 0, 0), 10, 10);
+	meshList[CModel::GEO_TEXT_BG]->textureID = LoadTGA("Image//black.tga");
 	
 	//Atm Screen
 	meshList[CModel::GEO_ATMSCREEN] = MeshBuilder::GenerateQuad("ATM", Color(0, 0, 0), 10, 10);
@@ -1118,14 +1182,27 @@ void SceneAssignment::InitOBJs()
 
 	Objs.push_back(myObj);
 
-	meshList[CModel::GEO_MONITOR] = MeshBuilder::GenerateOBJ("cashier", "OBJ//monitor.obj");
-	meshList[CModel::GEO_MONITOR]->textureID = LoadTGA("Image//MonitorTexture.tga");
+	meshList[CModel::GEO_MONITOR] = MeshBuilder::GenerateOBJ("monitor", "OBJ//monitor.obj");
+	meshList[CModel::GEO_MONITOR]->textureID = LoadTGA("Image//CCTVScreen.tga");
 
 	Translate.Set(-41, -28, -195);
 	Scale.Set(20, 20, 20);
 	Rotate.SetToRotation(0,0,1,0);
 
 	myObj.Set(CModel::GEO_MONITOR, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::MONITOR);
+
+	Objs.push_back(myObj);
+
+
+
+	meshList[CModel::GEO_MONITOR2] = MeshBuilder::GenerateOBJ("monitor2", "OBJ//monitor2.obj");
+	meshList[CModel::GEO_MONITOR2]->textureID = LoadTGA("Image//MonitorTexture.tga");
+
+	Translate.Set(-41, -28, -195);
+	Scale.Set(20, 20, 20);
+	Rotate.SetToRotation(0,0,1,0);
+
+	myObj.Set(CModel::GEO_MONITOR2, Translate, Scale, Rotate, MinimumBound, MaximumBound, 1, CSceneObj::MONITOR2);
 
 	Objs.push_back(myObj);
 
@@ -1514,8 +1591,15 @@ void SceneAssignment::Update(double dt)
 		pause[1] = "Switch to " + switch1;
 		pause[2] = "Switch to " + switch2;
 
-		if(Application::IsKeyPressed(VK_SPACE))
+		if(currentScene == CASHIER || currentScene == SECURITY)
+				MenuSelections(InteractHighLight, 5, 0);
+			else if(currentScene == CUSTOMER)
+				MenuSelections(InteractHighLight, 11, 0);
+
+		if(Application::IsKeyPressed(VK_SPACE) && TextMenuMode == false)
 		{
+			InteractHighLight = 0;
+
 			pauseGame = true;
 		}
 
@@ -1587,7 +1671,7 @@ void SceneAssignment::Update(double dt)
 
 		Vector3 TempPosition = Character.GetPosition();
 		
-		if(CashierGame == false && ATMMode == false && inventory == false && SecurityCamera == false && pauseGame == false)
+		if(CashierGame == false && ATMMode == false && inventory == false && SecurityCamera == false && pauseGame == false && TextMenuMode == false)
 		{
 			Character.Update(dt, Objs, AiList);
 		}
@@ -1645,7 +1729,6 @@ void SceneAssignment::Update(double dt)
 			}
 			CashierGameKeyPressTimer = 0;
 		}
-
 		
 		InteractionTimer += (float)(10*dt);
 
@@ -2046,7 +2129,6 @@ void SceneAssignment::InteractionCheck()
 	{
 		if(Character.GetCamera().target.x > AiList[i].getBoundMin().x && Character.GetCamera().target.x < AiList[i].getBoundMax().x && Character.GetCamera().target.z > AiList[i].getBoundMin().z && Character.GetCamera().target.z < AiList[i].getBoundMax().z && Character.getLevel() == AiList[i].getLevel())
 		{
-			AiList[i].SetText();
 		}	
 	}
 }
@@ -2449,6 +2531,82 @@ void SceneAssignment::Render()
 				}
 			}
 		}
+
+
+
+		for(int i = 0; i < AiList.size(); ++i)
+		{
+			if(Character.GetCamera().target.x > AiList[i].getBoundMin().x && Character.GetCamera().target.x < AiList[i].getBoundMax().x && Character.GetCamera().target.z > AiList[i].getBoundMin().z && Character.GetCamera().target.z < AiList[i].getBoundMax().z && Character.getLevel() == AiList[i].getLevel() && AiList[i].getAiType() != CAi::MOVING)
+			{
+				TextMenuMode = true;
+				if(TextMenuMode == true)
+				{
+					if(currentScene == CUSTOMER)
+					{
+						RenderImageOnScreen(meshList[CModel::GEO_TEXT_BG], Color(1, 0, 0), 80.f, 25.0f, 0.5f, 0.9f);
+						//PrintTextInCentre(0, 11, playerText, highlight, 12);
+						RenderPlayerQuestions();
+						RenderAIReply();
+					}
+
+					if(currentScene == SECURITY)
+					{
+						RenderImageOnScreen(meshList[CModel::GEO_TEXT_BG], Color(1, 0, 0), 80.f, 18.0f, 0.5f, 0.9f);
+						//PrintTextInCentre(0, 5, playerText, highlight, 6);
+						RenderSecurityQuestion();
+						RenderSecurityReply();
+					}
+
+					if(currentScene == CASHIER)
+					{
+						RenderImageOnScreen(meshList[CModel::GEO_TEXT_BG], Color(1, 0, 0), 80.f, 18.0f, 0.5f, 0.9f);
+						//PrintTextInCentre(0, 5, playerText, highlight, 6);
+						RenderCashierQuestion();
+						RenderCashierReply();
+					}
+				}
+			}
+			else
+			{
+				InteractAIMode = true;
+				if(Application::IsKeyPressed('E'))
+				{
+					TextMenuMode = false;
+				}
+			}
+		}
+
+
+		if(currentScene == SECURITY)
+		{
+			for(int i = 0; i < Objs.size(); ++i)
+			{
+				if(Objs[i].getOBJType() == CSceneObj::MONITOR && Character.getLevel() == 1)
+				{
+					modelStack.PushMatrix();
+					modelStack.Translate(Objs[i].getTranslate().x, Objs[i].getTranslate().y, Objs[i].getTranslate().z);
+					modelStack.Rotate(0, 0, 1, 0);
+					modelStack.Scale(Objs[i].getScale().x, Objs[i].getScale().y, Objs[i].getScale().z);
+					RenderMesh(meshList[Objs[i].getModel()], true);
+					modelStack.PopMatrix();
+				}
+			}
+		}
+		else if(currentScene == CUSTOMER || currentScene == CASHIER)
+		{
+			for(int i = 0; i < Objs.size(); ++i)
+			{
+				if(Objs[i].getOBJType() == CSceneObj::MONITOR2 && Character.getLevel() == 1)
+				{
+					modelStack.PushMatrix();
+					modelStack.Translate(Objs[i].getTranslate().x, Objs[i].getTranslate().y, Objs[i].getTranslate().z + 0.5);
+					modelStack.Rotate(0, 0, 1, 0);
+					modelStack.Scale(Objs[i].getScale().x, Objs[i].getScale().y, Objs[i].getScale().z);
+					RenderMesh(meshList[Objs[i].getModel()], true);
+					modelStack.PopMatrix();
+				}
+			}
+		}
 	}
 
 	if(winScreen)
@@ -2574,6 +2732,110 @@ bool SceneAssignment::CalTotalPrice(int customerPayingPrice)
 		return false;
 	}
 }
+
+
+
+
+void SceneAssignment::RenderPlayerQuestions(){
+	int a = 0;
+	//menu
+	for (int text = 0; text < 12; text++)
+	{
+		const float TextSize = 2;
+		//int x = 80/TextSize/2 - menu[text].length()/2;
+		int y = 60/TextSize/2 + 1 - text;
+
+		if(InteractHighLight == text)
+		{
+			a = 1;
+		}
+
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], playerText[text], Color(1, a, a), TextSize, 1, y);
+
+		if(InteractHighLight == text)
+		{
+			a = 0;
+		}
+	}
+}
+
+
+void SceneAssignment::RenderSecurityQuestion(){
+	int a = 0;
+	//menu
+	for (int text = 0; text < 6; text++)
+	{
+		const float TextSize = 2;
+		//int x = 80/TextSize/2 - menu[text].length()/2;
+		int y = 60/TextSize/2 - 5 - text;
+
+		if(InteractHighLight == text)
+		{
+			a = 1;
+		}
+
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], securityText[text], Color(1, a, a), TextSize, 1, y);
+
+		if(InteractHighLight == text)
+		{
+			a = 0;
+		}
+	}
+}
+
+void SceneAssignment::RenderCashierQuestion(){
+	int a = 0;
+	//menu
+	for (int text = 0; text < 6; text++)
+	{
+		const float TextSize = 2;
+		//int x = 80/TextSize/2 - menu[text].length()/2;
+		int y = 60/TextSize/2 -5 - text;
+
+		if(InteractHighLight == text)
+		{
+			a = 1;
+		}
+
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], cashierText[text], Color(1, a, a), TextSize, 1, y);
+
+		if(InteractHighLight == text)
+		{
+			a = 0;
+		}
+	}
+}
+
+
+void SceneAssignment::RenderAIReply()
+{
+	if(Application::IsKeyPressed(VK_RETURN))
+	{
+		RenderImageOnScreen(meshList[CModel::GEO_TEXT_BG], Color(0, 0, 0), 100.f, 2.0f, 0.5f, 3.0f);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], AIText1[InteractHighLight], Color(0, 1, 1), 2, 1, 2.5);
+	}
+}
+
+void SceneAssignment::RenderSecurityReply()
+{
+	if(Application::IsKeyPressed(VK_RETURN))
+	{
+		RenderImageOnScreen(meshList[CModel::GEO_TEXT_BG], Color(0, 0, 0), 100.f, 2.0f, 0.5f, 3.0f);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], AIText2[InteractHighLight], Color(0, 1, 1), 2, 1, 2.5);
+	}
+}
+
+void SceneAssignment::RenderCashierReply()
+{
+	if(Application::IsKeyPressed(VK_RETURN))
+	{
+		RenderImageOnScreen(meshList[CModel::GEO_TEXT_BG], Color(0, 0, 0), 100.f, 2.0f, 0.5f, 3.0f);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], AIText3[InteractHighLight], Color(0, 1, 1), 2, 1, 2.5);
+	}
+}
+
+
+
 
 bool SceneAssignment::CheckCustomerInventory()
 {
@@ -2841,16 +3103,6 @@ void SceneAssignment::RenderAI()
 			}
 	
 			modelStack.PopMatrix();
-
-			if(AiList[i].getAIText().getTime() > 0)
-			{
-				modelStack.PushMatrix();
-				modelStack.Translate(AiList[i].getAIText().getTranslation().x, AiList[i].getAIText().getTranslation().y, AiList[i].getAIText().getTranslation().z);
-				modelStack.MultMatrix(AiList[i].getAIText().getRotation());
-				modelStack.Scale(AiList[i].getAIText().getScale().x, AiList[i].getAIText().getScale().y, AiList[i].getAIText().getScale().z);
-				RenderText(meshList[CModel::GEO_TEXT], AiList[i].getAIText().getText(), Color(0, 1, 0));
-				modelStack.PopMatrix();
-			}
 		}
 	}
 }

@@ -1,9 +1,28 @@
+/******************************************************************************/
+/*!
+\file	LoadOBJ.cpp
+\author Tang Wen Sheng
+\par	email: tang_wen_sheng\@nyp.edu.sg
+\brief
+Loads the OBJ
+*/
+/******************************************************************************/
+
 #include <iostream>
 #include <fstream>
 #include <map>
 
 #include "LoadOBJ.h"
 
+/***********************************************************/
+/*!
+\brief
+	Sets the Item Model
+
+\param Newmodel
+	Sets the new Model for the Item
+*/
+/***********************************************************/
 bool LoadOBJ(
 	const char *file_path, 
 	std::vector<Position> & out_vertices, 
