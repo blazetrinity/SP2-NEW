@@ -137,6 +137,12 @@ bool LoadOBJ(
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Struct to define packedVertex
+*/
+/***********************************************************/
 struct PackedVertex{
 	Position position;
 	TexCoord uv;
@@ -146,6 +152,12 @@ struct PackedVertex{
 	};
 };
 
+/***********************************************************/
+/*!
+\brief
+	Get Similar Vertex Index fast
+*/
+/***********************************************************/
 bool getSimilarVertexIndex_fast( 
 	PackedVertex & packed, 
 	std::map<PackedVertex, unsigned short> & VertexToOutIndex,

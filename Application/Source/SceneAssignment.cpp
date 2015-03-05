@@ -1,8 +1,8 @@
 /******************************************************************************/
 /*!
 \file	SceneAssignment.cpp
-\author Malcolm
-\par	email: Malcolm\@nyp.edu.sg
+\author TANG WEN SHENG
+\par	email: tang_wen_sheng\@nyp.edu.sg
 \brief
 Define the SceneAssignment and it's method
 */
@@ -261,12 +261,10 @@ void SceneAssignment::Init()
 	cash[10] = "->YES";
 	cash[11] = "->NO";
 
-	navigate[0] = "Press 'SPACEBAR' to Pause";
+	navigate[0] = "Press 'SPACEBAR' to Switch Character";
 	navigate[1] = "Press 'E' to Interact";
 	navigate[2] = "Press 'TAB' for Inventory";
 	navigate[3] = "$0";
-
-
 
 	playerText[0] = "How Are You?";
 	playerText[1] = "Why can't I get the Shopping Cart?";
@@ -321,8 +319,6 @@ void SceneAssignment::Init()
 	AIText3[3] = "AI: Hope to see you too!";
 	AIText3[4] = "AI: Really? I'll get some later!";
 	AIText3[5] = "AI: Good Luck on your First Day!";
-
-
 
 	Selected = 0;
 
@@ -1853,6 +1849,13 @@ void SceneAssignment::Update(double dt)
 	fps = 1/dt;
 }
 
+
+/***********************************************************/
+/*!
+\brief
+	Updates in Atm
+*/
+/***********************************************************/
 void SceneAssignment::AtmUpdate()
 {
 
@@ -1962,6 +1965,12 @@ void SceneAssignment::AtmUpdate()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Updates the selected items 
+*/
+/***********************************************************/
 void SceneAssignment::UpdateSelectedItem()
 {
 	if (Application::IsKeyPressed(VK_LEFT) && delay == 0)
@@ -2223,6 +2232,15 @@ void SceneAssignment::LiftInteraction(double dt)
 
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds the Interaction for the Gantry
+
+\param dt
+	Using Delta Time to update the Gantry Interaction
+*/
+/***********************************************************/
 void SceneAssignment::GantryInteraction(double dt)
 {
 	if(Gantryindex.size() == 0)
@@ -2271,6 +2289,15 @@ void SceneAssignment::GantryInteraction(double dt)
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Updates the Menu Selection
+
+\param dt
+	Using Delta Time to update in SceneAssignment
+*/
+/***********************************************************/
 void SceneAssignment::MenuSelections(int &highlighted, int max, int min)
 {
 	if (Application::IsKeyPressed(VK_DOWN) && delay == 0 && highlighted < max)
@@ -2465,6 +2492,7 @@ void SceneAssignment::Render()
 	{
 		//RenderMenu
 		RenderImageOnScreen(meshList[CModel::GEO_MENU], Color(0,0,0), 57.f, 25.f, 0.7f, 1.2f);
+		RenderTextOnScreen(meshList[CModel::GEO_TEXT], "TRILOGY", Color(1,0.7,0.8), 10.f,  0.7f, 4.5f);
 		PrintTextInCentre(0, 6, menu, highlight, 5);
 	}
 	else
@@ -2639,6 +2667,12 @@ void SceneAssignment::Render()
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], stringfps.str(), Color(0, 1, 0), 2, 5, 1);
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render a win screen when player wins
+*/
+/***********************************************************/
 void SceneAssignment::RenderWinScreen()
 {
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "YOU WIN!", Color(0, 1, 0), 3, 10, 10);
@@ -2655,6 +2689,12 @@ void SceneAssignment::RenderWinScreen()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Render a lose screen when player lose
+*/
+/***********************************************************/
 void SceneAssignment::RenderLoseScreen()
 {
 	RenderTextOnScreen(meshList[CModel::GEO_TEXT], "YOU LOSE", Color(0, 1, 0), 3, 10, 10);
@@ -2671,6 +2711,12 @@ void SceneAssignment::RenderLoseScreen()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Renders Items on counter
+*/
+/***********************************************************/
 void SceneAssignment::RenderItemOnCounter()
 {
 	if(IndexCounter < itemRenderList.size())
@@ -2735,7 +2781,12 @@ bool SceneAssignment::CalTotalPrice(int customerPayingPrice)
 
 
 
-
+/***********************************************************/
+/*!
+\brief
+	Renders player Questions
+*/
+/***********************************************************/
 void SceneAssignment::RenderPlayerQuestions(){
 	int a = 0;
 	//menu
@@ -2760,6 +2811,12 @@ void SceneAssignment::RenderPlayerQuestions(){
 }
 
 
+/***********************************************************/
+/*!
+\brief
+	Renders Security Question
+*/
+/***********************************************************/
 void SceneAssignment::RenderSecurityQuestion(){
 	int a = 0;
 	//menu
@@ -2783,6 +2840,12 @@ void SceneAssignment::RenderSecurityQuestion(){
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Renders Cashier Question
+*/
+/***********************************************************/
 void SceneAssignment::RenderCashierQuestion(){
 	int a = 0;
 	//menu
@@ -2806,7 +2869,12 @@ void SceneAssignment::RenderCashierQuestion(){
 	}
 }
 
-
+/***********************************************************/
+/*!
+\brief
+	Renders AI Replies
+*/
+/***********************************************************/
 void SceneAssignment::RenderAIReply()
 {
 	if(Application::IsKeyPressed(VK_RETURN))
@@ -2816,6 +2884,12 @@ void SceneAssignment::RenderAIReply()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Renders AI Replies
+*/
+/***********************************************************/
 void SceneAssignment::RenderSecurityReply()
 {
 	if(Application::IsKeyPressed(VK_RETURN))
@@ -2825,6 +2899,12 @@ void SceneAssignment::RenderSecurityReply()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Renders AI Reply
+*/
+/***********************************************************/
 void SceneAssignment::RenderCashierReply()
 {
 	if(Application::IsKeyPressed(VK_RETURN))
@@ -2836,7 +2916,12 @@ void SceneAssignment::RenderCashierReply()
 
 
 
-
+/***********************************************************/
+/*!
+\brief
+	Checks for customers Inventory
+*/
+/***********************************************************/
 bool SceneAssignment::CheckCustomerInventory()
 {
 	vector<bool> booleanCheck;
@@ -3031,6 +3116,12 @@ void SceneAssignment::RenderCashierGame()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Renders customer Games
+*/
+/***********************************************************/
 void SceneAssignment::RenderCustomerGame()
 {
 	if(CustomerGameState == "Playing")
@@ -3184,6 +3275,27 @@ void SceneAssignment::RenderObjs()
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Prints text in Center of the screen
+
+\param start
+	Sets the start of the string text
+
+\param end 
+	Sets the end string of the text
+
+\param arrName
+	Sets the string name
+
+\param highlight
+	Highlight the selected text
+
+\param StringSize
+	Sets the StringSize
+*/
+/***********************************************************/
 void SceneAssignment::PrintTextInCentre(int start, int end, string arrName[], int highlighted, int StringSize)
 {
 	int colour = 1;
@@ -3208,6 +3320,15 @@ void SceneAssignment::PrintTextInCentre(int start, int end, string arrName[], in
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Store the money
+
+\param amount
+	Sets the amount of money to store
+*/
+/***********************************************************/
 void SceneAssignment::Money(int amount)
 {
 	Character.SetWallet(amount);
@@ -3218,6 +3339,15 @@ void SceneAssignment::Money(int amount)
 	cash[2] = "YOU HAVE $" + amountLeft.str();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Navigate around the item list
+
+\param increase
+	Increases the selected text
+*/
+/***********************************************************/
 void SceneAssignment::Navigation(int increase)
 {
 	float textSize = 2.5f;
@@ -3233,6 +3363,12 @@ void SceneAssignment::Navigation(int increase)
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Prints the Inventory Box
+*/
+/***********************************************************/
 void SceneAssignment::PrintInventoryBox()
 {
 	float BoxSize = 80/7;
@@ -3271,6 +3407,12 @@ void SceneAssignment::PrintInventoryBox()
 /*!
 \brief
 	Render Text in Scene Assignment
+
+\param text
+	Sets the text
+
+\param color
+	Sets the color of the text
 */
 /***********************************************************/
 void SceneAssignment::RenderText(Mesh *mesh, std::string text, Color color)
@@ -3304,6 +3446,21 @@ void SceneAssignment::RenderText(Mesh *mesh, std::string text, Color color)
 /*!
 \brief
 	Render Text on Screen
+
+\param text
+	Sets the Text
+
+\param color
+	Sets the color for text
+
+\param size
+	Sets the size of text to render on screen
+
+\param x
+	Sets the x coordinate for the text to render
+
+\param y
+	Sets the y coordinate for the text to render
 */
 /***********************************************************/
 void SceneAssignment::RenderTextOnScreen(Mesh *mesh, std::string text, Color color, float size, float x, float y)
@@ -3346,6 +3503,28 @@ void SceneAssignment::RenderTextOnScreen(Mesh *mesh, std::string text, Color col
 	modelStack.PopMatrix();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Renders the Image on screen
+
+\param text
+	Sets the Text
+
+\param color
+	Sets the color for text
+
+\param size
+	Sets the size of text to render on screen
+
+\param x
+	Sets the x coordinate for the text to render
+
+\param y
+	Sets the y coordinate for the text to render
+
+*/
+/***********************************************************/
 void SceneAssignment::RenderImageOnScreen(Mesh *mesh, Color color, float sizeX, float sizeY, float x, float y)
 {
 	glDisable(GL_DEPTH_TEST);

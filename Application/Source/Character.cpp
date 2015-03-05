@@ -245,11 +245,29 @@ float Ccharacter::GetRotation()
 	return turnbody;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Sets the Amount of money in a wallet
+
+\param value
+	Sets the amount of value in the wallet
+*/
+/***********************************************************/
 void Ccharacter::SetWallet(int value)
 {
 	wallet += value;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Gets the wallet value
+
+\return
+	returns the wallet value
+*/
+/***********************************************************/
 int Ccharacter::GetWallet()
 {
 	return wallet;
@@ -429,6 +447,15 @@ void Ccharacter::AddToInventory(CModel::GEOMETRY_TYPE ShelfObject)
 	}
 }
 
+/***********************************************************/
+/*!
+\brief
+	Remove the Item from inventory
+
+\param index
+	Increases the index when an item is remove
+*/
+/***********************************************************/
 void Ccharacter::RemoveFromInventory(int index)
 {
 	Inventory.erase(Inventory.begin()+index);
