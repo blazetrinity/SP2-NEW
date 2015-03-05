@@ -1,7 +1,7 @@
 /***********************************************************/
 /*!
 \file	Character.h
-\author	Malcolm Lim
+\author	Malcolm Lim & Jenny Liang Leran
 \par
 \brief	Creates a character Model and storing the Information
 */

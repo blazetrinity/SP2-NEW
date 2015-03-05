@@ -1,5 +1,21 @@
+/******************************************************************************/
+/*!
+\file	SoundManager.cpp
+\author Vincent Ang
+\par	email: Vincent_ang\@nyp.edu.sg
+\brief
+Manages the Sound for SceneAssignment
+*/
+/******************************************************************************/
+
 #include "SoundManager.h"
 
+/***********************************************************/
+/*!
+\brief
+	CSoundManager Default Constructor
+*/
+/***********************************************************/
 CSoundManager::CSoundManager(void)
 {
 	engine = createIrrKlangDevice();
@@ -7,12 +23,23 @@ CSoundManager::CSoundManager(void)
 	engine->setDefault3DSoundMaxDistance(5.0f);
 }
 
-
+/***********************************************************/
+/*!
+\brief
+	CSoundManager Destructor
+*/
+/***********************************************************/
 CSoundManager::~CSoundManager(void)
 {
 	engine->drop();
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music for Mall
+*/
+/***********************************************************/
 bool CSoundManager::mallMusic()
 {
 
@@ -34,6 +61,13 @@ bool CSoundManager::mallMusic()
 	return true;
 
 }
+
+/***********************************************************/
+/*!
+\brief
+	Adds music for footstep
+*/
+/***********************************************************/
 bool CSoundManager::footstep()
 {
 	if(!engine)
@@ -49,6 +83,13 @@ bool CSoundManager::footstep()
 	return true;
 
 }
+
+/***********************************************************/
+/*!
+\brief
+	Adds music when you enter ATM
+*/
+/***********************************************************/
 bool CSoundManager::ATMEnter()
 {
 	if(!engine)
@@ -65,6 +106,12 @@ bool CSoundManager::ATMEnter()
 
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when you exit ATM
+*/
+/***********************************************************/
 bool CSoundManager::ATMExit()
 {
 	if(!engine)
@@ -80,6 +127,13 @@ bool CSoundManager::ATMExit()
 	return true;
 
 }
+
+/***********************************************************/
+/*!
+\brief
+	Adds Music when you scroll for choices
+*/
+/***********************************************************/
 bool CSoundManager::scrollChoice()
 {
 	if(!engine)
@@ -95,6 +149,12 @@ bool CSoundManager::scrollChoice()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when you press a button
+*/
+/***********************************************************/
 bool CSoundManager::ButtonPress()
 {
 	if(!engine)
@@ -110,6 +170,12 @@ bool CSoundManager::ButtonPress()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when for the Cashier
+*/
+/***********************************************************/
 bool CSoundManager::CashierBeep()
 {
 	if(!engine)
@@ -131,6 +197,12 @@ bool CSoundManager::CashierBeep()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when you pick up an item
+*/
+/***********************************************************/
 bool CSoundManager::pickItem()
 {
 	if(!engine)
@@ -146,6 +218,12 @@ bool CSoundManager::pickItem()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when you drop item
+*/
+/***********************************************************/
 bool CSoundManager::dropItem()
 {
 	if(!engine)
@@ -161,6 +239,12 @@ bool CSoundManager::dropItem()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when the liftdoor opens
+*/
+/***********************************************************/
 bool CSoundManager::liftDoor()
 {
 	if(!engine)
@@ -177,6 +261,12 @@ bool CSoundManager::liftDoor()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when the floor change
+*/
+/***********************************************************/
 bool CSoundManager::changeFloor()
 {
 		if(!engine)
@@ -193,6 +283,12 @@ bool CSoundManager::changeFloor()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when the gantry door opens
+*/
+/***********************************************************/
 bool CSoundManager::gantryDoor()
 {
 		if(!engine)
@@ -209,6 +305,12 @@ bool CSoundManager::gantryDoor()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when you give the wrong answer
+*/
+/***********************************************************/
 bool CSoundManager::wrongAns()
 {
 		if(!engine)
@@ -225,6 +327,12 @@ bool CSoundManager::wrongAns()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when you give the correct answer
+*/
+/***********************************************************/
 bool CSoundManager::correctAns()
 {
 		if(!engine)
@@ -241,6 +349,12 @@ bool CSoundManager::correctAns()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when you win the game
+*/
+/***********************************************************/
 bool CSoundManager::winGame()
 {
 		if(!engine)
@@ -257,6 +371,12 @@ bool CSoundManager::winGame()
 	return true;
 }
 
+/***********************************************************/
+/*!
+\brief
+	Adds music when you lose the game
+*/
+/***********************************************************/
 bool CSoundManager::loseGame()
 {
 		if(!engine)

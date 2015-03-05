@@ -107,6 +107,18 @@ void Mesh::Render()
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+OpenGL render code
+
+\param offset
+	Sets the offset to render
+
+\param count
+	sets the count to render
+*/
+/******************************************************************************/
 void Mesh::Render(unsigned offset, unsigned count)
 {
 	glEnableVertexAttribArray(0); // 1st attribute buffer : vertices
