@@ -1812,16 +1812,9 @@ void SceneAssignment::RemoveTrolley(int i){
 void SceneAssignment::InteractionCheck()
 {
 	Vector3 Target;
-	if(renderCart && Character.GetModel() == CModel::GEO_CUSTOMER)
-	{
-		Target = Character.getTarget();
-	}
-
-	else
-	{
-		Target = Character.GetCamera().target;
-	}
-
+	
+	Target = Character.GetCamera().target;
+	
 	for(int i = 0; i < Objs.size(); ++i)
 	{
 		if(Target.x > Objs[i].getBoundMin().x && Target.x < Objs[i].getBoundMax().x && Target.z > Objs[i].getBoundMin().z && Target.z < Objs[i].getBoundMax().z && Character.getLevel() == Objs[i].getLevel())
@@ -1854,7 +1847,6 @@ void SceneAssignment::InteractionCheck()
 						CustomerGame = true;
 						CustomerGameState = "Playing";
 						CustomerGameTimer = 300;
-						Character.EnableTrolley();
 						break;
 					}
 				}
@@ -2461,7 +2453,7 @@ void SceneAssignment::RandShoppingList()
 	for(int i = 0; i < 10; ++i)
 	{
 		int value = rand() % 11;
-		shoppingList.push_back(itemList[3]);
+		shoppingList.push_back(itemList[value]);
 	}
 }
 
