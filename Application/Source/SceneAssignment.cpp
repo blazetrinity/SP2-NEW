@@ -1577,10 +1577,15 @@ void SceneAssignment::Update(double dt)
 		pause[1] = "Switch to " + switch1;
 		pause[2] = "Switch to " + switch2;
 
-		if(currentScene == CASHIER || currentScene == SECURITY)
-				MenuSelections(InteractHighLight, 5, 0);
-			else if(currentScene == CUSTOMER)
-				MenuSelections(InteractHighLight, 11, 0);
+		if((currentScene == CASHIER || currentScene == SECURITY) && TextMenuMode == true)
+		{
+			MenuSelections(InteractHighLight, 5, 0);
+		}
+			
+		else if(currentScene == CUSTOMER && TextMenuMode == true)
+		{
+			MenuSelections(InteractHighLight, 11, 0);
+		}
 
 		if(Application::IsKeyPressed(VK_SPACE) && TextMenuMode == false && CustomerGame == false && CashierGame == false)
 		{
@@ -2122,14 +2127,6 @@ void SceneAssignment::InteractionCheck()
 			}
 		}	
 	}
-
-	//Ai Interaction check
-	for(int i = 0; i < AiList.size(); ++i)
-	{
-		if(Character.GetCamera().target.x > AiList[i].getBoundMin().x && Character.GetCamera().target.x < AiList[i].getBoundMax().x && Character.GetCamera().target.z > AiList[i].getBoundMin().z && Character.GetCamera().target.z < AiList[i].getBoundMax().z && Character.getLevel() == AiList[i].getLevel())
-		{
-		}	
-	}
 }
 
 /***********************************************************/
@@ -2187,7 +2184,6 @@ void SceneAssignment::LiftInteraction(double dt)
 
 	else
 	{
-		
 		if(MoveDoor > MoveDoorLowerLimit)
 		{
 			MoveDoor -= (float)(DOORSPEED * dt);
